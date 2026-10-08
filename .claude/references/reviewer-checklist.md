@@ -101,6 +101,10 @@ tekrarlı metin) mekanik olarak ölçer; bulgularını aşağıdaki ilgili böl�
 Web ekranlarını 1280 **ve 375**'te (spec'te `tablet: true` ise 768'de de) açar; 375 bulguları `@375` etiketlidir
 (bölüm **q**). Uygulama ekranlarını cihaz ölçüsünde açar ve bölüm **r**'nin mekanik maddelerini ölçer.
 
+`structure` (`project-state.md → yapi` varsa) ekranları `flows.md` / `templates.md` ile karşılaştırır: işaretler,
+zorunlu durumlar, bölgeler, çıkmaz sokak, akış bağımlılıkları; bulgularını bölüm **s**'de raporla. `yapi` yoksa
+`UYGULANAMAZ` — eski proje, bulgu değildir.
+
 `scripts/test/` yoksa veya `npm install` başarısız olursa kaynak analiziyle devam et, ama zorunlu testlerin
 hepsini `ÇALIŞTIRILAMADI` olarak raporla ve "Teslim engelleri" listesine yaz. Kaynak analizi otomatik testin
 yerine geçmez; bu durumda çıktı "teslime hazır" sayılmaz. Kurulum için README → Kurulum.
@@ -326,6 +330,23 @@ Estetik değil, kusur kontrolleri:
 - [ ] `app_platforms: [ios, android]` ise Platform Farkları tablosundaki parçaların iki versiyonu var mı? → yoksa **High**
 - [ ] Brief'teki Tez / Kendi dünyası navigasyon veya kontrolleri değiştirmiş mi (yapı platformun)? → **High**
 
+### s. Yapı — Flow ve Template [`yapi` varsa]
+
+Kaynak: `flows.md`, `templates.md`, `references/structure-standards.md`. `structure.mjs` (run-all) işaretleri ve
+bağımlılıkları ölçer; aşağıdakilerin **anlamını** reviewer denetler.
+
+- [ ] **Zorunlu durumlar** ekranda var mı ve içerikleri gerçek mi (boş durum metni ve eylemi, hata mesajı ne olduğunu
+  + ne yapılacağını söylüyor mu)? Durum yok → **High**
+- [ ] **Çıkmaz sokak:** boş durumdaki eylem kullanıcıyı önkoşulu tamamlayacağı ya da sıradaki akışı başlatacağı yere
+  mi götürüyor (yalnızca "Ana sayfaya dön" değil)? Değilse → **High**
+- [ ] **Akış dalları:** `Dallar`'daki hata / iptal / boş durumları ekranda karşılık buluyor mu? Eksik dal → **High**
+- [ ] **`Sonra`:** akışın son adımı tanımlı hedefe gidiyor mu? Yanlış / ölü bağlantı → **High**
+- [ ] **Ortak Davranış:** doğrulama zamanı, başarı/hata geri bildirimi, geri alma tanıma uyuyor mu? Aykırılık →
+  **Medium**; yıkıcı işlemde onay yoksa → **High**
+- [ ] **Template uyumu:** ekran template'inin bölgelerini ve `Davranış` / `Pattern` maddelerini izliyor mu; aynı
+  template'i kullanan ekranlar aynı davranıyor mu? Sapma → **Medium**
+- [ ] Ekran akışta veya template'te tanımlı olmayan bir işlev / dal ekliyor mu? → kapsam kararı (builder kuralı)
+
 ---
 
 ## Figma Modu Kontrolleri
@@ -438,6 +459,11 @@ Kurallar: `references/mobile-platforms.md`.
 - [ ] **İki tema:** uygulama `color_scheme: both` ise fill'ler Light/Dark variable modlarına bağlı mı? → bağlı değilse **Medium**
 - [ ] `app_platforms: [ios, android]` ise Platform Farkları tablosundaki parçaların iOS ve Android versiyonları var mı? → yoksa **High**
 - [ ] `tablet: true` ise tablet frame'i yeniden kurgulanmış mı (büyütülmüş telefon değil)? → **High**
+
+### o. Yapı [`yapi` varsa]
+
+HTML bölüm **s** ile aynı kontroller; işaretler frame adı (`T-… · Ekran`) ve frame açıklamasından
+(`flow: … · states: …`) okunur, durumlar ayrı frame / variant olarak aranır. Betik çalışmaz — hepsi elle.
 
 ---
 

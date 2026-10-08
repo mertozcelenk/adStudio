@@ -95,9 +95,9 @@ Kurulu değilse pipeline otomatik olarak HTML/CSS moduna geçer.
   └── Brand-guide modu (kurumsal kimlik kılavuzu varsa)
         ↓
 /ads-design-strategy
-  ├── project-state.md başlangıç kaydı (çıktı türü, platform, token dosyası)
-  ├── quick mod → strategist → builder → hafif review + otomatik testler → teslim kapısı
-  └── deep mod  → strategist → planner → ads-ux-designer → plan-gate → builder
+  ├── project-state.md başlangıç kaydı (çıktı türü, platform, token dosyası, yapı)
+  ├── quick mod → strategist → flow + template (kısa) → builder → hafif review + otomatik testler → teslim kapısı
+  └── deep mod  → strategist → planner (flow + template, tam) → ads-ux-designer → plan-gate → builder
                 → ads-design-reviewer ‖ ads-ux-reviewer → düzeltme döngüsü (en fazla 2 tur) → teslim kapısı
 ```
 
@@ -148,7 +148,7 @@ Kurulu değilse pipeline otomatik olarak HTML/CSS moduna geçer.
 | Adım | Agent | Ne yapar |
 |------|-------|----------|
 | 1 | ads-design-strategist | Estetik çakışma tespiti, alternatif yönler, Design Read, kritik heuristic'ler |
-| 2 | ads-design-planner | Component listesi, user flow genişletme + UX validation, tasarımcı onayı, görev çıktısı |
+| 2 | ads-design-planner | Component listesi, `flows.md` (akışlar, önkoşul / sonra) + `templates.md` (ekran tipleri), UX validation, tasarımcı onayı, görev çıktısı |
 | 3 | ads-ux-designer | Her component için UX pattern seçimi ve spec üretimi (`ux-specs.md`'de bu çalışmanın bölümü) |
 | — | plan-gate | Builder öncesi geçiş kontrolü: bu çalışmanın planı ile UX spec'leri birebir tutuyor mu (`scripts/test/plan-gate.mjs`) |
 | 4 | ads-design-builder | Figma veya HTML/CSS üretir |
@@ -160,6 +160,14 @@ Kurulu değilse pipeline otomatik olarak HTML/CSS moduna geçer.
 > değişebilir — bu normaldir.
 
 ## Öne Çıkan Özellikler
+
+**Flow ve template**
+Token'lar ürünün nasıl göründüğünü, iki proje dosyası nasıl kurulduğunu ve nasıl davrandığını tanımlar:
+`templates.md` ekran tiplerini (liste, detay, form…: bölgeler, zorunlu durumlar, davranış), `flows.md` proje geneli
+**Ortak Davranış**'ı ve kullanıcı akışlarını (adımlar, dallar, `Önkoşul` / `Sonra`) tutar. Builder her ekranı bir
+template'ten ve bir akıştan üretir; boş durumlar kullanıcıyı sıradaki akışa götürür. Dosyalar kalıcıdır, yeni kapsam
+eklenir; `/ads-iterate` bir template ya da akış değişince etkilenen ekranları buradan bulur. `structure` testi
+ekranların bu dosyalarla tutarlılığını model çağırmadan denetler. Sözleşme: `references/structure-standards.md`.
 
 **Teslim kapısı**
 Her akış (quick, deep, iterate, promote) bir teslim durumuyla biter: **Teslime hazır**, **İstisna onayıyla
@@ -180,7 +188,7 @@ kendi başına eklemez; tasarımcıya sorulur: **kapsama ekle** (önce plan ve U
 **vaadi koruyan geçici çözüm** veya **istisna** (`project-state.md → ## Teslim İstisnaları`'na gerekçesiyle yazılır).
 
 **Otomatik testler**
-`scripts/test/` kurulumla gelir. `run-all.mjs` erişilebilirlik, token kullanımı, responsive, AI tells ve görsel
+`scripts/test/` kurulumla gelir. `run-all.mjs` erişilebilirlik, token kullanımı, responsive, AI tells, yapı (flow / template) ve görsel
 karşılaştırmayı çalıştırır; biri çökse de diğerleri sürer, sonuç `test-results.json`'a yazılır. Her test dört
 sonuçtan birini verir: geçti / başarısız / çalıştırılamadı / uygulanamaz (ör. Figma projesinde HTML testi).
 `check-run.mjs` bir çalışmanın bıraktığı dosyaları denetler: iddia edilen teslim durumu testlerin ve istisnaların
@@ -317,9 +325,10 @@ Yazı boyutları ve satır yüksekliğinde 4 katı yalnızca öneridir: tipograf
 └── references/
     ├── reviewer-checklist.md   # AI tells kataloğu + HTML/Figma kontrol listeleri + seviye ölçeği
     ├── preflight-checklist.md  # Builder'ın teslim öncesi öz-kontrolü
-    └── token-standards.md      # Geçerli source değerleri, $value kuralı, zorunlu koleksiyonlar, tema modları
+    ├── token-standards.md      # Geçerli source değerleri, $value kuralı, zorunlu koleksiyonlar, tema modları
+    └── structure-standards.md  # flows.md + templates.md biçimi, temel ekran tipleri, HTML yapı işaretleri
 
-scripts/test/                   # run-all (sonuç toplayıcı) + accessibility, tokens, responsive, tells, visual
+scripts/test/                   # run-all (sonuç toplayıcı) + accessibility, tokens, responsive, tells, structure, visual
 
 # Proje kökünde üretilen dosyalar
 spec.md                         # spec-intake çıktısı
@@ -328,6 +337,8 @@ project-state.md                # çıktı türü (orkestratör başta yazar) + 
 test-results.json               # run-all.mjs çıktısı — test başına sonuç ve bulgular
 design-plan.md                  # ads-design-planner çıktısı — İlk Tasarım + Geliştirme Backlog'u
 ux-specs.md                     # ads-ux-designer çıktısı — her çalışma kendi bölümünde (run kimliği), önceki bölümler korunur
+flows.md                        # Ortak Davranış + kullanıcı akışları (önkoşul / sonra) — kalıcı, yeni kapsam eklenir
+templates.md                    # Ekran tipleri: bölgeler, zorunlu durumlar, davranış — kalıcı, yeni kapsam eklenir
 components/[katman]/[ad].html   # ads-design-builder HTML çıktısı
 screens/[ad].html               # ads-design-builder ekran çıktısı
 index.html                      # ads-design-builder navigasyon sayfası
@@ -357,7 +368,7 @@ index.html                      # ads-design-builder navigasyon sayfası
 | Agent | Çağıran | Açıklama |
 |-------|---------|----------|
 | `ads-design-strategist` | design-strategy | Estetik çakışma, alternatif yönler, Design Read, tek cesur element ilkesi, heuristic uyarıları |
-| `ads-design-planner` | design-strategy (deep) | Flow genişletme, UX validation, görev listesi (`design-plan.md`; Notion/Jira kopyası isteğe bağlı) |
+| `ads-design-planner` | design-strategy (deep) + iterate | `flows.md` / `templates.md`, flow genişletme, UX validation, görev listesi (`design-plan.md`; Notion/Jira kopyası isteğe bağlı) |
 | `ads-ux-designer` | design-strategy (deep) + iterate | UX pattern seçimi, etkileşim spec, animasyon zamanlama, ikon disiplini, anti-generic kontrol |
 | `ads-design-builder` | design-strategy | Figma veya HTML/CSS çıktısı üretir |
 | `ads-design-reviewer` | design-strategy (deep) | Spec/token/a11y/AI tells kontrolü — teslim engelleri + etki (Blocker/High/Medium/Nitpick)/Ne iyi raporu |

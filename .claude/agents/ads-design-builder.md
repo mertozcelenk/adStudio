@@ -18,6 +18,8 @@ Promptunda şunlar olacak:
   — iletilmediyse `spec.md → token_directives`'ten oku
 - Platform alanları: `platform`, `app_platforms`, `tablet`, `icon_source`, `component_source`
   — uygulama ekranlarında `.claude/references/mobile-platforms.md` bağlayıcıdır
+- `flows.md` ve `templates.md` yolları (`project-state.md → yapi` varsa) — `.claude/references/structure-standards.md`
+  bağlayıcıdır (bkz. Adım 2b)
 
 ---
 
@@ -101,6 +103,27 @@ Token JSON mevcutsa `Color`, `Typography`, `Layout`, `Component` koleksiyonları
 Yoksa:
 - Style direction'ı spec.md'nin `Marka / Ton` bölümünden türet
 - Kullandığın her tahmini değeri açık soru olarak işaretle — sessizce uydurma
+
+---
+
+## Adım 2b — Yapıyı yükle (flow ve template)
+
+`project-state.md → yapi` varsa `.claude/references/structure-standards.md`, `flows.md` ve `templates.md`'yi oku.
+Token'lar ekranın nasıl göründüğünü, bu iki dosya nasıl kurulduğunu ve nasıl davrandığını belirler:
+
+- **Üretim sırası** önkoşullara göredir: `Önkoşul: yok` olan akışların ekranları önce.
+- **Her ekran bir template'ten** kurulur: template'in bölgeleri (`data-region`) ve **zorunlu durumlarının hepsi**
+  ekranda bulunur (`data-state` blokları; görünürlük `hidden` / CSS ile). Template'in `Davranış` ve `Pattern`
+  maddeleri ekranın davranışıdır — görev görev yeniden karar verme.
+- **Akış dalları ekranda karşılık bulur:** hata durumu, iptalde onay, başarı geri bildirimi. `## Ortak Davranış`
+  her ekranda geçerlidir (doğrulama zamanı, yıkıcı işlem onayı, geri alma); akışa özel `Davranış` onu geçersiz kılar.
+- **`Sonra`** hedefleri prototipte gerçek bağlantıdır (`href`).
+- **Boş durum çıkmaz sokak olmaz:** her `data-state="empty"` bloğu bir eylem (`<a>` / `<button>`) taşır; eylem başka
+  bir akışı başlatıyorsa `data-flow-start="F-…"` ile işaretlenir ("Henüz harcama yok" → [İlk harcamayı ekle] → F-02).
+- Akışta veya template'te olmayan bir ekran / durum / dal gerekiyorsa uydurma — orkestratöre
+  `yapı eksik — [ne, neden]` diye dön (kapsam kuralı aynen geçerli).
+
+`yapi` yoksa (katman öncesi proje) bu adımı atla.
 
 ---
 
@@ -207,6 +230,8 @@ Bağımlılık çözülemiyorsa o görevi sona bırak, atladığını belirt.
 - Font kullanmadan önce `await figma.loadFontAsync({family, style})` çağır
 - Auto-layout container için `figma.createAutoLayout()` kullan, mutlak koordinat değil
 - Token değerlerini birebir uygula — yaklaştırma yapma
+- Yapı (`yapi` varsa): ekran frame adı `T-… · [Ekran adı]`, frame açıklaması `flow: F-01 F-02 · states: loading, empty, error`;
+  template'in zorunlu durumları ayrı frame veya variant olarak üretilir (`structure-standards.md → HTML işaretleri`)
 
 ### Adım adım süreç
 
@@ -400,6 +425,28 @@ Token setinde karşılık bulunamıyorsa (örn. 10px için `--text-2xs` yok):
 
 **Inline style yasağı:** `style="font-size:..."` gibi inline tipografi stilleri kullanma. Her zaman CSS sınıfına taşı.
 
+### Zorunlu: Yapı İşaretleri (`yapi` varsa)
+
+Her `screens/*.html` dosyası Adım 2b'deki yapıyı işaretlerle taşır — `structure` testi bunları okur:
+
+```html
+<body data-template="T-DETAIL" data-flow="F-01 F-02">
+  <header data-region="header">…</header>
+  <section data-region="content">
+    <div data-state="loading" hidden>…</div>
+    <div data-state="empty" hidden>
+      <p>Henüz harcama yok.</p>
+      <a href="expense-add.html" data-flow-start="F-02">İlk harcamayı ekle</a>
+    </div>
+    …
+  </section>
+</body>
+```
+
+- `data-template` ve `data-flow` `<body>`'de; ekran birden çok akışta geçiyorsa hepsi boşlukla yazılır.
+- Template'in her bölgesi `data-region`, her zorunlu durumu `data-state` bloğu olarak bulunur.
+- Uygulama ekranlarında (`data-platform`) işaretler aynı `<body>`'ye eklenir.
+
 ### Side Navigation — `index.html`
 
 Tüm HTML görevleri tamamlandıktan sonra proje kökünde `index.html` oluştur.
@@ -407,6 +454,8 @@ Bu dosya tasarımlar arasında hızlı geçiş için side navigation içerir.
 
 Yapı:
 - Sol tarafta sabit sidebar — katman başlıkları (Primitives, Atoms, Molecules, Organisms, Screens) ve altında o katmandaki component'lar liste halinde
+- `yapi` varsa Screens bölümü akışlara göre gruplanır (`F-01 — Grup oluştur` başlığı altında o akışın ekranları,
+  adım sırasıyla); ortak ekran her akışında görünür
 - Sağ tarafta `<iframe>` — seçilen component'ı gösterir
 - Aktif link highlight edilir
 - Varsayılan olarak ilk component açık gelir

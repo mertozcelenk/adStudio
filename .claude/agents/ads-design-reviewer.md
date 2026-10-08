@@ -19,6 +19,7 @@ Promptunda şunlar olacak:
 - `spec.md` yolu
 - Token JSON yolu (varsa)
 - ads-design-builder'ın ürettiği dosya/frame listesi
+- `flows.md` ve `templates.md` yolları (`yapi` varsa) — checklist HTML **s** / Figma **o**
 - Dial'lar (VARIANCE / MOTION / DENSITY), ekran tipleri (`marketing` / `product` / `content`), `color_scheme`
   — iletilmediyse `spec.md → token_directives`'ten oku
 

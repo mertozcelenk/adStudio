@@ -18,6 +18,8 @@ Promptunda şunlar olacak:
 - **Çalışma kimliği** (`ADS_PLAN run=…` işaretine yazılır — yoksa dur, uydurma)
 - **Kopya hedefi:** yok / Notion + link / Jira + proje anahtarı (`design-plan.md` her durumda yazılır)
 - **Mod:** ilk tasarım veya `iterasyon` (iterasyonda yeni görevler `## Geliştirme Backlog'u`'na)
+- `flows.md` / `templates.md` yolları (varsa) — biçim ve kurallar `.claude/references/structure-standards.md`;
+  başlamadan oku. Var olan dosyaların üzerine yazma: dosyayı oku, yeni bölümleri ekleyerek tamamını yaz.
 
 ## Süreç
 
@@ -54,24 +56,35 @@ Kullanıcının yazdığı happy path'i al, ardından her adım için genişlet.
 
 Tespit edilen boşlukları `⚠️` ile işaretle.
 
-**Çıktı formatı:**
-```
-Akış: [Akış adı]
+**Akışlar arası bağımlılık:** her akış için hangi akışın önce tamamlanmış olması gerektiğini (`Önkoşul`) ve akış
+bitince kullanıcının nereye gittiğini (`Sonra`) belirle. Önkoşulu karşılanmamış her boş durum için kullanıcıyı
+sıradaki akışa götüren eylemi dala yaz ("Boş: harcama yoksa grup detayında 'İlk harcamayı ekle' → F-02").
+Önkoşullarda döngü kurma.
 
-Happy path:
-  1. [Adım]
-  2. [Adım] → [sonuç]
-
-Tespit edilen boşluklar:
-  ⚠️ [Adım X] sonrası akış tanımlanmamış — [ne sorulacak]
-  ⚠️ [Durum] state'i eksik — [ne eklenmeli]
+**Çıktı:** akışları `flows.md`'ye `structure-standards.md → flows.md` biçiminde yaz (en üstte `## Ortak Davranış`;
+her akışta `Önkoşul`, `Giriş`, `Adımlar` (ekran + `T-…`), `Dallar`, `Sonra`). Tasarımcıya sunarken boşlukları
+ayrıca listele:
 ```
+F-02 — Harcama ekle (önkoşul: F-01)
+  Happy path: 1. Tutar ve açıklama → 2. Kaydet → grup detayı
+  ⚠️ Kaydetme başarısız olursa ne olur? — taslak mı saklanır?
+  ⚠️ Boş durum: grubun harcaması yokken grup detayı ne gösterir?
+```
+
+### 2b. Ekran → template eşlemesi
+
+Akışlardaki her ekranı bir template'e bağla. `templates.md` varsa önce oradaki template'leri kullan; yoksa veya
+yetmiyorsa `structure-standards.md → adStudio'nun önerdiği temel tipler`'den uyarlayarak ekle (kullanılmayan tipi
+ekleme). Her template için bölgeleri ve zorunlu durumları projeye göre belirle; `templates.md`'ye yaz.
+Durum listesi Adım 1'deki component state'leriyle tutarlı olmalı (liste ekranı boş olabiliyorsa `empty` zorunlu).
 
 ### 3. Tasarımcıya onayla
 
-Genişletilmiş flow'ları ve tespit edilen boşlukları birlikte sun:
+Genişletilmiş flow'ları, tespit edilen boşlukları, ekran → template eşlemesini ve Ortak Davranış'ı birlikte sun:
 
-> "Ana akışı genişlettim. Şu soruları tespit ettim:
+> "Ana akışı genişlettim (flows.md). Akışlar: [F-01 … → F-02 (önkoşul F-01) …]
+> Ekran → template: [groups → T-LIST …] · Ortak davranış: [özet]
+> Şu soruları tespit ettim:
 > [⚠️ listesi]
 > Bunları yanıtlayın, ardından task listesini oluşturayım."
 
@@ -171,9 +184,9 @@ görevlerin kopyalanamadığını bildir — pipeline `design-plan.md` ile devam
 - Style direction: [stratejist brief'inden]
 - Primary persona: [stratejist brief'inden]
 
-### User Flow'lar
-[Basit projelerde: ekran sırası listesi]
-[Karmaşık projelerde: adım adım akış]
+### Akışlar ve Template'ler
+Kayıt: `flows.md`, `templates.md` (burada tekrar yazılmaz). Bu çalışmada eklenenler: [F-01, F-02 · T-LIST, T-FORM]
+Üretim sırası (önkoşullara göre): [F-01 ekranları → F-02 ekranları]
 
 ### Görev Listesi
 
@@ -187,6 +200,7 @@ görevlerin kopyalanamadığını bildir — pipeline `design-plan.md` ile devam
   - Copy: [state başına metin — hata mesajı, boş state yazısı, placeholder vb.]
   - A11y: [tab sırası, ARIA gereksinimleri, touch target boyutu, keyboard davranışı]
   - Token bağımlılıkları: [hangi koleksiyonlar]
+  - Yapı: [ekran görevlerinde `F-02 · T-FORM`; component görevlerinde kullanıldığı template'ler]
   - Çıktı: [figma → frame adı | html → components/[katman]/[ad].html]
 
 #### Katman 2 — Atoms

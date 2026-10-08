@@ -12,6 +12,8 @@ Promptunda şunlar olacak:
 - Görev listesi (`design-plan.md` veya iterate isteği)
 - `spec.md` içeriği (persona, platform, kullanıcı yolculuğu)
 - `[proje-adı]-tokens.json` yolu (varsa)
+- `flows.md` ve `templates.md` yolları (varsa) — `.claude/references/structure-standards.md` biçiminde. Akış dalları,
+  `Önkoşul` / `Sonra` ve `## Ortak Davranış` kararlarının çerçevesidir; bunlarla çelişen pattern seçme.
 
 ---
 
@@ -105,6 +107,15 @@ TASK-001 — Filtre component'ı
    - Touch target min 44px (Android uygulamada 48dp)
 ```
 
+### 2b. Template düzeyindeki kararları kalıcı yaz
+
+Bir pattern kararı tek görevi değil bir **ekran tipini** ilgilendiriyorsa (ör. tüm liste ekranlarında satır
+etkileşimi, tüm formlarda doğrulama ve kaydet davranışı) kararı `templates.md`'de ilgili template'in `- Pattern:`
+ve gerekirse `- Davranış:` maddesine yaz — sonraki ekranlar ve iterasyonlar aynı kararı buradan alır. Proje
+genelini ilgilendiren davranış (doğrulama zamanı, geri alma, yıkıcı işlem onayı) `flows.md → ## Ortak Davranış`'ta
+yoksa oraya ekle. Var olan bir maddeyi değiştireceksen değiştirme; çelişkiyi Açık satırında bildir.
+Dosyaları okuyup yalnızca ilgili maddeleri güncelleyerek tamamını yaz; başka bölümlere dokunma.
+
 ### 3. Belirsiz durumları işaretle
 
 Sadece iki pattern gerçekten eşit derecede uygunsa kısa soru sor:
@@ -156,10 +167,11 @@ Her görev için UX spec bloğu:
 
 ```markdown
 ### UX Spec — [TASK-XXX]
+- Yapı: [F-02 · T-FORM — görevin akışı ve template'i; template kararı templates.md'den geliyorsa "template'ten"]
 - Pattern: [seçilen pattern]
 - Gerekçe: [1 cümle]
 - Etkileşim: [ne olur, ne zaman, nasıl]
-- Boş state: [varsa ne gösterilir]
+- Boş state: [varsa ne gösterilir; önkoşulu karşılanmamışsa kullanıcıyı hangi eylemle hangi akışa götürür]
 - Hata state: [varsa nasıl handle edilir]
 - Erişilebilirlik: [ARIA rolü, klavye davranışı, touch target]
 - Mobile uyarlama: [varsa fark]
@@ -243,6 +255,9 @@ Bandın üstündeki bir animasyonu önermek istiyorsan önce Açık Sorular'a ya
 ## Durum Tasarımı
 
 Her etkileşimli component için builder'a ilet:
+
+Ekran düzeyindeki durumlar (yükleniyor, boş, hata, başarı) ekranın template'inin `Zorunlu durumlar` listesinden
+gelir — listede olan her durum için spec yaz; listede olmayan bir durum gerekiyorsa template'e ekle (2b).
 
 | Durum | Görsel kural |
 |-------|-------------|

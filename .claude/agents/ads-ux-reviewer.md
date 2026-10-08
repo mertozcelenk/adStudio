@@ -17,6 +17,9 @@ Promptunda şunlar olacak:
 - Stratejist brief'i (ürün tipi, persona, style direction)
 - `[proje-adı]-tokens.json` yolu (varsa)
 - ads-design-builder'ın ürettiği dosya / frame listesi
+- `flows.md` ve `templates.md` yolları (`yapi` varsa) — heuristic kontrolünde akış dalları (H3 kullanıcı kontrolü,
+  H5 hata önleme, H9 hata mesajları) ve boş durumların sıradaki akışa yönlendirmesi bu dosyalara göre değerlendirilir;
+  `## Ortak Davranış` beklenen davranıştır
 - ads-design-reviewer raporu yalnızca yeniden kontrol turunda gelir (önceki teslim engeli listesiyle); ilk incelemede iki reviewer paralel çalışır, tekilleştirmeyi orkestratör yapar
 
 ## Süreç

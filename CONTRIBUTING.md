@@ -20,7 +20,9 @@ Deneme klasöründe `claude` açıp `/ads-…` komutlarıyla denersin. `~/.claud
 Ad önekli olmalı (`ads-`); `check-names` öneksiz veya yazım hatalı atıfları yakalar.
 
 ## 3. Sözleşmelere bağla (gerekiyorsa)
-- **Başlangıç kaydı:** üretim yapan akış `project-state.md`'ye `cikti_formati`, `platform`, `token_dosyasi` yazar.
+- **Başlangıç kaydı:** üretim yapan akış `project-state.md`'ye `cikti_formati`, `platform`, `token_dosyasi`, `yapi` yazar.
+- **Yapı (flow / template):** ekran üreten veya değiştiren adım `flows.md` / `templates.md`'yi okur, yeni kapsamı oraya
+  ekler ve ekranları işaretler (`references/structure-standards.md`); `structure` testi denetler.
 - **Teslim kapısı:** üretim yapan akış hafif veya tam review ile biter ve teslim durumu yazar (`ads-design-strategy.md → Adım 6`).
 - **Bulgu modeli:** yeni bir kontrol bulgu üretiyorsa `etki` + `teslimi engeller` alanlarını taşır (`reviewer-checklist.md → Seviye Ölçeği`).
 - **Kapsam kararı:** builder'ın yeni kapsam eklemesi gerekiyorsa durup sorar.

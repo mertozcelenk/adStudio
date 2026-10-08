@@ -1,0 +1,180 @@
+{
+  "description": "Bilerek konmuş yapı ihlalleri: her kural en az bir kez. 17 bulgu fixture dosyalarıyla tek tek gözden geçirildi (2026-10-08); yanlış alarm yok.",
+  "tests": {
+    "structure": {
+      "status": "failed",
+      "findings": [
+        {
+          "rule": "structure/no-common-behavior",
+          "file": "flows.md",
+          "selector": null,
+          "viewport": null,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "structure/unknown-flow",
+          "file": "flows.md",
+          "selector": "F-01",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/unknown-flow",
+          "file": "flows.md",
+          "selector": "F-02",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/unknown-template",
+          "file": "flows.md",
+          "selector": "F-02",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/flow-screen-missing",
+          "file": "flows.md",
+          "selector": "F-02",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/flow-no-branches",
+          "file": "flows.md",
+          "selector": "F-03",
+          "viewport": null,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "structure/flow-no-entry",
+          "file": "flows.md",
+          "selector": "F-04",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/prereq-cycle",
+          "file": "flows.md",
+          "selector": "F-03",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/unknown-template",
+          "file": "screens/group-create.html",
+          "selector": "body",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/unknown-flow",
+          "file": "screens/group-detail.html",
+          "selector": "body",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/flow-mark-mismatch",
+          "file": "screens/group-detail.html",
+          "selector": "body",
+          "viewport": null,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "structure/unknown-flow",
+          "file": "screens/group-detail.html",
+          "selector": "[data-flow-start=\"F-07\"]",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/state-missing",
+          "file": "screens/groups.html",
+          "selector": "[data-state=\"error\"]",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/region-missing",
+          "file": "screens/groups.html",
+          "selector": "[data-region=\"primary-action\"]",
+          "viewport": null,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "structure/empty-dead-end",
+          "file": "screens/groups.html",
+          "selector": "[data-state=\"empty\"]",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "structure/screen-no-flow",
+          "file": "screens/orphan.html",
+          "selector": "body",
+          "viewport": null,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "structure/screen-no-template",
+          "file": "screens/orphan.html",
+          "selector": "body",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        }
+      ]
+    }
+  }
+}

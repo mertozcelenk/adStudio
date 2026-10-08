@@ -74,6 +74,20 @@ Yanıtı al. Adım 2'ye geç.
 
 Sınırda kalıyorsa büyük kabul et.
 
+### Yapı (flow ve template) — her iki yolda da
+
+`project-state.md → yapi` alanı varsa `flows.md` ve `templates.md` bu projenin kalıcı yapı kaydıdır
+(`.claude/references/structure-standards.md`). Etkilenen dosyaları sayarken:
+- **Template değişikliği** (bölge, zorunlu durum, davranış): o template'i kullanan **tüm ekranlar** etkilenen dosyadır.
+- **Akış değişikliği** (adım, dal, `Sonra`): o akışın ekranları + o akışı `Önkoşul` gösteren akışların ekranları
+  etkilenen dosyadır.
+- Yeni akış veya yeni ekran = büyük özellik (Adım 3B) ve kapsam ekleme; önce `flows.md` / `templates.md`'ye eklenir.
+
+`yapi` alanı yoksa (katman öncesi kurulmuş proje) büyük özellikte bir kez sor:
+> "Bu projede akış ve ekran tipi kaydı (flows.md, templates.md) yok. Bu özellikle birlikte oluşturayım mı?
+> Sonraki değişikliklerde hangi ekranların etkilendiği buradan bulunur."
+Evet → Adım 3B'de planner mevcut ekranlardan da çıkararak yazar, `yapi` alanı eklenir. Hayır → eski yolla devam.
+
 ### Bağlayıcı karar değişikliği (her iki yolda da)
 
 Bu adım adStudio'da bağlayıcı bir kararın değiştirilmesinin tek yoludur; `/ads-design-strategy` de bunu kullanır.
@@ -122,6 +136,7 @@ extension-spec'te `Modernizasyon kapsamı` tanımlı değilse, değişiklikleri 
 - `[proje-adı]-tokens.json` yolu
 - Mevcut çıktı formatı (html veya figma — `project-state.md → cikti_formati`'dan oku)
 - Dial'lar ve `color_scheme` (`spec.md → token_directives`), korunan öğe kararı (varsa)
+- `flows.md` ve `templates.md` yolları (`yapi` varsa)
 
 Builder değişikliği uygular, etkilenen dosyayı günceller ve Pre-flight raporu döndürür.
 
@@ -141,6 +156,9 @@ Yalnızca değiştirilen dosyayı kontrol et:
   - Metin rengi ile arka plan rengi arasındaki kontrast oranı WCAG AA karşılıyor mu? (normal metin ≥ 4.5:1, büyük metin ≥ 3:1)
   - Kontrast değerlerini token JSON'dan veya hesaplayarak doğrula; "büyük ihtimalle uyuyor" kabul etme.
   - `color_scheme: both` ise kontrastı koyu temada da kontrol et.
+- **Yapı** (`yapi` varsa): ekranın template'inin zorunlu durumları ve bölgeleri duruyor mu; akış dalları (hata,
+  iptal onayı) ve `Sonra` bağlantısı bozulmuş mu; boş durum çıkmaz sokak mı; değişiklik `## Ortak Davranış`'a
+  aykırı mı (`structure-standards.md → Denetim özeti`).
 
 HTML çıktısında ayrıca `node scripts/test/run-all.mjs` çalıştır.
 Bulguları `etki` ve `teslimi engeller` alanlarıyla sınıflandır (`references/reviewer-checklist.md → Seviye Ölçeği`).
@@ -171,9 +189,12 @@ ve teslim kapısını uygula.
 - `[proje-adı]-tokens.json` yolu
 - Mevcut çıktı formatı
 - **Mod:** `iterasyon` — planner yeni görevleri `design-plan.md`'nin `## Geliştirme Backlog'u` bölümüne yazar, `## İlk Tasarım` bölümüne dokunmaz
+- `flows.md` ve `templates.md` yolları (`yapi` varsa; yoksa yukarıdaki soruya verilen cevap)
 
 Planner şunları üretir:
 - Özelliği görevlere böler (katman sırasına göre)
+- Yeni akışı `flows.md`'ye `Önkoşul` / `Sonra` ile **ekler**, ekranlarını mevcut template'lere bağlar (gerekirse yeni
+  template ekler); var olan akışları yalnızca özellik gerektiriyorsa ve bunu göstererek değiştirir
 - User flow boşluklarını tespit eder
 - Kullanıcıya onaylatır
 
@@ -202,6 +223,7 @@ Onay gelince önce `ads-ux-designer` agent'ını çalıştır. Şunları ilet:
 - Backlog'a eklenen yeni görevler
 - `spec.md` içeriği
 - `[proje-adı]-tokens.json` yolu
+- `flows.md` ve `templates.md` yolları
 
 Agent her görev için UX pattern seçer ve spec'leri `ux-specs.md`'ye, bu iterasyonun kendi bölümüne ekler
 (ilk tasarımın ve önceki iterasyonların spec'leri korunur).
@@ -212,6 +234,7 @@ Builder'ı başlatmadan önce `ads-design-strategy.md → Adım 3c → Adım 4 G
 çalışma kimliğiyle uygula. Kontrol geçince `ads-design-builder` agent'ını çalıştır:
 - `design-plan.md`'nin `## Geliştirme Backlog'u` bölümündeki yeni görevler ve **çalışma kimliği**
 - `ux-specs.md` yolu (builder bu çalışmanın bölümünü `run=` kimliğiyle bulur)
+- `flows.md` ve `templates.md` yolları
 - `[proje-adı]-tokens.json` yolu
 - Mevcut çıktı formatı
 

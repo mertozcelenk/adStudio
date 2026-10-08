@@ -328,6 +328,7 @@ pipeline başında yazar) ya da `--format html|figma` ile açıkça verilir. Dos
 | `npm run tokens` | Token'a bağlanması gereken özelliklerde (renk, font-size, font-family, radius, boşluk) sabit değer; CSS değişkenlerini alias'ları çözülmüş token değerleriyle açık/koyu tema ayrı karşılaştırır; koyu tema eksikliği |
 | `npm run responsive` | Web ekranları 375 / 768 / 1280 px, uygulama ekranları cihaz ölçüsünde; yatay overflow. `index.html` varsa o da, ama ekranların yerine değil |
 | `npm run tells` | 1280 px'te em/en-dash (kullanıcı metni hariç), CTA satır kayması, eyebrow, yasak görsel desenler (ışık halesi, ızgara/çizgili zemin, sahte imleç, nabız noktası), tekrarlı giriş animasyonu, JS hatası, görünmeyen içerik, metin örtüşmesi, kenara yapışık kart, başlık ritmi, görünmeyen görsel, tekrarlı metin; marketing ekranlarda nav; content ekranlarda satır genişliği ve gezinme |
+| `npm run structure` | Ekranlar `flows.md` / `templates.md` ile tutarlı mı (model ve tarayıcı yok): `data-template` / `data-flow`, template'in zorunlu durumları (`data-state`) ve bölgeleri (`data-region`), boş durumda eylem (çıkmaz sokak), akış adımı / `Sonra` ekranları var mı, `Önkoşul` / `Sonra` atıfları, önkoşul döngüsü, girişsiz akış. `project-state.md → yapi` yoksa uygulanamaz |
 | `npm run all` | `run-all.mjs`: hepsini çalıştırır, biri başarısız olsa / çökse / takılsa da devam eder; tablo + `test-results.json` |
 | `npm run selftest` | `check-names` + `run-all.mjs`'in hata durumları (başarısız, çökme, zaman aşımı, karma sonuç, Figma, eksik `project-state.md`), görsel fark haritası, `plan-gate` senaryoları + tüm fixture beklentileri |
 | `node plan-gate.mjs --run <kimlik>` | Builder öncesi geçiş kontrolü: bu çalışmanın planı (`ADS_PLAN`) ile UX spec'leri (`UX_SPEC_STATUS`) birebir tutuyor mu; önceki çalışmadan kalan işaret kabul edilmez |
@@ -378,6 +379,9 @@ gözden geçirilir (bilerek konmamış ama gerçek bulgular `note` alanında aç
 | `tokens-clean` | Alias'lı token'lar, iki koyu tema bloğu ve izinli istisnalar (`0`, `auto`, `100%`, `50%`, `currentColor`, `transparent`, `inherit`) bulgu üretmez |
 | `responsive` | `index.html` varken ekranlar da test edilir; uygulama ekranı yalnızca cihaz ölçüsünde açılır |
 | `tokens-app` | Sunum sahnesi istisnası yalnızca uygulama ekranındaki `.ads-stage` kuralında; `body` ve `.device` arka planı denetlenir; web'de istisna yok |
+| `structure-good` | Ortak ekran (iki akışta), önkoşul F-02 → F-01, boş durumda `data-flow-start` bulgu üretmez |
+| `structure-bad` | 17 yapı bulgusu: eksik durum / bölge, işaretsiz ekran, bilinmeyen template / akış, eksik ekran dosyası, önkoşul döngüsü, girişsiz akış, çıkmaz sokak, Dallar / Ortak Davranış eksik |
+| `tokens-clean` (structure) | `yapi` alanı olmayan eski projede structure uygulanamaz |
 | `tablet-on` / `tablet-off` | `spec.md → tablet: true` olunca web ekranları 768'de de taranır (`@768` bulguları); `tablet: false` iken aynı sayfada 768 geçişi yapılmaz |
 
 Tablet geçişi için `--tablet` ekle (veya proje `spec.md`'sinde `tablet: true`).
