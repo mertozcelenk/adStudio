@@ -12,7 +12,7 @@ yönlendirme verilir. `ads-pipeline-tester.md`'ye kontrol maddesi.
 |---|---|
 | `npm run selftest` (çalıştırıcı, fixture'lar, check-names) | ✅ |
 | Mini senaryo T1, tur 1: showcase teslimi, General Sans lisansı açık karar | ✅ son blok "Bu kararlar netleşince `/ads-design-strategy`…"; ardından ek yok · $1.12, 4 dk |
-| Mini senaryo T1, tur 2: düzeltme isteği (lisanssız sorun olmayan, daha kalın başlık fontu) | ✅ font Source Sans 3 / 700; son blok koşulsuz `/ads-design-strategy` yönlendirmesi · $1.46 + $2.01 |
+| Mini senaryo T1, tur 2: düzeltme isteği (lisans sorunu olmayan, daha kalın başlık fontu) | ✅ font Source Sans 3 / 700; son blok koşulsuz `/ads-design-strategy` yönlendirmesi · $1.46 + $2.01 |
 
 **Notlar:** Tur 2 ilk denemede kullanım sınırına takıldı (düzenlemeler bitmiş, kapanış yazılamamıştı); otomatik yeniden
 başlatılmadı, sınır sıfırlandıktan sonra aynı oturum "devam" ile sürdürüldü. Bu son çağrının maliyeti ($2.01, tek tur),
