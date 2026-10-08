@@ -476,9 +476,18 @@ Kullanıcı birebir uygulama isterse kural delinebilir.
 
 ---
 
-### 6. Sıradaki adım
+### 6. Sıradaki adım (her kapanışta)
 
-Showcase sorusu yanıtlandıktan (veya atlandıktan) sonra, mevcut duruma göre yönlendir:
+Bu skill'i kapatan **her** mesaj sıradaki adım yönlendirmesiyle biter: showcase sorusu yanıtlandığında veya
+atlandığında, showcase teslim edildiğinde ve showcase ya da token seti üzerinde yapılan **her düzeltme turundan sonra**.
+Yönlendirme mesajın **son bloğudur**; ardından başka konu, teklif veya not gelmez. Link teklifi, uyarı gibi ekler
+yönlendirmeden önce yazılır.
+
+**Açık karar varsa** (ör. "showcase'den sonra karar verelim" denen font lisansı, ikon kalınlığı): önce kararları
+numaralı liste olarak sor, ardından yönlendirmeyi koşullu ver:
+> "Sıradaki adım: Bu kararlar netleşince `/ads-design-strategy` ile tasarım pipeline'ına geçiyoruz. Cevaplarınıza göre token setini güncelleyip bu yönlendirmeyi tekrar vereceğim."
+
+Açık karar yoksa mevcut duruma göre yönlendir:
 
 **Mevcut projeye yeni özellik/ekran ekleniyor** (`screens/` veya `components/` klasörü zaten varsa):
 > "Token seti hazır. Mevcut projeye yeni bir özellik ekliyorsunuz — devam etmek için `/ads-iterate` komutunu çalıştırın."

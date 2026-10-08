@@ -115,6 +115,7 @@ Figma skill'leri için ekstra:
 - [ ] `user_explicit` gap tespiti ve renk ailesi mapping tablosu var mı?
 - [ ] Hex detection: `#` olmadan da çalışıyor mu?
 - [ ] Component showcase sorusundan sonra `/ads-design-strategy`'ye yönlendiriyor mu?
+- [ ] Yönlendirme her kapanışta (showcase teslimi, her düzeltme turu) mesajın son bloğu mu; açık karar varken koşullu yönlendirme ("bu kararlar netleşince …") tanımlı mı?
 
 ---
 
