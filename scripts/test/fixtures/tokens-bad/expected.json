@@ -1,0 +1,92 @@
+{
+  "description": "Her token kuralından bilerek konmuş birer ihlal: sabit renk (user_explicit dahil), sabit boşluk/radius/font-size, adı verilmiş font, bağlı CSS'te sabit değer, style özniteliği, token'dan sapan değişken, token setinde olmayan değer, eksik koyu tema. İzinli istisnalar (.ok: margin 0 auto, width 100%, currentColor, 50%) bulgu üretmemeli.",
+  "tests": {
+    "tokens": {
+      "status": "failed",
+      "findings": [
+        {
+          "rule": "tokens/value-mismatch",
+          "file": "screens/drift.html",
+          "selector": ":root",
+          "viewport": null,
+          "theme": "light",
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tokens/value-not-in-set",
+          "file": "screens/drift.html",
+          "selector": ":root",
+          "viewport": null,
+          "theme": "light",
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tokens/hardcoded-value",
+          "file": "screens/home.html",
+          "selector": ".brand",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1,
+          "note": "user_explicit marka rengi (#7B2FF7) de sabit yazılırsa hatadır; kaynak etiketi yalnızca estetik filtreden muaf tutar."
+        },
+        {
+          "rule": "tokens/hardcoded-value",
+          "file": "screens/home.html",
+          "selector": ".card",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tokens/hardcoded-value",
+          "file": "screens/home.html",
+          "selector": ".title",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tokens/hardcoded-value",
+          "file": "screens/css/shared.css",
+          "selector": ".topbar",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1,
+          "note": "Bağlı .css dosyası bir kez, kendi adıyla raporlanır."
+        },
+        {
+          "rule": "tokens/hardcoded-value",
+          "file": "screens/home.html",
+          "selector": "div[style]",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tokens/dark-theme-missing",
+          "file": "screens/drift.html",
+          "selector": null,
+          "viewport": null,
+          "theme": "dark",
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        }
+      ]
+    }
+  }
+}

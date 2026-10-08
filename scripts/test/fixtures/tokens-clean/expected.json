@@ -1,0 +1,9 @@
+{
+  "description": "Her şey var() ile; alias'lı token'lar çözülmüş değerleriyle, koyu tema iki blokta da tanımlı. İzinli istisnalar: margin 0 auto, margin 0px, padding 0, width 100%, border-radius 50%, transparent, currentColor, inherit, html font-size 100%, dış font CSS'i (https). Bulgu çıkarsa kontrol fazla katıdır.",
+  "tests": {
+    "tokens": {
+      "status": "passed",
+      "findings": []
+    }
+  }
+}

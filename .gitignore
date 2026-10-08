@@ -1,0 +1,5 @@
+node_modules/
+scripts/test/snapshots/*.diff.png
+scripts/test/package-lock.json
+.DS_Store
+test-results.json

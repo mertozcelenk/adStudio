@@ -1,0 +1,12 @@
+{
+  "description": "spec.md → tablet: true olunca web ekranları 768'de de taranır. Sayfa yalnızca tablet genişliğinde bozulur (media query); 1280 ve 375 temiz.",
+  "tests": {
+    "tells": {
+      "status": "failed",
+      "findings": [
+        { "rule": "tells/cta-wrap", "file": "screens/fiyat.html", "selector": "a.btn", "viewport": 768, "theme": null, "impact": "Medium", "blocks": false, "count": 1, "note": "Tablet geçişinde CTA kayması Medium (yalnızca desktop'ta High)." },
+        { "rule": "tells/text-overlap", "file": "screens/fiyat.html", "selector": null, "viewport": 768, "theme": null, "impact": "High", "blocks": true, "count": 1 }
+      ]
+    }
+  }
+}

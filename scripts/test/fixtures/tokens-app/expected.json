@@ -1,0 +1,13 @@
+{
+  "description": "Sunum sahnesi istisnası yalnızca uygulama ekranında ve yalnızca açıkça işaretlenmiş .ads-stage kuralında geçerli. Uygulamanın gerçek arka planı (.device) ve body kuralları denetlenir; web ekranında .ads-stage istisnası yoktur.",
+  "tests": {
+    "tokens": {
+      "status": "failed",
+      "findings": [
+        { "rule": "tokens/hardcoded-value", "file": "screens/ios-leak.html", "selector": "body", "viewport": null, "theme": null, "impact": "High", "blocks": true, "count": 1, "note": "body kuralı sahne değildir; renk uygulamanın metin rengidir." },
+        { "rule": "tokens/hardcoded-value", "file": "screens/ios-leak.html", "selector": ".device", "viewport": null, "theme": null, "impact": "High", "blocks": true, "count": 1, "note": "Uygulamanın gerçek arka planı token'a bağlı olmalı." },
+        { "rule": "tokens/hardcoded-value", "file": "screens/web-stage.html", "selector": ".ads-stage", "viewport": null, "theme": null, "impact": "High", "blocks": true, "count": 1, "note": "Web ekranında sunum sahnesi istisnası yoktur." }
+      ]
+    }
+  }
+}

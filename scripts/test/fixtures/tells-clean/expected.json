@@ -1,0 +1,21 @@
+{
+  "description": "Bilinçli serbest bırakılan durumlar (kullanıcı metninde em-dash, izinli eyebrow, kayan şerit, organik clip-path, data-live nokta). Bunlardan biri bulgu üretirse kural fazla katıdır. Açık modal (aria-modal) arkasındaki inert / aria-hidden içerik metin örtüşmesi sayılmaz (modal-onay.html).",
+  "tests": {
+    "tells": {
+      "status": "passed",
+      "findings": []
+    },
+    "accessibility": {
+      "status": "passed",
+      "findings": []
+    },
+    "responsive": {
+      "status": "passed",
+      "findings": []
+    },
+    "tokens": {
+      "status": "not_applicable",
+      "findings": []
+    }
+  }
+}

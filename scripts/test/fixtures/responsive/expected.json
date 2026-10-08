@@ -1,0 +1,11 @@
+{
+  "description": "index.html varken ekranlar da kendi genişliklerinde test edilmeli (eski sürüm yalnızca index.html'e bakıp geçiyordu). Uygulama ekranı yalnızca cihaz ölçüsünde açılmalı, web genişliklerinde yanlış alarm vermemeli.",
+  "tests": {
+    "responsive": {
+      "status": "failed",
+      "findings": [
+        { "rule": "responsive/horizontal-overflow", "file": "screens/wide.html", "selector": "div.table", "viewport": 375, "theme": null, "impact": "High", "blocks": true, "count": 1 }
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "ads-test",
+  "type": "module",
+  "scripts": {
+    "visual": "node visual.mjs",
+    "a11y": "node accessibility.mjs",
+    "tokens": "node tokens.mjs",
+    "responsive": "node responsive.mjs",
+    "tells": "node tells.mjs",
+    "all": "node run-all.mjs",
+    "selftest": "node run-all.selftest.mjs; a=$?; node check-fixtures.mjs; b=$?; node check-names.mjs; c=$?; [ $a -eq 0 ] && [ $b -eq 0 ] && [ $c -eq 0 ]",
+    "fixtures": "node check-fixtures.mjs",
+    "names": "node check-names.mjs"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.9.0",
+    "pixelmatch": "^6.0.0",
+    "playwright": "^1.44.0",
+    "pngjs": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=20.11"
+  }
+}

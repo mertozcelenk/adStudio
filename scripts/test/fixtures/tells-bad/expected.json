@@ -1,0 +1,356 @@
+{
+  "description": "Bilerek konmuş ihlaller. 31 tells bulgusu fixture HTML'iyle tek tek gözden geçirildi (2026-10-02): 29'u bilerek konmuş, 2'si bilerek konmamış ama gerçek (note alanı). Yanlış alarm yok.",
+  "tests": {
+    "tells": {
+      "status": "failed",
+      "findings": [
+        {
+          "rule": "tells/app-target-gap",
+          "file": "screens/android-app.html",
+          "selector": null,
+          "viewport": 412,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/app-tab-count",
+          "file": "screens/android-app.html",
+          "selector": "nav.tab-bar",
+          "viewport": 412,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/app-text-px",
+          "file": "screens/android-app.html",
+          "selector": null,
+          "viewport": 412,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/js-error",
+          "file": "screens/broken.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/hidden-text",
+          "file": "screens/broken.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/heading-rhythm",
+          "file": "screens/content.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/line-length",
+          "file": "screens/content.html",
+          "selector": "p",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/content-nav",
+          "file": "screens/content.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/app-entrance",
+          "file": "screens/ios-app.html",
+          "selector": null,
+          "viewport": 390,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/app-target",
+          "file": "screens/ios-app.html",
+          "selector": null,
+          "viewport": 390,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/app-safe-area",
+          "file": "screens/ios-app.html",
+          "selector": null,
+          "viewport": 390,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/app-tab-count",
+          "file": "screens/ios-app.html",
+          "selector": "nav.tab-bar",
+          "viewport": 390,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/app-large-text",
+          "file": "screens/ios-app.html",
+          "selector": null,
+          "viewport": 390,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/em-dash",
+          "file": "screens/marketing.html",
+          "selector": "p",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Nitpick",
+          "blocks": true,
+          "count": 1,
+          "note": "Şirket kuralı (Kural): kullanıcıya etkisi Nitpick, teslimi engeller. 2026-10-02 öncesi etki Blocker olarak raporlanıyordu."
+        },
+        {
+          "rule": "tells/eyebrow",
+          "file": "screens/marketing.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/glow",
+          "file": "screens/marketing.html",
+          "selector": "section.hero",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/fake-cursor",
+          "file": "screens/marketing.html",
+          "selector": "h1.cursor",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/pulse-dot",
+          "file": "screens/marketing.html",
+          "selector": "span.dot",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/grid-bg",
+          "file": "screens/marketing.html",
+          "selector": "section.grid.fu",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/stripes",
+          "file": "screens/marketing.html",
+          "selector": "section.stripes.fu",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/same-entrance",
+          "file": "screens/marketing.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/text-overlap",
+          "file": "screens/marketing.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/edge-card",
+          "file": "screens/marketing.html",
+          "selector": "div.scroller",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/invisible-image",
+          "file": "screens/marketing.html",
+          "selector": "div.photo",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/repeated-text",
+          "file": "screens/marketing.html",
+          "selector": "article.card",
+          "viewport": 1280,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/target-small",
+          "file": "screens/marketing.html",
+          "selector": null,
+          "viewport": 375,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1,
+          "note": "Bilerek konmadı ama gerçek: karttaki varsayılan <button>Aktif</button> 42×21, 44px altında (gözden geçirme 2026-10-02)."
+        },
+        {
+          "rule": "tells/text-overlap",
+          "file": "screens/mobile-web.html",
+          "selector": null,
+          "viewport": 1280,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1,
+          "note": "Bilerek konmadı ama gerçek: sabit .bar sayfa sonundaki son metni örtüyor, alt boşluk bırakılmamış (gözden geçirme 2026-10-02)."
+        },
+        {
+          "rule": "tells/target-tiny",
+          "file": "screens/mobile-web.html",
+          "selector": null,
+          "viewport": 375,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/hover-only",
+          "file": "screens/mobile-web.html",
+          "selector": null,
+          "viewport": 375,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "tells/safe-area-web",
+          "file": "screens/mobile-web.html",
+          "selector": "div.bar",
+          "viewport": 375,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        },
+        {
+          "rule": "tells/vh-100",
+          "file": "screens/mobile-web.html",
+          "selector": null,
+          "viewport": 375,
+          "theme": null,
+          "impact": "Medium",
+          "blocks": false,
+          "count": 1
+        }
+      ]
+    },
+    "accessibility": {
+      "status": "failed",
+      "findings": [
+        {
+          "rule": "axe/target-size",
+          "file": "screens/mobile-web.html",
+          "selector": "button[aria-label=\"Paylaş\"]",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        },
+        {
+          "rule": "axe/target-size",
+          "file": "screens/mobile-web.html",
+          "selector": "button[aria-label=\"Kaydet\"]",
+          "viewport": null,
+          "theme": null,
+          "impact": "High",
+          "blocks": true,
+          "count": 1
+        }
+      ]
+    },
+    "responsive": {
+      "status": "passed",
+      "findings": []
+    },
+    "tokens": {
+      "status": "not_applicable",
+      "findings": []
+    }
+  }
+}

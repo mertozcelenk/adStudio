@@ -1,0 +1,4 @@
+{
+  "description": "Aynı sayfa, spec.md → tablet: false: 768 geçişi yapılmaz, yalnızca tablette görülen kusurlar raporlanmaz.",
+  "tests": { "tells": { "status": "passed", "findings": [] } }
+}
