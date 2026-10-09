@@ -43,8 +43,8 @@ git clone --depth 1 https://github.com/mertozcelenk/adStudio.git /tmp/ads \
 
 ## Geliştirme
 
-Yeni adım, skill veya agent eklemek için: [CONTRIBUTING.md](CONTRIBUTING.md). Repodaki talimatları kopyalamadan denemek için
-canlı geliştirme klasörü: `scripts/dev/sandbox.sh ~/Desktop/adstudio-gelistirme`. Komutlar ve agent'lar `ads-` önekli olduğundan
+Yeni adım, skill veya agent eklemek için: [CONTRIBUTING.md](CONTRIBUTING.md). Repodaki talimatları kurulu projelere
+dokunmadan denemek için geliştirme klasörü: `scripts/dev/sandbox.sh ~/Desktop/adstudio-gelistirme` (repoda değişiklikten sonra yeniden çalıştır). Komutlar ve agent'lar `ads-` önekli olduğundan
 aynı bilgisayardaki başka kurulumlarla karışmaz.
 
 ## Hızlı Başlangıç
