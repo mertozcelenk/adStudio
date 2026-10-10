@@ -34,6 +34,11 @@ Geçerli source değerleri orada tanımlıdır — bu listede olmayan hiçbir so
 önce yaz: çıktı türünü mevcut dosyalardan çıkar (`components/` / `screens/` HTML → `html`, Figma linki → `figma`),
 emin değilsen kullanıcıya sor. Alanların anlamı: `ads-design-builder.md` → "project-state.md".
 
+**Brief:** Proje kökünde `design-brief.md` varsa oku — projenin onaylı yönüdür (Tez, persona, seçilen estetik yön,
+kritik heuristic'ler). Bu skill'de çalıştırılan builder, planner, ads-ux-designer ve reviewer'lara "stratejist brief'i"
+olarak iletilir. İstek brief'in `Tez` / `Reddettiği kalıp` satırıyla açıkça çelişiyorsa uygulamadan önce söyle ve yönü
+değiştirmek için `/ads-design-strategy` öner. Dosya yoksa (eski projeler) brief'siz devam et.
+
 `project-state.md` yoksa aşağıdaki dosyaları manuel kontrol et:
 
 | Dosya | Zorunlu mu? |

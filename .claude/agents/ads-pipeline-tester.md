@@ -259,6 +259,7 @@ Her figma-*.md skill'i için:
 - [ ] `ads-design-planner.md`: akışları `flows.md`'ye `Önkoşul` / `Sonra` ile yazıyor, önkoşulu karşılanmamış boş durum için yönlendirme dalı ekliyor, ekran→template eşlemesi (Adım 2b) ve görevlerde `Yapı:` satırı var mı?
 - [ ] `ads-ux-designer.md`: template düzeyindeki kararları `templates.md → Pattern / Davranış`'a, proje genelini `## Ortak Davranış`'a yazıyor; UX spec'te `Yapı:` satırı var mı?
 - [ ] `ads-design-builder.md → Adım 2b` ve "Yapı İşaretleri": üretim sırası önkoşullara göre, zorunlu durumların hepsi, çıkmaz sokak yasağı, `Sonra` gerçek bağlantı, `index.html` akışlara göre gruplu mu?
+- [ ] `ads-design-strategy.md → Brief'i kaydet`: onaydan sonra `design-brief.md` yazılıyor, eskisi `design-brief.[tarih].md` olarak saklanıyor; stratejiste önceki brief iletiliyor; `ads-iterate.md → Ön Koşul` brief'i okuyup agent'lara iletiyor mu?
 - [ ] `ads-iterate.md → Yapı`: template değişikliğinde tüm kullanan ekranlar, akış değişikliğinde önkoşul gösteren akışların ekranları etkilenen dosya sayılıyor; `yapi` yoksa bir kez soruluyor mu?
 - [ ] `reviewer-checklist.md` HTML **s** / Figma **o** ve `preflight-checklist.md → Yapı` var mı?
 - [ ] `scripts/test/structure.mjs` `run-all`'da zorunlu; `yapi` yokken uygulanamaz; `structure-good` / `structure-bad` fixture'ları geçiyor mu?

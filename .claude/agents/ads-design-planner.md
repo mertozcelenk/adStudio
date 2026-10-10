@@ -11,7 +11,7 @@ Tasarım kararı verme, markup yazma — yalnızca planla.
 ## Girdi
 
 Promptunda şunlar olacak:
-- Stratejist brief'i (onaylanmış kapsam, style direction, persona, mod)
+- Stratejist brief'i (onaylanmış kapsam, style direction, persona, mod) — iletilmediyse proje kökündeki `design-brief.md`'yi oku; o da yoksa brief'siz devam et
 - `spec.md` içeriği
 - Token JSON yolu (varsa)
 - Çıktı tipi (`figma` veya `html`)

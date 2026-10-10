@@ -14,6 +14,8 @@ Promptunda şunlar olacak:
 - `spec.md` içeriği (tamamı)
 - Kullanıcının isteği (hangi ekran, component veya genel "başlayalım")
 - Token JSON dosyası yolu (varsa)
+- `design-brief.md` içeriği (varsa) — projenin önceki onaylı yönü. Yeni brief bundan ayrılıyorsa (Tez, dial,
+  estetik yön) farkı `## Seçilen Estetik Yön`'de açıkça yaz; sessizce değiştirme.
 
 ## Süreç
 
@@ -257,5 +259,5 @@ quick | deep — [tek satır gerekçe]
 [Gerçekten belirsizse yaz — yoksa bu bölümü çıkar]
 ```
 
-Dosya yazma. HTML, CSS veya Figma çıktısı üretme.
+Dosya yazma — onaylanan brief'i orkestratör `design-brief.md`'ye yazar. HTML, CSS veya Figma çıktısı üretme.
 Tasarımcının yanıtı bekleniyor olduğunda çıktıyı tut — yanıt gelmeden devam etme.

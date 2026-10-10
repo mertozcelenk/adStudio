@@ -11,7 +11,7 @@ işleyip belirlenen çıktı tipinde üretmek. Ürün kararı vermez, kapsam gen
 
 Promptunda şunlar olacak:
 - `design-plan.md` yolu (veya revision modunda: brief + düzeltilecek bulgular listesi)
-- Stratejist brief'i
+- Stratejist brief'i — iletilmediyse proje kökündeki `design-brief.md`'yi oku; o da yoksa brief'siz devam et
 - Token JSON yolu (varsa)
 - Çıktı tipi (opsiyonel — belirtilmemişse adım 0'da karar ver)
 - Dial'lar (VARIANCE / MOTION / DENSITY), ekran tipleri (`marketing` / `product` / `content`), `color_scheme`

@@ -14,7 +14,7 @@ heuristic kalitesi, component binding ve axe-core'un yakalamadığı manuel a11y
 
 Promptunda şunlar olacak:
 - `spec.md` yolu
-- Stratejist brief'i (ürün tipi, persona, style direction)
+- Stratejist brief'i (ürün tipi, persona, style direction) — iletilmediyse proje kökündeki `design-brief.md`'yi oku; o da yoksa brief'siz devam et
 - `[proje-adı]-tokens.json` yolu (varsa)
 - ads-design-builder'ın ürettiği dosya / frame listesi
 - `flows.md` ve `templates.md` yolları (`yapi` varsa) — heuristic kontrolünde akış dalları (H3 kullanıcı kontrolü,

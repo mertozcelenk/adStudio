@@ -15,7 +15,7 @@ dosyasında. Süreci başlatmadan önce o dosyayı oku.
 
 Promptunda şunlar olacak:
 - `design-plan.md` yolu
-- Stratejist brief'i
+- Stratejist brief'i — iletilmediyse proje kökündeki `design-brief.md`'yi oku; o da yoksa brief'siz devam et
 - `spec.md` yolu
 - Token JSON yolu (varsa)
 - ads-design-builder'ın ürettiği dosya/frame listesi
