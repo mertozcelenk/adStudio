@@ -1,7 +1,7 @@
 ---
 name: ads-token-generator-worker
 description: Invoke this agent to do the mechanical data-pulling work for token-generator — fetching raw Figma variable/layer data for constraint mode, or describing visual style properties from reference images/screenshots for inspiration mode. Use PROACTIVELY whenever token-generator needs raw token-source data collected. Returns only raw structured findings — does NOT decide the final token architecture, does NOT run accessibility contrast checks, does NOT propose fixes, does NOT talk to the user. Those decisions stay with the orchestrating token-generator flow.
-tools: Figma:get_variable_defs, Figma:get_metadata, Figma:get_design_context, Figma:get_screenshot
+tools: mcp__plugin_figma_figma__get_variable_defs, mcp__plugin_figma_figma__get_metadata, mcp__plugin_figma_figma__get_design_context, mcp__plugin_figma_figma__get_screenshot, mcp__figma-desktop__get_variable_defs, mcp__figma-desktop__get_metadata, mcp__figma-desktop__get_design_context, mcp__figma-desktop__get_screenshot
 model: haiku
 ---
 
@@ -31,9 +31,13 @@ Bu durumda orkestratör (token-generator) veri toplamayı kendi üstlenir.
 
 Aşağıdaki seviyeleri sırayla dene. Bir seviye başarısız olursa bir sonrakine geç.
 
+**Hangi Figma bağlantısı:** link verildiyse önce link tabanlı araçları kullan (`mcp__plugin_figma_figma__*`;
+`fileKey` ve `nodeId` linkten çıkarılır, Figma Desktop gerekmez). Masaüstü araçları (`mcp__figma-desktop__*`)
+yalnızca Figma Desktop'ta açık olan dosyayı görür — link tabanlı araçlar erişilemezse yedek olarak dene.
+
 ### Seviye 1 — `get_variable_defs`
-Verilen dosya/node için çağır. Bu araç **Figma Desktop açık + aktif layer
-seçimi** gerektirir. Yanıt "nothing selected" veya benzeri bir hata içeriyorsa
+Verilen dosya/node için çağır. Masaüstü sürümü **Figma Desktop açık + aktif layer
+seçimi** gerektirir; link tabanlı sürüme `nodeId` verilir. Yanıt "nothing selected" veya benzeri bir hata içeriyorsa
 bu seviyeyi başarısız say, Seviye 2'ye geç. Başarılı olursa çıktıyı
 kaynak etiketiyle birlikte döndür: `"source": "figma-variable"`.
 

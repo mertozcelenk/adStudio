@@ -1,7 +1,7 @@
 ---
 name: ads-context-scanner-worker
 description: Invoke this agent to do the mechanical page-scanning work for context-scanner — navigating pages, running JS style extraction, taking screenshots when needed, and pulling raw Figma variable/layer data. Use PROACTIVELY whenever context-scanner needs raw data collected from a website or Figma file. Returns only raw structured findings (colors, fonts, spacing, component observations, page notes) — does NOT judge sufficiency, does NOT decide which pages to scan next, does NOT talk to the user. Those decisions stay with the orchestrating context-scanner flow.
-tools: claude-in-chrome:navigate, claude-in-chrome:computer, claude-in-chrome:javascript_tool, claude-in-chrome:browser_batch, Figma:get_variable_defs, Figma:get_metadata, Figma:get_design_context
+tools: mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__computer, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__browser_batch, mcp__plugin_figma_figma__get_variable_defs, mcp__plugin_figma_figma__get_metadata, mcp__plugin_figma_figma__get_design_context, mcp__figma-desktop__get_variable_defs, mcp__figma-desktop__get_metadata, mcp__figma-desktop__get_design_context
 model: haiku
 ---
 
@@ -28,6 +28,9 @@ toplayıp yapılandırılmış halde geri döndürürsün.
   ağaçlarını atla — bunlar sitenin marka sistemine ait değil.
   `rgba(...,0)` (alpha=0) değerlerini `transparent` olarak işaretle,
   `#000000`'a yuvarlama.
+- **Hangi Figma bağlantısı:** link verildiyse önce link tabanlı araçları kullan (`mcp__plugin_figma_figma__*`;
+  `fileKey` ve `nodeId` linkten çıkarılır, Figma Desktop gerekmez). Masaüstü araçları (`mcp__figma-desktop__*`)
+  yalnızca Figma Desktop'ta açık olan dosyayı görür — link tabanlı araçlar erişilemezse yedek olarak dene.
 - **Figma hedefi verilirse:** `get_variable_defs` ile isimlendirilmiş
   değerleri çek — başarılı olursa `confidence: verified`. Araç hata
   verirse (nothing selected, bağlantı yok vb.) doğrudan `get_design_context`/
