@@ -335,6 +335,7 @@ spec.md                         # spec-intake çıktısı
 [proje-adı]-tokens.json         # token-generator çıktısı (Türkçe harf dönüşümü, küçük harf, boşluk→tire: "Örnek Bank" → ornek-bank-tokens.json)
 project-state.md                # çıktı türü (orkestratör başta yazar) + proje durumu ve dosya listesi (ads-design-builder)
 test-results.json               # run-all.mjs çıktısı — test başına sonuç ve bulgular
+design-brief.md                 # onaylı stratejist brief'i — sonraki adımlar ve /ads-iterate okur; önceki sürüm design-brief.[tarih].md
 design-plan.md                  # ads-design-planner çıktısı — İlk Tasarım + Geliştirme Backlog'u
 ux-specs.md                     # ads-ux-designer çıktısı — her çalışma kendi bölümünde (run kimliği), önceki bölümler korunur
 flows.md                        # Ortak Davranış + kullanıcı akışları (önkoşul / sonra) — kalıcı, yeni kapsam eklenir

@@ -14,6 +14,7 @@ Tüm dosyalar proje kökünde aranır ve üretilir:
 | `spec.md` | spec-intake çıktısı — proje adı buradan okunur |
 | `[proje-adı]-tokens.json` | token-generator çıktısı (`spec.md`'deki proje adından türetilir, boşluklar tire olur) |
 | `project-state.md` | çıktı türü (bu skill başta yazar) + üretim durumu (ads-design-builder) |
+| `design-brief.md` | Onaylı stratejist brief'i (Adım 1 sonunda) — kalıcı; önceki sürüm `design-brief.[tarih].md` olarak saklanır |
 | `design-plan.md` | ads-design-planner çıktısı — görev listesinin ana kaydı (Notion/Jira yalnızca kopya) |
 | `ux-specs.md` | ads-ux-designer çıktısı — her çalışma kendi bölümünde, önceki bölümler korunur |
 | `flows.md` | Ortak Davranış + kullanıcı akışları (Adım 2b) — kalıcı, yeni kapsam eklenir |
@@ -102,6 +103,7 @@ karar netleşince builder kaldığı görevden devam eder.
 `ads-design-strategist` agent'ını çalıştır. Şunları ilet:
 - `spec.md` içeriği (tamamı)
 - Kullanıcının bu konuşmadaki isteği (hangi ekran, hangi component, genel mi)
+- `design-brief.md` içeriği (varsa) — projenin önceki onaylı yönü
 
 Agent şunları döndürür:
 - **Design Read** — tek satır estetik beyan + VARIANCE / MOTION / DENSITY değerleri
@@ -132,6 +134,29 @@ Bu andan itibaren builder, ads-ux-designer ve her iki reviewer'a şunlar **her z
 - `color_scheme` (spec.md `token_directives`'ten — yoksa Ortak Bağlam'daki "Renk şeması" cevabından)
 - Platform alanları: `platform`, `app_platforms`, `tablet`, `icon_source`, `component_source`
   (uygulama ekranlarında `references/mobile-platforms.md` kuralları geçerlidir)
+
+### Brief'i kaydet
+
+Çakışmalar çözülüp alternatif seçildikten ve dial'lar onaylandıktan sonra brief'i proje köküne `design-brief.md`
+olarak yaz. Brief yalnızca konuşmada kalırsa sonraki `/ads-iterate` çalışmaları Tez'i, persona'yı ve seçilen yönü
+göremez.
+
+1. `design-brief.md` zaten varsa önce `design-brief.[YYYY-MM-DD].md` adıyla yeniden adlandır (eski dosyanın
+   `onaylandi` tarihi; aynı adla dosya varsa sonuna `-HHMM` ekle). Arşiv dosyalarını hiçbir adım okumaz.
+2. Yeni dosyayı yaz: stratejist çıktısının `## Design Read` ve sonrası, dial'lar onaylanan değerlerle
+   (`spec.md → token_directives → dials` ile aynı). `## Estetik Çakışmalar` ve `## Alternatif Yönler` yazılmaz —
+   sonuçları `## Seçilen Estetik Yön`'de özetlenir. Çözülmemiş açık soru yoksa `## Açık Sorular` da yazılmaz.
+
+```markdown
+# Design Brief — [proje adı]
+onaylandi: [YYYY-MM-DD]
+<!-- Bu dosyayı /ads-design-strategy yazar. Yönü değiştirmek için strateji adımını yeniden çalıştırın. -->
+
+## Design Read
+...
+```
+
+Bundan sonra bu skill'de ve `/ads-iterate`'te "stratejist brief'i" denen her yerde bu dosya iletilir.
 
 ## Adım 2 — Modu belirle
 
