@@ -30,7 +30,21 @@ Promptunda şunlar olacak:
 2. Promptta Figma linki iletildiyse → `figma` dene
 3. Hiçbiri yoksa → `html`
 
-**Figma seçildiyse — önce bağlantıyı test et:**
+**Figma seçildiyse — önce çizim aracının varlığını kontrol et:**
+
+Kullanabildiğin araçlar arasında `mcp__plugin_figma_figma__use_figma` var mı? Yoksa okuma testine geçme ve HTML'e
+kendiliğinden düşme — dur ve şunu döndür:
+
+> "Figma çizim aracı (`mcp__plugin_figma_figma__use_figma`) bu oturumda yok. Olası nedenler:
+> - Figma eklentisi kurulu değil ya da giriş yapılmamış (Claude Code'da `/mcp` → figma → Authenticate)
+> - Eklenti güncellendi ve bağlantının adı değişti — agent'ın `tools:` satırı yeni adla güncellenmeli
+>
+> `[ ] Düzelttim, tekrar dene`
+> `[ ] HTML/CSS olarak devam et`"
+
+Okuma aracı çalışsa da çizim aracı yoksa Figma'ya hiçbir şey yazılamaz; bu kontrol bu yüzden okuma testinden önce gelir.
+
+**Sonra bağlantıyı test et:**
 
 `mcp__figma-desktop__get_metadata` ile iletilen Figma dosya linkini kullanarak okuma denemesi yap.
 
