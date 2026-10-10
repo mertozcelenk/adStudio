@@ -1,0 +1,9 @@
+{
+  "description": "flows.md + templates.md ile tutarlı ekranlar; ortak ekran (group-detail ← F-01, F-02), önkoşul F-02 → F-01, boş durumda data-flow-start.",
+  "tests": {
+    "structure": {
+      "status": "passed",
+      "findings": []
+    }
+  }
+}

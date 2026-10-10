@@ -36,6 +36,7 @@ const DEFAULT_SUITE = [
   { name: 'tokens',        script: 'tokens.mjs',        required: true },
   { name: 'responsive',    script: 'responsive.mjs',    required: true },
   { name: 'tells',         script: 'tells.mjs',         required: true },
+  { name: 'structure',     script: 'structure.mjs',     required: true },
   { name: 'visual',        script: 'visual.mjs',        required: false, role: 'review' },
 ];
 

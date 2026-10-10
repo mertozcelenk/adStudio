@@ -4,6 +4,10 @@
     "tokens": {
       "status": "passed",
       "findings": []
+    },
+    "structure": {
+      "status": "not_applicable",
+      "findings": []
     }
   }
 }

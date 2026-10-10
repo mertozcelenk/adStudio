@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta charset="UTF-8"><title>Grup detayı</title></head>
+<body data-template="T-DETAIL" data-flow="F-01 F-02">
+  <header data-region="header"><h1>Ev arkadaşları</h1></header>
+  <section data-region="summary"><p>Bakiye: 0 ₺</p></section>
+  <section data-region="content">
+    <div data-state="loading" hidden>Yükleniyor</div>
+    <div data-state="empty" hidden>
+      <p>Henüz harcama yok.</p>
+      <a href="expense-add.html" data-flow-start="F-02">İlk harcamayı ekle</a>
+    </div>
+  </section>
+</body></html>

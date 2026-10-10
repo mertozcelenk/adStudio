@@ -252,6 +252,19 @@ Her figma-*.md skill'i için:
 
 ---
 
+## BÖLÜM 13 — Flow ve Template (Yapı)
+
+- [ ] `references/structure-standards.md` var mı; `templates.md` ve `flows.md` biçimi (Ortak Davranış, `Önkoşul`, `Giriş`, `Adımlar`, `Dallar`, `Sonra`), temel ekran tipleri, HTML işaretleri (`data-template`, `data-flow`, `data-region`, `data-state`, `data-flow-start`) ve denetim özeti tanımlı mı?
+- [ ] `ads-design-strategy.md → Adım 2b`: her iki modda builder'dan önce; var olan dosyaya ekleme (üzerine yazmama); tek onay (akışlar + ekran→template + Ortak Davranış); başlangıç kaydında `yapi` var mı?
+- [ ] `ads-design-planner.md`: akışları `flows.md`'ye `Önkoşul` / `Sonra` ile yazıyor, önkoşulu karşılanmamış boş durum için yönlendirme dalı ekliyor, ekran→template eşlemesi (Adım 2b) ve görevlerde `Yapı:` satırı var mı?
+- [ ] `ads-ux-designer.md`: template düzeyindeki kararları `templates.md → Pattern / Davranış`'a, proje genelini `## Ortak Davranış`'a yazıyor; UX spec'te `Yapı:` satırı var mı?
+- [ ] `ads-design-builder.md → Adım 2b` ve "Yapı İşaretleri": üretim sırası önkoşullara göre, zorunlu durumların hepsi, çıkmaz sokak yasağı, `Sonra` gerçek bağlantı, `index.html` akışlara göre gruplu mu?
+- [ ] `ads-iterate.md → Yapı`: template değişikliğinde tüm kullanan ekranlar, akış değişikliğinde önkoşul gösteren akışların ekranları etkilenen dosya sayılıyor; `yapi` yoksa bir kez soruluyor mu?
+- [ ] `reviewer-checklist.md` HTML **s** / Figma **o** ve `preflight-checklist.md → Yapı` var mı?
+- [ ] `scripts/test/structure.mjs` `run-all`'da zorunlu; `yapi` yokken uygulanamaz; `structure-good` / `structure-bad` fixture'ları geçiyor mu?
+
+---
+
 ## RAPOR
 
 Tüm kontroller tamamlandığında:

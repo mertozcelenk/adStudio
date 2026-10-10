@@ -16,6 +16,8 @@ Tüm dosyalar proje kökünde aranır ve üretilir:
 | `project-state.md` | çıktı türü (bu skill başta yazar) + üretim durumu (ads-design-builder) |
 | `design-plan.md` | ads-design-planner çıktısı — görev listesinin ana kaydı (Notion/Jira yalnızca kopya) |
 | `ux-specs.md` | ads-ux-designer çıktısı — her çalışma kendi bölümünde, önceki bölümler korunur |
+| `flows.md` | Ortak Davranış + kullanıcı akışları (Adım 2b) — kalıcı, yeni kapsam eklenir |
+| `templates.md` | Ekran tipleri: bölgeler, zorunlu durumlar, davranış (Adım 2b) — kalıcı, yeni kapsam eklenir |
 | `components/[katman]/[ad].html` | ads-design-builder HTML çıktısı |
 | `screens/[ad].html` | ads-design-builder HTML ekran çıktısı |
 
@@ -82,9 +84,11 @@ bu alanları güncelle). Alanların anlamı: `ads-design-builder.md` → "projec
 cikti_formati: [html | figma]
 platform: [spec.md → platform]
 token_dosyasi: [bulunan token dosyası | yok]   ← sunum modunda token'sız devam ediliyorsa "yok"
+yapi: flows.md, templates.md
 ```
 
 Otomatik testler hangi kontrolün uygulanacağını bu alanlardan okur; üretim yarıda kalsa da kayıt durmalıdır.
+`yapi` alanı `structure` testini açar; dosyalar Adım 2b'de, builder'dan önce yazılır.
 
 ### Bağlayıcı kararlarla çelişki
 
@@ -137,10 +141,12 @@ Bu andan itibaren builder, ads-ux-designer ve her iki reviewer'a şunlar **her z
 
 ### Quick mod
 
-`ads-design-planner` çalıştırılmaz. `ads-design-builder` agent'ını doğrudan çalıştır:
+`ads-design-planner` çalıştırılmaz. Önce **Adım 2b**'yi (kısa sürüm) uygula, ardından `ads-design-builder`
+agent'ını doğrudan çalıştır:
 - Stratejist brief'i
 - `spec.md` içeriği
 - `[proje-adı]-tokens.json` yolu (varsa — yoksa token üretilmemiş uyarısı ver, pipeline'ı durdurma)
+- `flows.md` ve `templates.md` yolları
 - Dial'lar, ekran tipleri, `color_scheme`, platform alanları
 
 Quick modda reviewer agent'ları çalışmaz. Builder bitince **hafif review** ile teslim kapısı uygulanır —
@@ -148,7 +154,7 @@ Quick modda reviewer agent'ları çalışmaz. Builder bitince **hafif review** i
 
 1. HTML'de `node scripts/test/run-all.mjs`; Figma'da frame'leri `get_screenshot` ile aç.
 2. Builder'ın **Pre-flight** raporu + `ads-iterate.md → Review — Etki Bazlı → hafif review` maddeleri
-   (token bağlama, AI tells / em-dash, tutarlılık kilitleri, `[Korunan]`, tipografi ve kontrast) — orkestratör yapar.
+   (token bağlama, AI tells / em-dash, tutarlılık kilitleri, `[Korunan]`, tipografi ve kontrast, yapı) — orkestratör yapar.
 3. Bulguları `etki` / `teslimi engeller` ile sınıflandır; teslim engeli varsa Adım 6 döngüsü (yeniden kontrol =
    aynı hafif review + `run-all`).
 4. Teslim durumunu Adım 6'ya göre yaz; quick modda koşul 3 ("inceleme tamamlandı") hafif review ile karşılanır.
@@ -157,7 +163,32 @@ Quick modda reviewer agent'ları çalışmaz. Builder bitince **hafif review** i
 
 ### Deep mod
 
-Adım 3'e geç.
+Adım 3'e geç. Adım 2b'yi (tam sürüm) planner yapar (Adım 3b).
+
+## Adım 2b — Flow ve template
+
+Ürünün nasıl kurulduğu ve nasıl davrandığı builder'dan önce, proje düzeyinde yazılır. Biçim ve kurallar:
+`.claude/references/structure-standards.md` — oku ve birebir uygula.
+
+1. **Var olanı oku.** `flows.md` / `templates.md` varsa üzerine yazma; yalnızca bu çalışmanın kapsamındaki yeni
+   akışları, template'leri ve ekranları **ekle**. Var olan bir akışı değiştirmek gerekiyorsa bunu kullanıcıya ayrıca
+   göster (o akışı `Önkoşul` gösteren akışlar da etkilenir).
+2. **Yaz.**
+   - Quick (kısa sürüm): orkestratör yazar. Kaynak: `spec.md → Bilgi Mimarisi ve Temel Akışlar` + kullanıcı
+     yolculuğu, stratejist brief'inin kapsamı ve ekran tipleri, `spec.md → Başarı Kriterleri`.
+   - Deep (tam sürüm): `ads-design-planner` yazar (Adım 3b) — genişletme sorularıyla bulunan dallar dahil.
+   - Her ikisinde: `## Ortak Davranış`, her akış için `Önkoşul`, `Giriş`, `Adımlar` (ekran + `T-…`), `Dallar`,
+     `Sonra`; her ekran bir template'e bağlanır; template'ler `structure-standards.md`'deki temel tiplerden uyarlanır
+     (kullanılmayan tip eklenmez).
+3. **Tek onay.** Kullanıcıya üçünü birlikte göster ve onay al:
+   > "Akışlar: [F-01 Grup oluştur (önkoşul yok) → F-02 Harcama ekle (önkoşul F-01) …]
+   > Ekran → template: [groups → T-LIST, group-create → T-FORM …]
+   > Ortak davranış: [doğrulama, geri bildirim, yıkıcı işlem onayı …]
+   > Değiştirmek istediğiniz bir şey var mı?"
+   Düzeltme gelirse dosyaları güncelle ve tekrar göster.
+4. `project-state.md → yapi: flows.md, templates.md` alanının yazılı olduğunu kontrol et.
+
+Sunum / fikir paylaşımı modunda da kısa sürüm yazılır — tek sayfalık işte tek akış (`F-01`) ve tek template yeterlidir.
 
 ## Adım 3 — Görev çıktısı hedefini sor
 
@@ -199,8 +230,9 @@ Planner ve ads-ux-designer'a aynı kimliği ilet. Geçiş kontrolü (Adım 3c �
 
 Agent şunları yapar:
 - Component listesi + state'leri çıkarır
-- User flow'ları üretir (karmaşık projelerde)
-- Tasarımcıya onaylatır — yanıt beklenir
+- **Adım 2b'yi (tam sürüm) uygular:** `flows.md` ve `templates.md`'yi yazar veya genişletir, ekran→template eşlemesini
+  çıkarır; görevler `F-` / `T-` kimliği taşır
+- Tasarımcıya onaylatır (akışlar + template eşlemesi + Ortak Davranış dahil) — yanıt beklenir
 - Görev listesini `design-plan.md`'ye `<!-- ADS_PLAN run=… tasks=… -->` işaretiyle yazar,
   seçildiyse Notion/Jira'ya kopyalar
 
@@ -213,6 +245,7 @@ Planner hangi çıktı formatını seçtiyse not al — Adım 4'te builder'a ile
 - **Çalışma kimliği**
 - `spec.md` içeriği
 - `[proje-adı]-tokens.json` yolu (varsa)
+- `flows.md` ve `templates.md` yolları
 
 Agent her görev için en uygun UX pattern'i seçer, gerekçesini yazar ve UX spec'leri `ux-specs.md`'ye,
 bu çalışmanın kendi bölümüne ekler (`design-plan.md`'ye yazmaz; önceki bölümleri silmez).
@@ -246,6 +279,7 @@ node scripts/test/plan-gate.mjs --run [çalışma kimliği]
 `ads-design-builder` agent'ını çalıştır. Şunları ilet:
 - `design-plan.md` yolu ve çalışma kimliği (görev listesi; Notion/Jira yalnızca kopyadır, builder okumaz)
 - `ux-specs.md` yolu (bu çalışmanın bölümü — her task için builder buradan okur)
+- `flows.md` ve `templates.md` yolları
 - Stratejist brief'i
 - `[proje-adı]-tokens.json` yolu
 - Çıktı tipi (`figma` veya `html`)
@@ -262,10 +296,12 @@ Agent her görevi sırayla işler ve tamamlananları bildirir.
 - Stratejist brief'i
 - `spec.md` yolu
 - `[proje-adı]-tokens.json` yolu
+- `flows.md` ve `templates.md` yolları
 - ads-design-builder'ın ürettiği çıktıların listesi
 
 **ads-ux-reviewer'a ilet:**
 - `spec.md` yolu
+- `flows.md` ve `templates.md` yolları (akış dalları, Ortak Davranış, çıkmaz sokak kontrolü)
 - Stratejist brief'i (ürün tipi, persona, style direction)
 - `[proje-adı]-tokens.json` yolu
 - ads-design-builder'ın ürettiği çıktıların listesi

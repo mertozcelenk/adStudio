@@ -71,6 +71,12 @@ uygulama ekranlarında `[marketing]`, `[content]` ve web hareket maddeleri N/A'd
 - [ ] Ekran geçişleri sistemin, kaydırınca belirme yok; yazılar `rem` ile ve %130'da taşmıyor (HTML r)
 - [ ] iOS + Android ise Platform Farkları parçalarının iki versiyonu var (HTML r / Figma n)
 
+**Yapı [`yapi` varsa]** (`references/structure-standards.md`)
+- [ ] Her ekranda `data-template` + `data-flow`; template'in bölgeleri ve zorunlu durumlarının hepsi var (HTML s / Figma o)
+- [ ] Boş durumlar çıkmaz sokak değil; başka akışı başlatan eylem `data-flow-start` ile işaretli (HTML s / Figma o)
+- [ ] Akış dalları (hata, iptal onayı) ve `Sonra` bağlantıları ekranda; Ortak Davranış uygulandı (HTML s / Figma o)
+- [ ] `scripts/test/` varsa `node structure.mjs` geçti (HTML s)
+
 **Mobil, tema, hareket**
 - [ ] Her çok kolonlu section'ın 375px düzeni açıkça tanımlı (HTML k / Figma k)
 - [ ] [dark] Koyu tema blokları/modları mevcut, kontrast iki temada da kontrol edildi (HTML l / Figma i)

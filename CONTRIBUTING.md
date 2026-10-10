@@ -6,9 +6,10 @@ sabit kurallar ücretsiz testlerle, ajan davranışı tek bir küçük senaryoyl
 ## 1. Dal ve deneme klasörü
 ```bash
 git checkout main && git pull && git checkout -b feat/<adım-adı>
-scripts/dev/sandbox.sh ~/Desktop/adstudio-gelistirme      # repodaki talimatlar anında geçerli
+scripts/dev/sandbox.sh ~/Desktop/adstudio-gelistirme      # repodaki son hâli kopyalar
 ```
-Deneme klasöründe `claude` açıp `/ads-…` komutlarıyla denersin. `~/.claude`'a ve kurulu projelere dokunulmaz.
+Deneme klasöründe `claude` açıp `/ads-…` komutlarıyla denersin. Repoda bir dosyayı değiştirdikten sonra komutu yeniden
+çalıştır (kopya güncellenir; proje dosyalarına dokunmaz). `~/.claude`'a ve kurulu projelere dokunulmaz.
 
 ## 2. Türünü seç ve doğru yere ekle
 | Tür | Nereye | Dikkat |
@@ -20,7 +21,9 @@ Deneme klasöründe `claude` açıp `/ads-…` komutlarıyla denersin. `~/.claud
 Ad önekli olmalı (`ads-`); `check-names` öneksiz veya yazım hatalı atıfları yakalar.
 
 ## 3. Sözleşmelere bağla (gerekiyorsa)
-- **Başlangıç kaydı:** üretim yapan akış `project-state.md`'ye `cikti_formati`, `platform`, `token_dosyasi` yazar.
+- **Başlangıç kaydı:** üretim yapan akış `project-state.md`'ye `cikti_formati`, `platform`, `token_dosyasi`, `yapi` yazar.
+- **Yapı (flow / template):** ekran üreten veya değiştiren adım `flows.md` / `templates.md`'yi okur, yeni kapsamı oraya
+  ekler ve ekranları işaretler (`references/structure-standards.md`); `structure` testi denetler.
 - **Teslim kapısı:** üretim yapan akış hafif veya tam review ile biter ve teslim durumu yazar (`ads-design-strategy.md → Adım 6`).
 - **Bulgu modeli:** yeni bir kontrol bulgu üretiyorsa `etki` + `teslimi engeller` alanlarını taşır (`reviewer-checklist.md → Seviye Ölçeği`).
 - **Kapsam kararı:** builder'ın yeni kapsam eklemesi gerekiyorsa durup sorar.
