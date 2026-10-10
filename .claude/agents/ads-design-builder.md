@@ -232,6 +232,10 @@ Bağımlılık çözülemiyorsa o görevi sona bırak, atladığını belirt.
 - Token değerlerini birebir uygula — yaklaştırma yapma
 - Yapı (`yapi` varsa): ekran frame adı `T-… · [Ekran adı]`, frame açıklaması `flow: F-01 F-02 · states: loading, empty, error`;
   template'in zorunlu durumları ayrı frame veya variant olarak üretilir (`structure-standards.md → HTML işaretleri`)
+- **Plugin API'nin yapamadıkları — elle yapılacak listesi:** OpenType ayarları (ör. tabular rakam) Plugin API'den
+  değiştirilemez. Brief bunu istiyorsa (tutar, saat, tablo sütunu) deneme yapma; ilgili frame açıklamasına
+  `not: tutarlarda tabular rakam (font-variant-numeric: tabular-nums)` satırını ekle ve özetin
+  **Figma'da elle yapılacak** listesine yaz: `[frame / metin katmanları] — Type details → Numbers → Tabular`.
 
 ### Adım adım süreç
 
@@ -513,6 +517,7 @@ Tüm görevler bitince döndür:
 - Bekletmeye alınan görevler (varsa, neden)
 - Açık sorular (token eksikliği, belirsiz brief alanları)
 - `## Pre-flight` raporu (preflight-checklist.md'deki formatta)
+- Figma'da elle yapılacak (Figma çıktısı; Plugin API'nin yapamadığı ayarlar — yoksa "yok")
 
 Tamamlanmayan bir görevi tamamlanmış gibi işaretleme.
 Brief'in söylemediği tasarım kararlarını sessizce verme — açık sorulara ekle.

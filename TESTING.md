@@ -354,7 +354,8 @@ node visual.mjs --update  # Baseline oluşturur veya günceller; oluşturulan g�
 - Tek test: `0` geçti / uygulanamaz, `1` başarısız, `2` çalıştırılamadı
 - `run-all.mjs` (öncelik sırasıyla): `1` herhangi bir zorunlu test başarısız (aynı anda çalıştırılamayan olsa da),
   `2` başarısız yok ama zorunlu bir test çalıştırılamadı, `0` uygulanan zorunlu testler geçti
-- `0` "teslime hazır" demek değildir; Figma projesinde HTML testleri uygulanamaz ve Figma doğrulaması ayrıca gerekir.
+- `0` "teslime hazır" demek değildir; Figma projesinde HTML testleri uygulanamaz ve Figma doğrulaması ayrıca gerekir (deep modda
+  reviewer'lar; quick modda hafif review, kullanıcı isterse reviewer'lar).
 - `visual` **inceleme** rolündedir: her zaman çalışır, genel kodu değiştirmez. Baseline yoksa "karşılaştırma
   yapılamadı" notu, fark varsa `visual_review.pending_review` listesi çıkar. İncelenmemiş fark varken teslim
   kapısı "teslime hazır" demez; kasıtlı fark `visual.mjs --update --only <dosya>` ile kabul edilir.

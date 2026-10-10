@@ -126,7 +126,7 @@ async function run() {
     if (visual.status === 'not_run') notes.push(`Görsel karşılaştırma yapılamadı: ${visual.reason}.`);
     if (pending.length) notes.push(`Görsel fark var (${pending.length} dosya): her fark incelenmeli — kasıtlıysa kabul edip baseline'ı güncelle (visual.mjs --update --only …), değilse düzelt. İncelenmemiş fark varken teslime hazır denmez.`);
   }
-  if (fmt.format === 'figma') notes.push('HTML kontrolleri uygulanamaz; Figma doğrulaması ayrıca gerekli (ads-design-reviewer + ads-ux-reviewer).');
+  if (fmt.format === 'figma') notes.push('HTML kontrolleri uygulanamaz; Figma doğrulaması ayrıca gerekli (deep modda ads-design-reviewer + ads-ux-reviewer; quick modda hafif review, kullanıcı isterse reviewer'lar).');
   if (code === 2) notes.push('Zorunlu bir doğrulama çalıştırılamadı — sonuç "geçti" sayılmaz.');
   notes.push('Çıkış kodu 0 "teslime hazır" demek değildir: açık teslim engeli olmaması ve çıktı türünün gerektirdiği incelemenin tamamlanması da gerekir.');
 
