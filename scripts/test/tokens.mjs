@@ -2,7 +2,7 @@
  * Token testi — iki kontrol:
  *
  * 1. Sabit değer (teslimi engeller): token'a bağlanması gereken özelliklerde var() yerine sabit değer.
- *    Kapsam ads-design-builder.md → "Token Bağlama — Hardcode Yasağı" tablosu:
+ *    Kapsam build-html.md → "Token Bağlama — Hardcode Yasağı" tablosu (kural TK-1):
  *      renk          color, background-color, border-*-color, outline-color, fill, stroke, text-decoration-color
  *      font-size     px / rem / em / pt değerleri
  *      font-family   adı verilmiş font (yalnızca genel aileler — serif, system-ui… — serbest)

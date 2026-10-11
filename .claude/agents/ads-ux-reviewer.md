@@ -72,7 +72,7 @@ Odak: tab sırası, touch target boyutu, anlamlı link metni, semantic HTML, ARI
 
 `spec.md → platform` `app` veya `both` ise, `data-platform="ios|android"` olan ekranlarda uygula.
 Ölçüler ve platform kuralları: `.claude/references/mobile-platforms.md`. Mobil **web** kontrolleri
-(375px, dokunma 24/44, hover, güvenli alan, 100vh) ads-design-reviewer'ın `reviewer-checklist.md → q` bölümündedir.
+(375px, dokunma 24/44, hover, güvenli alan, 100vh) ads-design-reviewer'ın MW kurallarındadır (`rules.md`).
 
 ## Kanıt Temeli
 
@@ -251,5 +251,5 @@ grep -rn 'style="' components/ screens/
 | `Medium` | Noticeable friction — görev tamamlanır ama zorlanır — teslimi engellemez |
 | `Nitpick` | Küçük iyileştirme, isteğe bağlı — teslimi engellemez |
 
-Ayrıntı ve şirket/proje kuralları (**Kural**): `references/reviewer-checklist.md → Seviye Ölçeği`.
+Ayrıntı ve şirket/proje kuralları (**Kural**): `references/rules.md → Seviye Ölçeği`.
 Teslimi engelleyen her bulguya `U1, U2…` kimliği ver; yeniden kontrol turunda yalnızca `kapandı` / `açık` yaz.

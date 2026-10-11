@@ -30,48 +30,11 @@ Promptunda şunlar olacak:
 2. Promptta Figma linki iletildiyse → `figma` dene
 3. Hiçbiri yoksa → `html`
 
-**Figma seçildiyse — önce çizim aracının varlığını kontrol et:**
+**Figma seçildiyse:** `.claude/references/build-figma.md → Bağlantı kontrolü`nü uygula (önce çizim aracının varlığı,
+sonra okuma testi). Başarısızsa oradaki sorularla dur; HTML'e kendiliğinden düşme.
 
-Kullanabildiğin araçlar arasında `mcp__plugin_figma_figma__use_figma` var mı? Yoksa okuma testine geçme ve HTML'e
-kendiliğinden düşme — dur ve şunu döndür:
-
-> "Figma çizim aracı (`mcp__plugin_figma_figma__use_figma`) bu oturumda yok. Olası nedenler:
-> - Figma eklentisi kurulu değil ya da giriş yapılmamış (Claude Code'da `/mcp` → figma → Authenticate)
-> - Eklenti güncellendi ve bağlantının adı değişti — agent'ın `tools:` satırı yeni adla güncellenmeli
->
-> `[ ] Düzelttim, tekrar dene`
-> `[ ] HTML/CSS olarak devam et`"
-
-Okuma aracı çalışsa da çizim aracı yoksa Figma'ya hiçbir şey yazılamaz; bu kontrol bu yüzden okuma testinden önce gelir.
-
-**Sonra bağlantıyı test et:**
-
-`mcp__figma-desktop__get_metadata` ile iletilen Figma dosya linkini kullanarak okuma denemesi yap.
-
-- **Başarılıysa:** Figma Desktop ve eklenti çalışıyor. `use_figma` ile yazmaya geç.
-- **Başarısızsa:** Dur ve kullanıcıya sor:
-
-> "Figma dosyasına ulaşılamadı. Olası nedenler:
-> - Figma Desktop açık değil
-> - Claude Code eklentisi kurulu değil (`Plugins → Claude Code`)
-> - Claude Code ayarlarında Figma MCP sunucusu etkin değil
->
-> `[ ] Figma hazır, tekrar dene`
-> `[ ] HTML/CSS olarak devam et`"
-
-Tekrar dene seçilirse `mcp__figma-desktop__get_metadata` ile bir kez daha dene.
-Yine başarısızsa kullanıcıya şunu sun:
-
-> "İki denemede de Figma'ya ulaşılamadı. Şunları kontrol edebilirsiniz:
-> 1. Figma Desktop'u kapatıp yeniden açın
-> 2. Figma'da `Plugins → Claude Code` eklentisini çalıştırın
-> 3. Claude Code ayarlarında Figma MCP sunucusunun etkin olduğunu doğrulayın
->
-> `[ ] Sorun çözüldü, tekrar dene`
-> `[ ] HTML/CSS olarak devam et`"
-
-Kullanıcı istediği kadar deneyebilir — her "tekrar dene" seçiminde `mcp__figma-desktop__get_metadata` ile bir deneme daha yap.
-HTML seçilirse devam et.
+**Üretim dosyası:** Çıktı tipi belli olunca yalnızca o türün dosyasını oku — `figma` → `.claude/references/build-figma.md`,
+`html` → `.claude/references/build-html.md`. Öteki türün dosyasını okuma.
 
 ---
 
@@ -168,23 +131,19 @@ Stratejistin dial değerleri layout ve hareket kararlarını bağlar:
   VARIANCE > 4 iken marketing hero'su ortalanmaz (editorial/manifesto brief'leri hariç).
 - **DENSITY** — ≤ 3: section başına tek ana mesaj, geniş boşluk. 4-6: dengeli. ≥ 7: kart kabuğu yerine
   boşluk ve ayraçla gruplanmış yoğun düzen.
-- **MOTION** — aşağıdaki "Hareket bantları"na göre.
+- **MOTION** — `build-html.md → Hareket Bantları`na göre (Figma'da hareket üretilmez).
 
 **Ekran tipi:** Her ekran dosyasının `<body>` etiketine `data-page-kind="marketing"`,
 `data-page-kind="product"` veya `data-page-kind="content"` yaz (Figma'da ekran annotation'ına
-`page_kind: <tip>` satırı). `reviewer-checklist.md`'deki `[marketing]` kuralları (hero, nav,
-layout çeşitliliği) yalnızca marketing ekranlarında, `[content]` kuralları (satır genişliği,
-başlık ritmi, gezinme) yalnızca content ekranlarında uygulanır.
+`page_kind: <tip>` satırı). `rules.md`'deki `[marketing]` kuralları (LY: hero, nav, layout çeşitliliği)
+yalnızca marketing ekranlarında, `[content]` kuralları (OD) yalnızca content ekranlarında uygulanır.
 
 **Platform etiketi:** Her ekran dosyasının `<body>` etiketine `data-platform="web"`, `"ios"` veya `"android"` yaz
 (Figma'da ekran annotation'ına `platform: <değer>` satırı). `platform: web` projelerinde `data-platform="web"`.
 **Uygulama ekranlarında** (`ios` / `android`) `mobile-platforms.md` geçerlidir: yapı platformun (§2), dokunma alanı
 ve güvenli alan ölçüleri (§3), platform kontrolleri (§5), hareket (§7). Web'e özgü kurallar uygulanmaz (§8).
-- `component_source: kit` → bileşenleri `search_design_system` ile dosyaya eklenmiş iOS UI Kit / Material 3 Kit'te
-  bul, instance olarak yerleştir, marka token'larıyla temala. Kit bulunamazsa dur ve kullanıcıya hatırlat — sessizce çizime geçme.
-- `component_source: drawn` (HTML'de her zaman) → bileşenleri platform ölçü ve davranışına uygun çiz, component adını
-  platform adıyla ver (`iOS/Switch`, `M3/FilledButton`).
-- `component_source: own` → mevcut kütüphaneyi kullan; ölçü ve davranış kuralları yine geçerli.
+- `component_source` (`kit` | `drawn` | `own`) yalnızca Figma'da anlamlıdır — `build-figma.md → Bileşen kaynağı`.
+  HTML'de bileşenler her zaman platform biçiminde çizilir (`drawn`), adları platform adıyla (`iOS/Switch`, `M3/FilledButton`).
 - İkonlar `icon_source`'a göre: `platform` → iOS SF Symbols / Android Material Symbols; `shared:<set>` → o set; `custom` → kullanıcının seti.
 - `app_platforms: [ios, android]` → stratejistin **Platform Farkları** tablosundaki parçaları iki versiyon component
   olarak üret (`iOS/TabBar` + `Android/NavigationBar`); ortak ekranlar bir kez.
@@ -211,9 +170,8 @@ metinler (placeholder, başlık önerisi, açıklama) muaf değildir.
 
 ## Yasak Desenler — AI Tells
 
-Üretim öncesi `.claude/references/reviewer-checklist.md` dosyasının
-"AI Tells — Yasak Desenler Kataloğu" bölümünü ve "Tutarlılık Kilitleri" (i),
-"Layout Disiplini" (j) bölümlerini oku ve uygula.
+Üretim öncesi `.claude/references/rules.md` dosyasını oku: kural tablosu (özellikle AT, TL, LY, MB, A11Y) ve
+"Yasak Desenler Kataloğu". Kuralı uygularken kimliğini bil — Pre-flight ve reviewer bulguları kimlikle yazılır.
 
 **Override kuralı:** Token JSON'da `"source": "user_explicit"` işaretli her değer
 bu listeden muaftır — kullanıcının açık talebi her zaman kazanır.
@@ -228,325 +186,7 @@ bu listeden muaftır — kullanıcının açık talebi her zaman kazanır.
 Bir component bağımlı olduğu component tamamlanmadan işlenmez.
 Bağımlılık çözülemiyorsa o görevi sona bırak, atladığını belirt.
 
----
-
-## Çıktı tipi: `figma`
-
-`use_figma` ile Figma Plugin API'sini kullanarak Figma dosyasına yaz.
-
-### Kurallara uy
-
-- Renk değerleri 0–1 aralığında (`{r: 1, g: 0, b: 0}` = kırmızı — 0-255 değil)
-- Her `use_figma` çağrısında max 10 mantıksal işlem — daha fazlası için böl
-- Her çağrıdan oluşturulan/değiştirilen tüm node ID'lerini döndür
-- `figma.notify()` kullanma — çıktı için `return` kullan
-- `figma.currentPage = page` çalışmaz — `await figma.setCurrentPageAsync(page)` kullan
-- Font kullanmadan önce `await figma.loadFontAsync({family, style})` çağır
-- Auto-layout container için `figma.createAutoLayout()` kullan, mutlak koordinat değil
-- Token değerlerini birebir uygula — yaklaştırma yapma
-- Yapı (`yapi` varsa): ekran frame adı `T-… · [Ekran adı]`; template'in zorunlu durumları ayrı frame olarak üretilir;
-  akış / template / durum bilgisi ekran annotation'ına yazılır (aşağıda, `structure-standards.md → HTML işaretleri`)
-- **Plugin API'nin yapamadıkları — elle yapılacak listesi:** OpenType ayarları (ör. tabular rakam) Plugin API'den
-  değiştirilemez. Brief bunu istiyorsa (tutar, saat, tablo sütunu) deneme yapma; ilgili ekran annotation'ına
-  `not: tutarlarda tabular rakam (font-variant-numeric: tabular-nums)` satırını ekle ve özetin
-  **Figma'da elle yapılacak** listesine yaz: `[frame / metin katmanları] — Type details → Numbers → Tabular`.
-- **Yüklenemeyen yazı tipi:** Token'daki yazı tipi Figma'da yüklenemiyorsa (`listAvailableFontsAsync`'te yok ya da
-  `loadFontAsync` hata veriyor — ör. SF Pro, lisanslı marka yazı tipi) en yakın yedeği kullan: iOS → Inter,
-  Android → Roboto, web → token'daki yedek aile (yoksa Inter). Token dosyasını değiştirme; yedeği yalnızca Figma
-  değişkenine yaz. Ekran annotation'ına `not: yazı tipi yedek (Inter ← SF Pro)` satırını ekle ve özetin
-  **Figma'da elle yapılacak** listesine yaz: `Typography → font-family-… değerini [asıl yazı tipi] yap (kurulunca)`.
-
-### Adım adım süreç
-
-**1. Dosyayı incele (her şeyden önce)**
-```js
-// Mevcut sayfaları, component'ları ve değişkenleri keşfet
-const pages = figma.root.children.map(p => ({ id: p.id, name: p.name }));
-return pages;
-```
-
-**2. Token'ları Figma değişkenlerine aktar (varsa)**
-Token JSON'dan renk, tipografi ve boşluk değerlerini Figma değişkeni olarak oluştur.
-Zaten varsa üstüne yazma — önce kontrol et.
-
-`color_scheme: both` ise `Color` koleksiyonunda `Light` ve `Dark` adlı iki mod oluştur,
-her semantic değişkene `Light` = `$value`, `Dark` = `$extensions.mode.dark` ata. Ekranları koyu tema için kopyalama —
-fill'leri variable'a bağla, kontrol için frame'in mode'unu değiştir.
-`color_scheme: dark` ise tek `Dark` modu yeterli.
-
-**3. Her görevi sırayla işle**
-- Bölümü `placeholder = true` ile başlat
-- Component / frame'i oluştur
-- Token değerlerini bağla
-- Ekranlar **frame** olarak kurulur (component değil — Assets paneline karışmaz). Ekran bilgisi frame'in **annotation**'ına
-  yazılır (aşağıda "Ekran annotation'ı"). Component'lerin `description` alanına yalnızca amaç / kullanım yazılır;
-  yapay zeka kökenini ima eden ifade (AI, Claude, generated) hiçbir yere yazılmaz
-- Uygulama ekranı frame'leri cihaz ölçüsünde (iOS 390×844, Android 412×915) ve durum çubuğu + home indicator /
-  gezinme çubuğu katmanlarıyla oluşturulur; içerik güvenli alanın içinde kalır (`mobile-platforms.md → 3`)
-- Tamamlandığında `placeholder = false` yap
-- `await frame.screenshot()` ile doğrula
-
-### Ekran annotation'ı
-
-Makinenin (reviewer, `/ads-iterate`) ve tasarımcının kullandığı ekran bilgisi Dev Mode annotation'ı olarak yazılır —
-tasarım modunda ve Dev Mode'da görünür, okuma araçları (`get_design_context`) `data-adstudio-annotations` olarak getirir.
-
-- Kategori: `adStudio` (`teal`). Dosyada yoksa bir kez oluştur:
-  `figma.annotations.addAnnotationCategoryAsync({ label: 'adStudio', color: 'teal' })`; varsa onu kullan.
-- Metin `label` alanına **düz metin** yazılır — `labelMarkdown` kullanma (kalın işaretleri okuma aracında bozuluyor).
-- Yalnızca makinenin ya da tasarımcının kullandığı satırlar; satır sınırı yok. Ana ekran frame'i:
-  ```
-  flow: F-01 · Kitap ilerlemesini güncelle
-  template: T-DETAIL
-  states: loading, error, success
-  regions: header, progress, actions, notes
-  page_kind: product
-  platform: ios
-  ```
-  `yapi` yoksa `flow` / `template` / `states` / `regions` satırları yazılmaz. Gerekirse `not: …` satırı (ör. tabular rakam).
-- Durum frame'i: `state: error (sayfa sayısı aralık dışı)` (+ ana frame'in `flow` ve `template` satırları).
-- Annotation `flows.md` / `templates.md`'nin kısa kopyasıdır; asıl kaynak dosyalardır. Ekran değişince annotation'ı da güncelle.
-
-### flows.md ekran linkleri (`yapi` varsa)
-
-Ekranlar çizildikten sonra `flows.md`'de `Adımlar` ve `Sonra` satırlarındaki her `Figma: <Ekran adı>` atfını o ekranın
-ana frame linkiyle değiştir: `Figma: [Kitap detayı](<figma_linki dosyası>?node-id=9-177)`
-(`structure-standards.md → Figma çıktısında ekran atfı`). Yalnızca bu atıfları değiştir — akışın metnine, dallarına,
-önkoşuluna dokunma. Bir ekranı yeniden çizdiğinde (ör. `/ads-iterate`) yeni numarayla linki güncelle.
-- Yazım: `frame.annotations = [{ label: '…', categoryId: kategori.id }]` — tasarımcının aynı node'daki başka
-  kategorilerdeki notlarını silme (önce mevcutları oku, yalnızca `adStudio` kategorisindekini değiştir).
-
-**4. Her görev sonrası doğrula**
-Görsel ve yapısal sorunları erken yakala — bir sonraki göreye bozuk temelle devam etme.
-
-### Her görev için bildir
-```
-TASK-001 ✓ — Button/Primary (Figma: Components/Atoms | node: 123:456)
-TASK-002 ✓ — Input/Default  (Figma: Components/Atoms | node: 124:789)
-```
-
----
-
-## Çıktı tipi: `html`
-
-Her görev için self-contained bir HTML dosyası üret:
-
-- Her component kendi dosyasında: `components/[katman]/[component-adı].html`
-- Ekranlar: `screens/[ekran-adı].html`
-- Token değerlerini CSS custom properties olarak tanımla (`--color-primary` vb.)
-- Animasyon varsa yalnızca `transform` / `opacity` kullan
-- Animasyon varsa `prefers-reduced-motion` guard ekle
-- WCAG AA kontrast oranını koru (`color_scheme: both` ise her iki temada)
-
-### Zorunlu: Koyu Tema (`color_scheme: both` veya `dark`)
-
-`color_scheme: light` ise bu bölümü atla.
-
-`both` ise semantic renk token'larını üç blokta tanımla — component CSS'i yalnızca
-semantic değişkenleri kullanır, temaya göre ayrı kural yazmaz:
-
-```css
-:root {                                   /* açık tema (varsayılan) */
-  --color-bg-default: #fafafa;
-  --color-text-primary: #111111;
-}
-[data-theme="dark"] {                     /* elle seçilen koyu tema */
-  --color-bg-default: #121212;
-  --color-text-primary: #ededed;
-}
-@media (prefers-color-scheme: dark) {     /* sistem tercihi */
-  :root:not([data-theme="light"]) {
-    --color-bg-default: #121212;
-    --color-text-primary: #ededed;
-  }
-}
-```
-
-- Açık değerler `$value`'dan, koyu değerler `$extensions.mode.dark`'tan gelir
-  (`references/token-standards.md → Tema Modları`) — uydurma. Koyu değer eksikse Açık Sorular'a ekle.
-- `dark` ise tek koyu set `:root` içinde tanımlanır.
-- Sayfanın ortasında tek bir section'ı ters temaya çevirme — tema tüm sayfa için tektir.
-- `index.html` sidebar'ına açık/koyu tema anahtarı ekle (`document.documentElement.dataset.theme`
-  ayarlar ve iframe'deki sayfaya da iletir).
-
-### Hareket Bantları (MOTION)
-
-| MOTION | Uygula | Uygulama |
-|---|---|---|
-| 1-3 | Yalnızca durum geçişleri: hover, focus, açılma/kapanma, pressed | CSS `transition` |
-| 4-6 | + **tek imza an** + yumuşak giriş (fade/translate), kademeli liste girişi | `IntersectionObserver` veya CSS |
-| 7-10 | + scroll ile açılan / scroll'a bağlı bölümler, sabitlenen (sticky) anlatım; geçişlerde blur / mask / clip-path | CSS scroll-driven animations (`animation-timeline: view()`) veya `IntersectionObserver` |
-
-**Tek imza an (MOTION ≥ 4):** Hareketi sayfanın **bir** önemli anında yoğunlaştır ve bu anı brief'teki
-Tez'e bağla (ör. "laboratuvar raporu" tezi → içerik tablosu satır satır dolar). Geri kalan section'lar
-sakin kalır: hover/focus ve gerekiyorsa kısa bir giriş.
-- Aynı giriş animasyonu (aynı `animation-name` / aynı reveal sınıfı) **en fazla 2 section'da** kullanılır.
-  Her section'a aynı fade-up koymak yasak.
-- Kademeli giriş (stagger) yalnızca gerçekten liste olarak beliren öğelerde; toplam gecikme ≤ 400ms.
-- İçerik **varsayılan olarak görünür**: başlangıç durumu `opacity: 0` / `visibility: hidden` olan bir
-  reveal, JavaScript çalışmazsa içeriği gizli bırakır. Gizleme sınıfını JS ekler (`.js .reveal`),
-  CSS'te varsayılan görünür kalır.
-
-**Blur / mask / clip-path (yalnızca MOTION ≥ 7):** İmza anda geçiş malzemesi olarak kullanılabilir:
-odak (modal açılırken arka planın 200ms içinde hafifçe bulanıklaşması), açılma (görselin maske ile
-perde gibi belirmesi). Efekt alanı küçük ve sınırlı tutulur (tam ekran sürekli blur yok), yalnızca geçiş
-sırasında çalışır ve `prefers-reduced-motion`'da kapanır. Duran süs amaçlı cam efekti (glassmorphism)
-her MOTION değerinde yasaktır.
-
-- `window.addEventListener('scroll', …)` kullanma.
-- Her animasyon tek cümleyle gerekçelendirilebilmeli (hiyerarşi, geri bildirim, durum geçişi, anlatım) — süs için sonsuz döngü yok.
-- MOTION ne olursa olsun `@media (prefers-reduced-motion: reduce)` altında animasyonları kapat veya yalnızca opacity'ye indir.
-
-### Zorunlu: HTML Metadata
-
-Her üretilen HTML dosyasının `<head>` bölümüne aşağıdakileri ekle:
-
-```html
-<!-- Designed by: adesso Turkey -->
-<meta name="author" content="adesso Turkey">
-```
-
-**Kesinlikle yasak:**
-- `generator`, `ai`, `claude`, `artificial intelligence`, `machine learning` içeren herhangi bir `<meta>` etiketi
-- Yapay zeka kökenini ima eden her türlü HTML yorumu (`<!-- AI generated -->`, `<!-- Claude -->` vb.)
-- `data-ai`, `data-generated`, `data-claude` gibi özel veri özelliği
-
-### Zorunlu: Mobile-First CSS
-
-Tüm CSS **mobile-first** yazılır — temel stiller 375px için geçerlidir,
-büyük ekranlar `min-width` media query ile üzerine yazar:
-
-```css
-/* Temel — 375px ve üzeri */
-.card { padding: 16px; flex-direction: column; }
-
-/* Tablet — 768px ve üzeri */
-@media (min-width: 768px) {
-  .card { padding: 24px; }
-}
-
-/* Desktop — 1280px ve üzeri */
-@media (min-width: 1280px) {
-  .card { flex-direction: row; padding: 32px; }
-}
-```
-
-**Kurallar:**
-- `max-width` media query kullanma — yalnızca `min-width`
-- Sabit `px` genişlik (`width: 800px`) kullanma — `max-width`, `%`, `clamp()` veya `min()` kullan
-- Yatay overflow'a yol açan her element `overflow-x: hidden` veya `flex-wrap: wrap` alır
-- Token JSON'da `Viewport` koleksiyonu varsa breakpoint değerlerini oradan oku;
-  yoksa varsayılan: 375 / 768 / 1280px
-
-**Mobil web kuralları (web ekranları):**
-- Dokunulan her buton, ikon ve link en az **44×44px** tıklanabilir alana sahip (padding dahil); 24px altı kesinlikle yok.
-  Paragraf içindeki metin linkleri muaf.
-- Hiçbir işlev yalnızca `:hover` ile erişilebilir olmaz — hover'da beliren buton/menü dokunmayla da açılır
-  veya varsayılan görünür. Süs amaçlı hover efekti serbest.
-- Tam ekran bölümlerde `100vh` kullanma — `100svh` / `100dvh`.
-- `viewport-fit=cover` kullanılıyorsa üst/alt sabit öğeler `env(safe-area-inset-*)` ile boşluk alır.
-
-### Zorunlu: Uygulama Ekranı Çerçevesi (`data-platform="ios|android"`)
-
-Uygulama ekranları web sayfası gibi değil, cihaz çerçevesinde üretilir — şablon ve ölçüler
-`references/mobile-platforms.md → 9`:
-- `<body class="ads-stage">`: çerçevenin dışındaki sunum arka planı yalnızca `.ads-stage` kuralında; uygulamanın kendi
-  arka planı `.device` / `.screen` üzerinde ve token'a bağlı (token testi yalnızca `.ads-stage`'i muaf tutar).
-- `.device` iOS 390×844 / Android 412×915, `--safe-top` / `--safe-bottom` değişkenleri, durum çubuğu ve
-  home indicator alanlarına buton/link yok.
-- `font-size` değerleri `rem` ile (değerler adStudio ölçeğinde) — büyük yazı (%130) testi bunu gerektirir.
-- Sekme çubuğu iOS'ta 2–5, Android'de 3–5 öğe.
-- Ekranlar arası geçiş, kaydırınca belirme ve giriş animasyonu yok; hareket yalnızca mikro etkileşim ve
-  tek imza an (`mobile-platforms.md → 7`). Web "Hareket Bantları" bu ekranlarda uygulanmaz.
-
-### Zorunlu: Token Bağlama — Hardcode Yasağı
-
-Aşağıdaki değerleri **asla** hardcode etme; her zaman token değişkenini kullan:
-
-| Özellik | Yasak | Doğru |
-|---------|-------|-------|
-| `font-size` | `10px`, `11px`, `12px` vb. herhangi bir px değeri | `var(--text-2xs)`, `var(--text-xs)` vb. |
-| `font-family` | `"Inter"`, `"Cabin"` vb. | `var(--font-family-display)` / `var(--font-family-body)` |
-| `color` | `#F9423A`, `#1B2A4A` vb. | `var(--color-accent)` vb. |
-| `background-color` | literal hex/rgb | `var(--color-bg-*)` vb. |
-| `border-radius` | `4px`, `8px` vb. | `var(--radius-sm)` vb. |
-| `gap`, `padding`, `margin` | literal px | `var(--space-*)` vb. |
-
-Token setinde karşılık bulunamıyorsa (örn. 10px için `--text-2xs` yok):
-- Token dosyasına yeni token ekle, oradan referans ver
-- Sessizce hardcode etme — "Açık Sorular" bölümüne ekle
-
-**Inline style yasağı:** `style="font-size:..."` gibi inline tipografi stilleri kullanma. Her zaman CSS sınıfına taşı.
-
-### Zorunlu: Yapı İşaretleri (`yapi` varsa)
-
-Her `screens/*.html` dosyası Adım 2b'deki yapıyı işaretlerle taşır — `structure` testi bunları okur:
-
-```html
-<body data-template="T-DETAIL" data-flow="F-01 F-02">
-  <header data-region="header">…</header>
-  <section data-region="content">
-    <div data-state="loading" hidden>…</div>
-    <div data-state="empty" hidden>
-      <p>Henüz harcama yok.</p>
-      <a href="expense-add.html" data-flow-start="F-02">İlk harcamayı ekle</a>
-    </div>
-    …
-  </section>
-</body>
-```
-
-- `data-template` ve `data-flow` `<body>`'de; ekran birden çok akışta geçiyorsa hepsi boşlukla yazılır.
-- Template'in her bölgesi `data-region`, her zorunlu durumu `data-state` bloğu olarak bulunur.
-- Uygulama ekranlarında (`data-platform`) işaretler aynı `<body>`'ye eklenir.
-
-### Side Navigation — `index.html`
-
-Tüm HTML görevleri tamamlandıktan sonra proje kökünde `index.html` oluştur.
-Bu dosya tasarımlar arasında hızlı geçiş için side navigation içerir.
-
-Yapı:
-- Sol tarafta sabit sidebar — katman başlıkları (Primitives, Atoms, Molecules, Organisms, Screens) ve altında o katmandaki component'lar liste halinde
-- `yapi` varsa Screens bölümü akışlara göre gruplanır (`F-01 — Grup oluştur` başlığı altında o akışın ekranları,
-  adım sırasıyla); ortak ekran her akışında görünür
-- Sağ tarafta `<iframe>` — seçilen component'ı gösterir
-- Aktif link highlight edilir
-- Varsayılan olarak ilk component açık gelir
-
-```html
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Designed by: adesso Turkey -->
-  <meta name="author" content="adesso Turkey">
-  <title>[Proje Adı] — Design System</title>
-</head>
-<body>
-<nav>
-  <section>
-    <h3>Atoms</h3>
-    <a href="components/atoms/button.html" target="preview">Button</a>
-    <a href="components/atoms/input.html" target="preview">Input</a>
-  </section>
-  <section>
-    <h3>Screens</h3>
-    <a href="screens/login.html" target="preview">Login</a>
-  </section>
-</nav>
-<iframe name="preview" src="[ilk component]"></iframe>
-</body>
-</html>
-```
-
-Sidebar token'lardan renk ve tipografi değerlerini kullanır — hardcode etme.
-
-### Her görev için bildir
-```
-TASK-001 ✓ — Button/Primary → components/atoms/button.html
-TASK-002 ✓ — Input/Default  → components/atoms/input.html
-```
+Her görevi çıktı türünün üretim dosyasındaki adımlarla işle (`build-figma.md → Üretim` / `build-html.md → Üretim`).
 
 ---
 

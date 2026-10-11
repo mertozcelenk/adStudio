@@ -92,7 +92,7 @@ Kabul edilen değerler: 4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 12
 **Tipografi (font-size, line-height) — öneri, zorunlu değil.** Varsayılan ölçek 4'ün katlarından kurulur,
 ama tipografik oran gerektiriyorsa (ör. 15px gövde, 13px etiket, 1.5 satır yüksekliğinden çıkan 21px) farklı
 değer kullanılabilir; değer `_meta`'da kısa gerekçesiyle tutulur. Reviewer bunu bulgu olarak raporlamaz.
-Okunabilirlik alt sınırları ayrıdır ve zorunludur (caption ≥ 12px, gövde ≥ 14px — `reviewer-checklist.md`).
+Okunabilirlik alt sınırları ayrıdır ve zorunludur (caption ≥ 12px, gövde ≥ 14px — `rules.md → A11Y-3`).
 
 ---
 

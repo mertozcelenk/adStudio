@@ -1,5 +1,5 @@
 /**
- * AI tells & layout disiplini testi — reviewer-checklist.md'deki mekanik ölçülebilen
+ * AI tells & layout disiplini testi — rules.md'deki mekanik ölçülebilen
  * kuralları HTML çıktıları üzerinde kontrol eder.
  *
  * Geçişler:

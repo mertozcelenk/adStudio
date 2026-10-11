@@ -27,7 +27,7 @@ kısa ad (`use_figma`) araç agent'a verilmez demektir — `check-names` bunu da
 - **Yapı (flow / template):** ekran üreten veya değiştiren adım `flows.md` / `templates.md`'yi okur, yeni kapsamı oraya
   ekler ve ekranları işaretler (`references/structure-standards.md`); `structure` testi denetler.
 - **Teslim kapısı:** üretim yapan akış hafif veya tam review ile biter ve teslim durumu yazar (`ads-design-strategy.md → Adım 6`).
-- **Bulgu modeli:** yeni bir kontrol bulgu üretiyorsa `etki` + `teslimi engeller` alanlarını taşır (`reviewer-checklist.md → Seviye Ölçeği`).
+- **Bulgu modeli:** yeni bir kontrol bulgu üretiyorsa `etki` + `teslimi engeller` alanlarını taşır (`rules.md → Seviye Ölçeği`); yeni kural `rules.md`'ye kimlikle eklenir, `review-html.md` ve `review-figma.md`'de karşılığı ya da `yalnızca HTML` / `Figma'da henüz yok` işareti yazılır (`check-rules` denetler).
 - **Kapsam kararı:** builder'ın yeni kapsam eklemesi gerekiyorsa durup sorar.
 - **Bağlayıcı kararlar:** kararı aşan değişiklik "kararı güncelle / karar kalsın" adımından geçer.
 

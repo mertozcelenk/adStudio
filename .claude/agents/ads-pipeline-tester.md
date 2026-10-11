@@ -199,14 +199,14 @@ Her figma-*.md skill'i için:
 - [ ] `content` ekran tipi tanımlı mı?
 - [ ] Design Read formatında `Tez:` ve `Kendi dünyası:` satırları ve kategori testi var mı?
 
-**`ads-design-builder.md`:**
+**`build-html.md`:**
 - [ ] Tek imza an, ≤ 2 section aynı giriş, içerik varsayılan görünür kuralları var mı?
 - [ ] Blur / mask / clip-path yalnızca MOTION ≥ 7'de geçiş efekti olarak serbest mi?
-- [ ] Eyebrow varsayılan yasak + `data-eyebrow-allowed` istisnası, kullanıcı metni `data-copy="user"` tanımlı mı?
+- [ ] (`ads-design-builder.md`) Eyebrow varsayılan yasak + `data-eyebrow-allowed` istisnası, kullanıcı metni `data-copy="user"` tanımlı mı?
 
-**`reviewer-checklist.md`:**
-- [ ] `[content]` kapsam etiketi ve "Okuma Düzeni" bölümü (HTML o / Figma l) var mı?
-- [ ] "Kalite Kontrolleri" bölümü (HTML p / Figma m) 7 maddeyi içeriyor mu?
+**`rules.md`:**
+- [ ] `[content]` kapsam etiketi ve OD kuralları var mı; `review-html.md` / `review-figma.md`'de karşılıkları var mı?
+- [ ] QA kuralları 7 maddeyi (QA-1 … QA-7) içeriyor mu?
 - [ ] Katalogda ışık halesi, ızgara zemin, çizgili desen, sahte imleç var; kayan şerit ve organik kesimin yasak olmadığı not edilmiş mi?
 - [ ] Eski "eyebrow ≤ ceil(section/3)" kuralı kaldırılmış mı?
 
@@ -223,8 +223,8 @@ Her figma-*.md skill'i için:
 - [ ] `ads-design-strategy.md`: eski `platform: mobile` sorusu ve uygulama + Figma'da bileşen kaynağı sorusu (`component_source`) var mı?
 - [ ] `ads-token-generator.md`: Adım 2f platform rol notu ve uygulama zemin token'ı #fff/#000 muafiyeti var mı?
 - [ ] `ads-design-strategist.md`: Adım 4b uygulama ekranları ve "Platform Farkları" çıktı bölümü var mı?
-- [ ] `ads-design-builder.md`: `data-platform` etiketi, uygulama ekranı çerçevesi, mobil web kuralları (44px, hover, 100vh, safe-area) ve `search_design_system` aracı var mı?
-- [ ] `reviewer-checklist.md`: HTML **q** (Mobil Web) ve **r** (Uygulama), Figma **n** (Uygulama) bölümleri var mı?
+- [ ] `ads-design-builder.md` + `build-html.md` / `build-figma.md`: `data-platform` etiketi, uygulama ekranı çerçevesi, mobil web kuralları (44px, hover, 100vh, safe-area; Figma'da 375 frame MW) ve `search_design_system` aracı var mı?
+- [ ] `rules.md`: MW (Mobil Web) ve APP (Uygulama) kuralları; `review-html.md` ve `review-figma.md`'de karşılıkları var mı?
 - [ ] `ads-ux-reviewer.md` Bölüm 5 uygulama ekranlarına göre güncellenmiş, 48dp maddesi var mı?
 - [ ] `node check-fixtures.mjs` tüm fixture'larda (iOS / Android / mobil web ekranları dahil) beklentileri karşılıyor mu?
   (Playwright yoksa WARN)
@@ -236,7 +236,7 @@ Her figma-*.md skill'i için:
 - [ ] `scripts/test/run-all.mjs` ve `lib/common.mjs` var mı; dört sonuç (geçti / başarısız / çalıştırılamadı / uygulanamaz) ve genel kod önceliği (1 > 2 > 0) tanımlı mı?
 - [ ] `npm --prefix scripts/test run selftest` → "Tüm durumlar geçti." ve "Tüm fixture beklentileri karşılandı." (Playwright yoksa WARN)
 - [ ] `ads-design-builder.md → project-state.md`: başlık alanları (`cikti_formati`, `platform`, `token_dosyasi`) ve "üretimden önce yazılır" kuralı var mı; design-strategy / iterate / migrate / promote bunları başta yazıyor mu?
-- [ ] `reviewer-checklist.md → Seviye Ölçeği`: `etki` ve `teslimi engeller` iki ayrı alan, **Kural** tablosu (em-dash, metadata, sahte UI, `[Korunan]`, Bağlayıcı Karar) var mı; checklist'te Blocker yalnızca erişilebilirlik / görev engeli için mi kullanılıyor?
+- [ ] `rules.md → Seviye Ölçeği`: `etki` ve `teslimi engeller` iki ayrı alan, **Kural** tablosu (em-dash, metadata, sahte UI, `[Korunan]`, Bağlayıcı Karar) var mı; kural tablosunda Blocker yalnızca erişilebilirlik / görev engeli için mi kullanılıyor?
 - [ ] `ads-design-strategy.md → Adım 6`: en fazla 2 tur, yeniden kontrol (run-all + reviewer'lar), "tur sınırı kabul değildir", "Teslime hazır"ın dört koşulu (4. görsel fark incelemesi) ve üç teslim durumu var mı; "Sonuç finaldir" ifadesi kalkmış mı?
 - [ ] `ads-iterate.md`: hafif review, tam review ve büyük özellik review'ı Adım 6'ya yönleniyor mu; "tek bir revision pass" ifadesi kalkmış mı?
 - [ ] `ads-design-reviewer.md` raporunda "Otomatik testler" ve "Teslim engelleri" (B kimlikli) bölümleri, yeniden kontrol modu var mı?
@@ -247,7 +247,7 @@ Her figma-*.md skill'i için:
 - [ ] Kapsam kararı: builder yeni özellik/ekran/veri toplama/vaat/akış gerektiren engelde "kapsam kararı gerekli" diye dönüyor; Adım 6'da üç seçenek (kapsama ekle → plan + UX önce / vaadi koruyan geçici çözüm / istisna → `## Teslim İstisnaları`) ve "İstisna onayıyla teslim edilebilir" durumu var mı?
 - [ ] `ads-iterate.md → Bağlayıcı karar değişikliği`: `[Korunan]` ve diğer kararlar için ayrı soru, güncelle / kalsın sonuçları, `(güncellendi: tarih, önceki: …)` eki var mı; design-strategy ve builder buraya yönleniyor mu?
 - [ ] `ads-design-builder.md → Bağlayıcı Kararlar`: çelişkide "karar güncelleme gerekli" diye dönüyor, kayıt güncellenince yeni hâli uyguluyor mu?
-- [ ] `npm --prefix scripts/test run names` → "tüm atıflar tutarlı"; `CONTRIBUTING.md` ve `scripts/dev/sandbox.sh` var mı?
+- [ ] `npm --prefix scripts/test run names` → "tüm atıflar tutarlı"; `npm --prefix scripts/test run rules` → kural kimlikleri tutarlı; `CONTRIBUTING.md` ve `scripts/dev/sandbox.sh` var mı?
 - [ ] `token-standards.md → 4 Katı Skalası`: tipografide 4 katı yalnızca öneri, spacing/radius/icon zorunlu mu?
 
 ---
@@ -258,10 +258,10 @@ Her figma-*.md skill'i için:
 - [ ] `ads-design-strategy.md → Adım 2b`: her iki modda builder'dan önce; var olan dosyaya ekleme (üzerine yazmama); tek onay (akışlar + ekran→template + Ortak Davranış); başlangıç kaydında `yapi` var mı?
 - [ ] `ads-design-planner.md`: akışları `flows.md`'ye `Önkoşul` / `Sonra` ile yazıyor, önkoşulu karşılanmamış boş durum için yönlendirme dalı ekliyor, ekran→template eşlemesi (Adım 2b) ve görevlerde `Yapı:` satırı var mı?
 - [ ] `ads-ux-designer.md`: template düzeyindeki kararları `templates.md → Pattern / Davranış`'a, proje genelini `## Ortak Davranış`'a yazıyor; UX spec'te `Yapı:` satırı var mı?
-- [ ] `ads-design-builder.md → Adım 2b` ve "Yapı İşaretleri": üretim sırası önkoşullara göre, zorunlu durumların hepsi, çıkmaz sokak yasağı, `Sonra` gerçek bağlantı, `index.html` akışlara göre gruplu mu?
+- [ ] `ads-design-builder.md → Adım 2b` ve `build-html.md → Yapı İşaretleri` / `build-figma.md → Ekran annotation'ı`: üretim sırası önkoşullara göre, zorunlu durumların hepsi, çıkmaz sokak yasağı, `Sonra` gerçek bağlantı, `index.html` akışlara göre gruplu mu?
 - [ ] `ads-design-strategy.md → Brief'i kaydet`: onaydan sonra `design-brief.md` yazılıyor, eskisi `design-brief.[tarih].md` olarak saklanıyor; stratejiste önceki brief iletiliyor; `ads-iterate.md → Ön Koşul` brief'i okuyup agent'lara iletiyor mu?
 - [ ] `ads-iterate.md → Yapı`: template değişikliğinde tüm kullanan ekranlar, akış değişikliğinde önkoşul gösteren akışların ekranları etkilenen dosya sayılıyor; `yapi` yoksa bir kez soruluyor mu?
-- [ ] `reviewer-checklist.md` HTML **s** / Figma **o** ve `preflight-checklist.md → Yapı` var mı?
+- [ ] `rules.md` ST kuralları, `review-html.md` / `review-figma.md` ST karşılıkları ve `preflight-checklist.md → Yapı` var mı?
 - [ ] `scripts/test/structure.mjs` `run-all`'da zorunlu; `yapi` yokken uygulanamaz; `structure-good` / `structure-bad` fixture'ları geçiyor mu?
 
 ---

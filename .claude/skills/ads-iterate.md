@@ -169,7 +169,7 @@ Yalnızca değiştirilen dosyayı kontrol et:
 
 HTML çıktısında ayrıca `node scripts/test/run-all.mjs` çalıştır. Figma çıktısında hafif review bulgularını gösterdikten
 sonra ayrıntılı inceleme sorusunu sor (`ads-design-strategy.md → Quick mod → madde 4`); evet → iki reviewer + Adım 6.
-Bulguları `etki` ve `teslimi engeller` alanlarıyla sınıflandır (`references/reviewer-checklist.md → Seviye Ölçeği`).
+Bulguları `etki` ve `teslimi engeller` alanlarıyla sınıflandır (`references/rules.md → Seviye Ölçeği`).
 Teslim engeli varsa `ads-design-strategy.md → Adım 6` döngüsünü uygula (en fazla 2 tur); yeniden kontrol
 yukarıdaki maddeler + `run-all.mjs`'tir (kontrast/boyut değerleri gerçekten düzelmiş mi doğrula).
 
@@ -268,7 +268,7 @@ Teslim durumu: [Teslime hazır | İstisna onayıyla teslim edilebilir — n isti
 Bekleyen görev varsa kullanıcıya bildir:
 > "`design-plan.md` → Geliştirme Backlog'u bölümünde [n] görev daha var. Devam etmek için `/ads-iterate` çalıştırın."
 
-**Çapraz sayfa hatırlatması** (yalnızca HTML çıktısı — `/ads-check` Figma'da çalışmaz): Etkilenen dosya sayısı 2 veya daha fazlaysa rapora şunu ekle:
+**Çapraz sayfa hatırlatması:** Etkilenen dosya (Figma'da ekran) sayısı 2 veya daha fazlaysa rapora şunu ekle:
 > "Birden fazla sayfada değişiklik yapıldı. Sunum öncesinde tutarlılık kontrolü için `/ads-check` çalıştırmanızı öneririm."
 
 ---
