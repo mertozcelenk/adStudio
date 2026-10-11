@@ -467,7 +467,9 @@ Kurallar: `references/mobile-platforms.md`.
 ### o. Yapı [`yapi` varsa]
 
 HTML bölüm **s** ile aynı kontroller; işaretler frame adı (`T-… · Ekran`) ve ekran annotation'ından
-(`flow:`, `template:`, `states:`, `regions:`) okunur, durumlar ayrı frame olarak aranır (`state:` annotation'ı). Betik çalışmaz — hepsi elle.
+(`flow:`, `template:`, `states:`, `regions:`) okunur, durumlar ayrı frame olarak aranır (`state:` annotation'ı).
+`flows.md`'deki ekran linkleri: önce `node-id` ile, bulunamazsa adla ara; ad / numara uyuşmuyorsa **Medium**
+(`structure-standards.md → Figma çıktısında ekran atfı`). Betik çalışmaz — hepsi elle.
 
 ---
 

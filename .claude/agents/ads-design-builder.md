@@ -306,6 +306,13 @@ tasarım modunda ve Dev Mode'da görünür, okuma araçları (`get_design_contex
   `yapi` yoksa `flow` / `template` / `states` / `regions` satırları yazılmaz. Gerekirse `not: …` satırı (ör. tabular rakam).
 - Durum frame'i: `state: error — sayfa sayısı aralık dışı` (+ ana frame'in `flow` ve `template` satırları).
 - Annotation `flows.md` / `templates.md`'nin kısa kopyasıdır; asıl kaynak dosyalardır. Ekran değişince annotation'ı da güncelle.
+
+### flows.md ekran linkleri (`yapi` varsa)
+
+Ekranlar çizildikten sonra `flows.md`'de `Adımlar` ve `Sonra` satırlarındaki her `Figma: <Ekran adı>` atfını o ekranın
+ana frame linkiyle değiştir: `Figma: [Kitap detayı](<figma_linki dosyası>?node-id=9-177)`
+(`structure-standards.md → Figma çıktısında ekran atfı`). Yalnızca bu atıfları değiştir — akışın metnine, dallarına,
+önkoşuluna dokunma. Bir ekranı yeniden çizdiğinde (ör. `/ads-iterate`) yeni numarayla linki güncelle.
 - Yazım: `frame.annotations = [{ label: '…', categoryId: kategori.id }]` — tasarımcının aynı node'daki başka
   kategorilerdeki notlarını silme (önce mevcutları oku, yalnızca `adStudio` kategorisindekini değiştir).
 

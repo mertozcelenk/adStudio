@@ -100,10 +100,28 @@ Proje bunları **uyarlar**; kullanmadığı tipi eklemez, ihtiyaç duyduğu yeni
 | `## Ortak Davranış` | Evet | Dosyada bir kez, en üstte; her akış bunu miras alır |
 | `Önkoşul` | Evet | `yok` ya da önce gereken akış(lar): `F-01 (en az 1 grup)` |
 | `Giriş` | Evet | Kullanıcının akışa nereden girdiği. Girişi olmayan akışa ulaşılamaz |
-| `Adımlar` | Evet | Her adım: açıklama — `screens/<dosya>.html` · `T-…` |
+| `Adımlar` | Evet | Her adım: açıklama — `screens/<dosya>.html` · `T-…` (Figma: aşağıda) |
 | `Dallar` | Evet | En az hata ve iptal; listeli/boş olabilen veride boş durum |
-| `Sonra` | Evet | Akış bitince gidilen ekran, sürüyorsa `→ F-…` |
+| `Sonra` | Evet | Akış bitince gidilen ekran, sürüyorsa `→ F-…` (Figma: aşağıda) |
 | `Davranış`, `Başarı ölçütü` | Hayır | Başarı ölçütü spec'teki başarı kriterinden |
+
+### Figma çıktısında ekran atfı
+
+Dosya yolu yerine ekranın Figma'daki adı ve tipi, çizimden sonra da tıklanabilir link:
+
+```
+Akış yazılırken (builder'dan önce):
+  2. Kitaba dokun, sayfayı güncelle — Figma: Kitap detayı · T-DETAIL
+Builder çizdikten sonra:
+  2. Kitaba dokun, sayfayı güncelle — Figma: [Kitap detayı](https://www.figma.com/design/<dosya>?node-id=9-177) · T-DETAIL
+- Sonra: Figma: [Kitap detayı](…?node-id=9-177) → F-02
+```
+
+- Ekran adı = frame adındaki `·` sonrası kısım (`T-DETAIL · Kitap detayı` → `Kitap detayı`); template kimliği satırda bir kez.
+- Ekran adları proje içinde tektir (durum frame'leri `Kitap detayı · error` gibi ayrı adlanır ve adımlarda anılmaz).
+- Link yalnızca ana ekran frame'ine verilir; `node-id`'de `:` yerine `-` yazılır. Linki builder ekler (`ads-design-builder.md`).
+- Okuyan (reviewer, `/ads-iterate`) ekranı önce `node-id` ile, bulamazsa adıyla arar. Ad ya da numara uyuşmuyorsa
+  (frame yeniden adlandırılmış / yeniden çizilmiş) **Medium** bulgu yazar; kendiliğinden düzeltmez.
 
 ### Akışlar arası bağımlılık — hafif
 
