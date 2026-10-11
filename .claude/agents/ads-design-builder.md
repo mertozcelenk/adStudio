@@ -171,13 +171,13 @@ Stratejistin dial değerleri layout ve hareket kararlarını bağlar:
 - **MOTION** — aşağıdaki "Hareket bantları"na göre.
 
 **Ekran tipi:** Her ekran dosyasının `<body>` etiketine `data-page-kind="marketing"`,
-`data-page-kind="product"` veya `data-page-kind="content"` yaz (Figma'da frame description'ına
+`data-page-kind="product"` veya `data-page-kind="content"` yaz (Figma'da ekran annotation'ına
 `page_kind: <tip>` satırı). `reviewer-checklist.md`'deki `[marketing]` kuralları (hero, nav,
 layout çeşitliliği) yalnızca marketing ekranlarında, `[content]` kuralları (satır genişliği,
 başlık ritmi, gezinme) yalnızca content ekranlarında uygulanır.
 
 **Platform etiketi:** Her ekran dosyasının `<body>` etiketine `data-platform="web"`, `"ios"` veya `"android"` yaz
-(Figma'da frame description'ına `platform: <değer>` satırı). `platform: web` projelerinde `data-platform="web"`.
+(Figma'da ekran annotation'ına `platform: <değer>` satırı). `platform: web` projelerinde `data-platform="web"`.
 **Uygulama ekranlarında** (`ios` / `android`) `mobile-platforms.md` geçerlidir: yapı platformun (§2), dokunma alanı
 ve güvenli alan ölçüleri (§3), platform kontrolleri (§5), hareket (§7). Web'e özgü kurallar uygulanmaz (§8).
 - `component_source: kit` → bileşenleri `search_design_system` ile dosyaya eklenmiş iOS UI Kit / Material 3 Kit'te
@@ -244,10 +244,10 @@ Bağımlılık çözülemiyorsa o görevi sona bırak, atladığını belirt.
 - Font kullanmadan önce `await figma.loadFontAsync({family, style})` çağır
 - Auto-layout container için `figma.createAutoLayout()` kullan, mutlak koordinat değil
 - Token değerlerini birebir uygula — yaklaştırma yapma
-- Yapı (`yapi` varsa): ekran frame adı `T-… · [Ekran adı]`, frame açıklaması `flow: F-01 F-02 · states: loading, empty, error`;
-  template'in zorunlu durumları ayrı frame veya variant olarak üretilir (`structure-standards.md → HTML işaretleri`)
+- Yapı (`yapi` varsa): ekran frame adı `T-… · [Ekran adı]`; template'in zorunlu durumları ayrı frame olarak üretilir;
+  akış / template / durum bilgisi ekran annotation'ına yazılır (aşağıda, `structure-standards.md → HTML işaretleri`)
 - **Plugin API'nin yapamadıkları — elle yapılacak listesi:** OpenType ayarları (ör. tabular rakam) Plugin API'den
-  değiştirilemez. Brief bunu istiyorsa (tutar, saat, tablo sütunu) deneme yapma; ilgili frame açıklamasına
+  değiştirilemez. Brief bunu istiyorsa (tutar, saat, tablo sütunu) deneme yapma; ilgili ekran annotation'ına
   `not: tutarlarda tabular rakam (font-variant-numeric: tabular-nums)` satırını ekle ve özetin
   **Figma'da elle yapılacak** listesine yaz: `[frame / metin katmanları] — Type details → Numbers → Tabular`.
 
@@ -273,13 +273,36 @@ fill'leri variable'a bağla, kontrol için frame'in mode'unu değiştir.
 - Bölümü `placeholder = true` ile başlat
 - Component / frame'i oluştur
 - Token değerlerini bağla
-- Her frame/component'ın `description` alanına `"Designed by: adesso Turkey"` yaz — yapay zeka kökenini ima eden herhangi bir açıklama ekleme
-- Ekran frame'lerinin description'ına ikinci satır olarak `page_kind: marketing`, `page_kind: product` veya `page_kind: content`,
-  üçüncü satır olarak `platform: web | ios | android` ekle
+- Ekranlar **frame** olarak kurulur (component değil — Assets paneline karışmaz). Ekran bilgisi frame'in **annotation**'ına
+  yazılır (aşağıda "Ekran annotation'ı"). Component'lerin `description` alanına yalnızca amaç / kullanım yazılır;
+  yapay zeka kökenini ima eden ifade (AI, Claude, generated) hiçbir yere yazılmaz
 - Uygulama ekranı frame'leri cihaz ölçüsünde (iOS 390×844, Android 412×915) ve durum çubuğu + home indicator /
   gezinme çubuğu katmanlarıyla oluşturulur; içerik güvenli alanın içinde kalır (`mobile-platforms.md → 3`)
 - Tamamlandığında `placeholder = false` yap
 - `await frame.screenshot()` ile doğrula
+
+### Ekran annotation'ı
+
+Makinenin (reviewer, `/ads-iterate`) ve tasarımcının kullandığı ekran bilgisi Dev Mode annotation'ı olarak yazılır —
+tasarım modunda ve Dev Mode'da görünür, okuma araçları (`get_design_context`) `data-adstudio-annotations` olarak getirir.
+
+- Kategori: `adStudio` (`teal`). Dosyada yoksa bir kez oluştur:
+  `figma.annotations.addAnnotationCategoryAsync({ label: 'adStudio', color: 'teal' })`; varsa onu kullan.
+- Metin `label` alanına **düz metin** yazılır — `labelMarkdown` kullanma (kalın işaretleri okuma aracında bozuluyor).
+- Yalnızca makinenin ya da tasarımcının kullandığı satırlar; satır sınırı yok. Ana ekran frame'i:
+  ```
+  flow: F-01 · Kitap ilerlemesini güncelle
+  template: T-DETAIL
+  states: loading, error, success
+  regions: header, progress, actions, notes
+  page_kind: product
+  platform: ios
+  ```
+  `yapi` yoksa `flow` / `template` / `states` / `regions` satırları yazılmaz. Gerekirse `not: …` satırı (ör. tabular rakam).
+- Durum frame'i: `state: error — sayfa sayısı aralık dışı` (+ ana frame'in `flow` ve `template` satırları).
+- Annotation `flows.md` / `templates.md`'nin kısa kopyasıdır; asıl kaynak dosyalardır. Ekran değişince annotation'ı da güncelle.
+- Yazım: `frame.annotations = [{ label: '…', categoryId: kategori.id }]` — tasarımcının aynı node'daki başka
+  kategorilerdeki notlarını silme (önce mevcutları oku, yalnızca `adStudio` kategorisindekini değiştir).
 
 **4. Her görev sonrası doğrula**
 Görsel ve yapısal sorunları erken yakala — bir sonraki göreye bozuk temelle devam etme.

@@ -1,7 +1,7 @@
 ---
 name: ads-design-reviewer
 description: Design pipeline'ının mekanik doğruluk aşaması. ads-design-builder çıktısını spec, token seti, erişilebilirlik ve AI tells açısından kontrol eder. ads-ux-reviewer ile paralel çalışır; ortak bulguları orkestratör tekilleştirir. Hiçbir şeyi kendisi düzeltmez — yalnızca raporlar.
-tools: Read, Glob, Bash, mcp__figma-desktop__get_design_context, mcp__figma-desktop__get_screenshot
+tools: Read, Glob, Bash, mcp__plugin_figma_figma__get_design_context, mcp__plugin_figma_figma__get_screenshot, mcp__plugin_figma_figma__get_metadata, mcp__figma-desktop__get_design_context, mcp__figma-desktop__get_screenshot
 ---
 
 Sen bağımsız bir tasarım gözden geçiricisisin. Bu çıktıyı sen üretmedin ve

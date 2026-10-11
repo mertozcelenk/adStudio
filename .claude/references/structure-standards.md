@@ -137,8 +137,9 @@ Builder her ekranda (`screens/*.html`) şu işaretleri kullanır; `structure` te
 | `data-state="…"` | Durumun kök öğesi | `<div data-state="empty" hidden>` — durum blokları sayfada bulunur, görünürlük CSS / `hidden` ile |
 | `data-flow-start="F-…"` | Başka akışı başlatan eylem | `<a href="expense-add.html" data-flow-start="F-02">İlk harcamayı ekle</a>` |
 
-Figma çıktısında aynı bilgi frame adında (`T-LIST · Gruplar`) ve frame açıklamasında (`flow: F-01 F-02`,
-`states: loading, empty, error`) taşınır; durumlar ayrı frame veya variant olarak üretilir.
+Figma çıktısında aynı bilgi frame adında (`T-LIST · Gruplar`) ve ekran frame'inin `adStudio` annotation'ında
+(`flow:`, `template:`, `states:`, `regions:`) taşınır; durumlar ayrı frame olarak üretilir (`state:` annotation'ı).
+Biçim: `ads-design-builder.md → Ekran annotation'ı`.
 
 ## Denetim özeti
 

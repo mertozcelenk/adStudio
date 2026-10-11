@@ -23,8 +23,8 @@ uygulama ekranlarında `[marketing]`, `[content]` ve web hareket maddeleri N/A'd
 ## Liste
 
 **Metadata ve token**
-- [ ] HTML `<head>`'de "Designed by: adesso Turkey" yorumu + `meta author`; yapay zeka iması yok (HTML g / Figma e)
-- [ ] Ekranlarda `data-page-kind` (HTML) veya `page_kind` description satırı (Figma) mevcut (HTML g / Figma e)
+- [ ] HTML `<head>`'de "Designed by: adesso Turkey" yorumu + `meta author` (HTML g); yapay zeka iması yok (HTML g / Figma e)
+- [ ] Ekranlarda `data-page-kind` (HTML) veya `page_kind` annotation satırı (Figma) mevcut (HTML g / Figma e)
 - [ ] `platform: app | both` ise ekranlarda `data-platform` / `platform:` satırı mevcut (HTML g / Figma e)
 - [ ] Renk, font, font-size, radius, spacing hardcode edilmemiş, hepsi token'a bağlı (HTML c / Figma c)
 - [ ] `spec.md → Bağlayıcı Kararlar` maddelerinin hiçbiri ihlal edilmemiş; `[Korunan]` öğeler aynen korunmuş (HTML m / Figma j)
