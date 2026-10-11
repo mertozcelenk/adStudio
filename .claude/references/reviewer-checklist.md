@@ -38,7 +38,7 @@ Teslim kuralı ve düzeltme döngüsü: `skills/ads-design-strategy.md → Adım
 
 - **[her ekran]** — tüm ekran ve component'larda uygulanır
 - **[marketing]** — yalnızca strategist'in `marketing` olarak etiketlediği ekranlarda uygulanır
-  (HTML'de `<body data-page-kind="marketing">`, Figma'da frame description'ında `page_kind: marketing`).
+  (HTML'de `<body data-page-kind="marketing">`, Figma'da ekran annotation'ında `page_kind: marketing`).
   `product` / `content` ekranlarda bu maddeleri atla, "N/A — product ekran" / "N/A — content ekran" yaz.
 - **[content]** — yalnızca `content` (blog yazısı, makale, doküman, yardım merkezi) ekranlarında uygulanır
   (`data-page-kind="content"` / `page_kind: content`). Diğer tiplerde "N/A" yaz.
@@ -353,8 +353,10 @@ bağımlılıkları ölçer; aşağıdakilerin **anlamını** reviewer denetler.
 
 ### a. Frame İçeriğini Oku
 
-`get_design_context` ve `get_screenshot` ile her frame'i incele.
-Frame description'larından `page_kind` değerini oku.
+`get_design_context` ve `get_screenshot` ile her frame'i incele. Önce link tabanlı araçları kullan
+(`mcp__plugin_figma_figma__*`; `fileKey` ve `nodeId` Figma linkinden); erişilemezse masaüstü araçlarını (`mcp__figma-desktop__*`) dene.
+Ekran frame'lerinin `adStudio` annotation'larından (`get_design_context` → `data-adstudio-annotations`) `page_kind`
+ve diğer satırları oku.
 
 ### b. Spec Uyumu
 
@@ -385,10 +387,12 @@ Token JSON mevcutsa:
 
 `get_design_context` çıktısında:
 
-- [ ] Herhangi bir frame veya component'ın `description` alanında "Designed by: adesso Turkey" yazıyor mu? → yoksa **Kural** (etki: Nitpick) — ads-design-builder'ın bunu eklemiş olması gerekir
-- [ ] Herhangi bir `description` alanında `AI`, `Claude`, `generated` gibi yapay zeka iması var mı? → varsa **Kural** (etki: Nitpick)
-- [ ] Ekran frame'lerinin description'ında `page_kind: marketing|product|content` satırı var mı? → yoksa **Medium**
-- [ ] `platform: app | both` projelerinde ekran description'ında `platform: web|ios|android` satırı var mı? → yoksa **Medium**
+- [ ] Herhangi bir `description` veya annotation'da `AI`, `Claude`, `generated` gibi yapay zeka iması var mı? → varsa **Kural** (etki: Nitpick)
+- [ ] Ekranlar frame mi (component değil) ve her ekranda `adStudio` annotation'ı var mı? → yoksa **Medium**
+- [ ] Ekran annotation'ında `page_kind: marketing|product|content` satırı var mı? → yoksa **Medium**
+- [ ] `platform: app | both` projelerinde ekran annotation'ında `platform: web|ios|android` satırı var mı? → yoksa **Medium**
+- [ ] Annotation `flows.md` / `templates.md` ile tutarlı mı (akış, template, durumlar)? → tutarsızsa **Medium** — hangisinin
+  doğru olduğuna karar verme, ikisini de yaz
 
 ---
 
@@ -462,8 +466,10 @@ Kurallar: `references/mobile-platforms.md`.
 
 ### o. Yapı [`yapi` varsa]
 
-HTML bölüm **s** ile aynı kontroller; işaretler frame adı (`T-… · Ekran`) ve frame açıklamasından
-(`flow: … · states: …`) okunur, durumlar ayrı frame / variant olarak aranır. Betik çalışmaz — hepsi elle.
+HTML bölüm **s** ile aynı kontroller; işaretler frame adı (`T-… · Ekran`) ve ekran annotation'ından
+(`flow:`, `template:`, `states:`, `regions:`) okunur, durumlar ayrı frame olarak aranır (`state:` annotation'ı).
+`flows.md`'deki ekran linkleri: önce `node-id` ile, bulunamazsa adla ara; ad / numara uyuşmuyorsa **Medium**
+(`structure-standards.md → Figma çıktısında ekran atfı`). Betik çalışmaz — hepsi elle.
 
 ---
 

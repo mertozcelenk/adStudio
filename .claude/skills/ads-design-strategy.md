@@ -83,6 +83,7 @@ bu alanları güncelle). Alanların anlamı: `ads-design-builder.md` → "projec
 
 ```markdown
 cikti_formati: [html | figma]
+figma_linki: [Figma seçildiyse dosya linki]
 platform: [spec.md → platform]
 token_dosyasi: [bulunan token dosyası | yok]   ← sunum modunda token'sız devam ediliyorsa "yok"
 yapi: flows.md, templates.md
@@ -174,7 +175,7 @@ agent'ını doğrudan çalıştır:
 - `flows.md` ve `templates.md` yolları
 - Dial'lar, ekran tipleri, `color_scheme`, platform alanları
 
-Quick modda reviewer agent'ları çalışmaz. Builder bitince **hafif review** ile teslim kapısı uygulanır —
+Quick modda reviewer agent'ları varsayılan olarak çalışmaz (Figma çıktısında kullanıcı isterse: madde 4). Builder bitince **hafif review** ile teslim kapısı uygulanır —
 `/ads-iterate`'in tek dosyalık değişiklikte kullandığı yolla aynı:
 
 1. HTML'de `node scripts/test/run-all.mjs`; Figma'da frame'leri `get_screenshot` ile aç.
@@ -182,7 +183,16 @@ Quick modda reviewer agent'ları çalışmaz. Builder bitince **hafif review** i
    (token bağlama, AI tells / em-dash, tutarlılık kilitleri, `[Korunan]`, tipografi ve kontrast, yapı) — orkestratör yapar.
 3. Bulguları `etki` / `teslimi engeller` ile sınıflandır; teslim engeli varsa Adım 6 döngüsü (yeniden kontrol =
    aynı hafif review + `run-all`).
-4. Teslim durumunu Adım 6'ya göre yaz; quick modda koşul 3 ("inceleme tamamlandı") hafif review ile karşılanır.
+4. **Figma çıktısında ayrıntılı inceleme sorusu.** Figma'da otomatik testler uygulanamaz; hafif review bulgularını
+   gösterdikten sonra sor:
+   > "Figma çıktısında otomatik testler çalışmaz; şu an yalnızca hafif kontrol yapıldı. Ayrıntılı inceleme de yapılsın mı?
+   > (Token bağlama, erişilebilirlik ve kullanılabilirlik ilkeleri ayrı ayrı denetlenir; daha uzun sürer.)"
+   > - `[ ] Evet, ayrıntılı incele` → Adım 5 ve Adım 6 deep moddaki gibi uygulanır
+   > - `[ ] Hayır, hafif kontrol yeterli` → teslim durumu hafif review'a göre yazılır
+   HTML çıktısında bu soru sorulmaz (`run-all` testleri çalışır).
+5. Teslim durumunu Adım 6'ya göre yaz; quick modda koşul 3 ("inceleme tamamlandı") hafif review ile karşılanır
+   (ayrıntılı inceleme seçildiyse reviewer'larla). Figma çıktısında yalnızca hafif kontrol yapıldıysa Adım 7 özetine
+   "Figma: yalnızca hafif kontrol yapıldı (reviewer agent'ları çalışmadı)" satırını ekle.
 
 Özette Pre-flight raporunu ve düzeltilemeyen (✗ kalan) maddeleri de göster.
 
@@ -312,7 +322,7 @@ node scripts/test/plan-gate.mjs --run [çalışma kimliği]
 
 Agent her görevi sırayla işler ve tamamlananları bildirir.
 
-## Adım 5 — ads-design-reviewer ve ads-ux-reviewer'ı paralel çalıştır (sadece deep mod)
+## Adım 5 — ads-design-reviewer ve ads-ux-reviewer'ı paralel çalıştır (deep mod; quick + Figma'da kullanıcı isterse)
 
 İki agent'ı **aynı anda** başlat — birinin bitmesini beklemeden diğerini başlat.
 
@@ -334,7 +344,7 @@ Agent her görevi sırayla işler ve tamamlananları bildirir.
 Her ikisi de tamamlandığında bulgularını birleştir. Aynı sorunu ikisi de raporladıysa
 düzeltme döngüsüne tek bulgu olarak geçir — duplicate düzeltme yapılmasın.
 
-## Adım 6 — Düzeltme döngüsü ve teslim kapısı (sadece deep mod)
+## Adım 6 — Düzeltme döngüsü ve teslim kapısı (deep mod; quick + Figma'da kullanıcı isterse)
 
 Bu adım adStudio'nun tek teslim kuralıdır; `/ads-iterate`'in review'ları da bunu uygular.
 
@@ -386,7 +396,8 @@ kullanıcı isterse yapılır).
 - **Teslime hazır** — dördü birden:
   1. Açık teslim engeli yok (reviewer'ların son yeniden kontrolü)
   2. Zorunlu otomatik testler geçti: `test-results.json → exit_code: 0`. Figma çıktısında HTML testleri
-     `UYGULANAMAZ`'dır; bu koşul Figma için reviewer'ların tamamlanmış incelemesiyle karşılanır.
+     `UYGULANAMAZ`'dır; bu koşul Figma için koşul 3'teki incelemeyle karşılanır
+     (deep mod veya ayrıntılı inceleme seçildiyse reviewer'lar; quick modda aksi halde hafif review).
   3. Çıktı türünün gerektirdiği inceleme tamamlandı — deep mod: ads-design-reviewer + ads-ux-reviewer; quick mod ve
      `/ads-iterate` tek dosyalık değişiklik: hafif review
   4. Görsel farklar çözüldü (HTML): `test-results.json → visual_review.pending_review` boş. Her fark
@@ -411,6 +422,7 @@ Kullanıcıya şunu bildir:
 - Otomatik testler: `test-results.json` özeti (test başına sonuç, genel kod)
 - Hangi component'lar / ekranlar üretildi
 - Builder pre-flight sonucu (✗ kalan madde varsa)
+- Figma'da elle yapılacak (builder'ın listesi; varsa) — hafif review bu maddeleri ayrıca bulgu olarak raporlamaz
 - ads-design-reviewer ne buldu (token, spec, a11y, AI tells)
 - ads-ux-reviewer ne buldu (heuristic'ler, component binding, manuel a11y)
 - Ne düzeltildi (veya "her iki reviewer'dan da bulgu yoktu"); açık kalan Medium / Nitpick önerileri

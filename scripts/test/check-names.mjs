@@ -13,6 +13,8 @@
  *   3. Çift önek (`ads-ads-`) yok
  *   4. Eski ad kalıntısı yok: "ldf" yalnızca README'deki köken notunda ("türetildi") geçebilir
  *   5. .claude/commands/ varsa .claude/skills/ ile aynı dosyaları içeriyor (kurulumdaki kopya)
+ *   6. Agent `tools:` satırındaki her ad Claude Code'un tanıdığı biçimde: yerleşik araç (Read, Bash…) veya
+ *      `mcp__<sunucu>__<araç>`. Ad eşleşmezse araç agent'a sessizce verilmez (ör. `use_figma`, `Figma:get_metadata`).
  *
  * Kapsam: yalnızca adStudio'nun kendi dosyaları (.claude/, scripts/, README.md, TESTING.md, CONTRIBUTING.md) —
  * kurulu bir projede kullanıcının kendi HTML / CSS'i taranmaz.
@@ -84,6 +86,23 @@ for (const p of files) {
       problems.push(`${rel}:${i + 1}: eski ad kalıntısı: ${line.trim().slice(0, 80)}`);
     }
   });
+}
+
+// 6. agent tools: adları
+const BUILTIN = new Set(['Read', 'Write', 'Edit', 'MultiEdit', 'Glob', 'Grep', 'Bash', 'BashOutput', 'KillShell',
+  'WebFetch', 'WebSearch', 'TodoWrite', 'NotebookEdit', 'Task', 'Agent', 'Skill', 'AskUserQuestion', 'SlashCommand',
+  'ListMcpResourcesTool', 'ReadMcpResourceTool', 'ToolSearch']);
+const MCP_RE = /^mcp__[A-Za-z0-9_-]+?__[A-Za-z0-9_-]+$/;
+for (const n of agents) {
+  const text = readFileSync(join(agentsDir, `${n}.md`), 'utf8');
+  const fm = text.match(/^---\n([\s\S]*?)\n---/);
+  const line = fm && fm[1].match(/^tools:\s*(.*)$/m);
+  if (!line) continue;   // tools: yoksa agent tüm araçları alır
+  for (const t of line[1].split(',').map(s => s.trim()).filter(Boolean)) {
+    if (!BUILTIN.has(t) && !MCP_RE.test(t)) {
+      problems.push(`.claude/agents/${n}.md: tools: "${t}" tanınmayan araç adı (yerleşik araç veya mcp__<sunucu>__<araç> olmalı)`);
+    }
+  }
 }
 
 // 5. commands = skills

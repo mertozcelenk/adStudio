@@ -19,6 +19,8 @@ Deneme klasöründe `claude` açıp `/ads-…` komutlarıyla denersin. Repoda bi
 | Yeni agent | `.claude/agents/ads-<ad>.md` — frontmatter `name`, `description`, `tools` | Onu çağıran skill'de adı birebir aynı yazılır |
 
 Ad önekli olmalı (`ads-`); `check-names` öneksiz veya yazım hatalı atıfları yakalar.
+Agent `tools:` satırında araçlar Claude Code'daki tam adıyla yazılır (`Read`, `mcp__plugin_figma_figma__use_figma`);
+kısa ad (`use_figma`) araç agent'a verilmez demektir — `check-names` bunu da yakalar.
 
 ## 3. Sözleşmelere bağla (gerekiyorsa)
 - **Başlangıç kaydı:** üretim yapan akış `project-state.md`'ye `cikti_formati`, `platform`, `token_dosyasi`, `yapi` yazar.
