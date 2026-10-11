@@ -147,7 +147,9 @@ Builder değişikliği uygular, etkilenen dosyayı günceller ve Pre-flight rapo
 
 ### Review — Etki Bazlı
 
-Builder'ın güncellediği dosya sayısını say:
+Builder'ın güncellediği dosya sayısını say. **Figma çıktısında birim ekrandır:** bir ekranın ana frame'i ve durum
+frame'leri tek ekran sayılır; değişen component'ler ayrıca sayılmaz, onları kullanan ekranlarla birlikte değerlendirilir.
+`flows.md` / `templates.md` düzenlemeleri sayıma girmez (yapı etkisi yukarıdaki "Yapı" kuralıyla bulunur).
 
 **1 dosya etkilendiyse — hafif review:**
 Yalnızca değiştirilen dosyayı kontrol et:
@@ -165,7 +167,8 @@ Yalnızca değiştirilen dosyayı kontrol et:
   iptal onayı) ve `Sonra` bağlantısı bozulmuş mu; boş durum çıkmaz sokak mı; değişiklik `## Ortak Davranış`'a
   aykırı mı (`structure-standards.md → Denetim özeti`).
 
-HTML çıktısında ayrıca `node scripts/test/run-all.mjs` çalıştır.
+HTML çıktısında ayrıca `node scripts/test/run-all.mjs` çalıştır. Figma çıktısında hafif review bulgularını gösterdikten
+sonra ayrıntılı inceleme sorusunu sor (`ads-design-strategy.md → Quick mod → madde 4`); evet → iki reviewer + Adım 6.
 Bulguları `etki` ve `teslimi engeller` alanlarıyla sınıflandır (`references/reviewer-checklist.md → Seviye Ölçeği`).
 Teslim engeli varsa `ads-design-strategy.md → Adım 6` döngüsünü uygula (en fazla 2 tur); yeniden kontrol
 yukarıdaki maddeler + `run-all.mjs`'tir (kontrast/boyut değerleri gerçekten düzelmiş mi doğrula).
@@ -265,7 +268,7 @@ Teslim durumu: [Teslime hazır | İstisna onayıyla teslim edilebilir — n isti
 Bekleyen görev varsa kullanıcıya bildir:
 > "`design-plan.md` → Geliştirme Backlog'u bölümünde [n] görev daha var. Devam etmek için `/ads-iterate` çalıştırın."
 
-**Çapraz sayfa hatırlatması:** Etkilenen dosya sayısı 2 veya daha fazlaysa rapora şunu ekle:
+**Çapraz sayfa hatırlatması** (yalnızca HTML çıktısı — `/ads-check` Figma'da çalışmaz): Etkilenen dosya sayısı 2 veya daha fazlaysa rapora şunu ekle:
 > "Birden fazla sayfada değişiklik yapıldı. Sunum öncesinde tutarlılık kontrolü için `/ads-check` çalıştırmanızı öneririm."
 
 ---
