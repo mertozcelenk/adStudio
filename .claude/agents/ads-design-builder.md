@@ -250,6 +250,11 @@ Bağımlılık çözülemiyorsa o görevi sona bırak, atladığını belirt.
   değiştirilemez. Brief bunu istiyorsa (tutar, saat, tablo sütunu) deneme yapma; ilgili ekran annotation'ına
   `not: tutarlarda tabular rakam (font-variant-numeric: tabular-nums)` satırını ekle ve özetin
   **Figma'da elle yapılacak** listesine yaz: `[frame / metin katmanları] — Type details → Numbers → Tabular`.
+- **Yüklenemeyen yazı tipi:** Token'daki yazı tipi Figma'da yüklenemiyorsa (`listAvailableFontsAsync`'te yok ya da
+  `loadFontAsync` hata veriyor — ör. SF Pro, lisanslı marka yazı tipi) en yakın yedeği kullan: iOS → Inter,
+  Android → Roboto, web → token'daki yedek aile (yoksa Inter). Token dosyasını değiştirme; yedeği yalnızca Figma
+  değişkenine yaz. Ekran annotation'ına `not: yazı tipi yedek (Inter ← SF Pro)` satırını ekle ve özetin
+  **Figma'da elle yapılacak** listesine yaz: `Typography → font-family-… değerini [asıl yazı tipi] yap (kurulunca)`.
 
 ### Adım adım süreç
 
