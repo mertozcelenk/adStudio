@@ -304,7 +304,7 @@ tasarım modunda ve Dev Mode'da görünür, okuma araçları (`get_design_contex
   platform: ios
   ```
   `yapi` yoksa `flow` / `template` / `states` / `regions` satırları yazılmaz. Gerekirse `not: …` satırı (ör. tabular rakam).
-- Durum frame'i: `state: error — sayfa sayısı aralık dışı` (+ ana frame'in `flow` ve `template` satırları).
+- Durum frame'i: `state: error (sayfa sayısı aralık dışı)` (+ ana frame'in `flow` ve `template` satırları).
 - Annotation `flows.md` / `templates.md`'nin kısa kopyasıdır; asıl kaynak dosyalardır. Ekran değişince annotation'ı da güncelle.
 
 ### flows.md ekran linkleri (`yapi` varsa)
