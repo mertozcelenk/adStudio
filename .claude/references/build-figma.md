@@ -106,10 +106,12 @@ ve annotation'da `not: varsayılan durum belirsiz (açık soru)` de.
   değiştirilemez. Brief bunu istiyorsa (tutar, saat, tablo sütunu) deneme yapma; ilgili ekran annotation'ına
   `not: tutarlarda tabular rakam (font-variant-numeric: tabular-nums)` satırını ekle ve özetin
   **Figma'da elle yapılacak** listesine yaz: `[frame / metin katmanları] — Type details → Numbers → Tabular`.
-- **Yüklenemeyen yazı tipi:** Token'daki yazı tipi Figma'da yüklenemiyorsa (`listAvailableFontsAsync`'te yok ya da
-  `loadFontAsync` hata veriyor — ör. SF Pro, lisanslı marka yazı tipi) en yakın yedeği kullan: iOS → Inter,
-  Android → Roboto, web → token'daki yedek aile (yoksa Inter). Token dosyasını değiştirme; yedeği yalnızca Figma
-  değişkenine yaz. Ekran annotation'ına `not: yazı tipi yedek (Inter ← SF Pro)` satırını ekle ve özetin
+- **Yüklenemeyen yazı tipi — çizimden önce karar ver:** SF Pro (Text / Display / Rounded) eklenti ortamında yüklense
+  bile metni 0 genişlikte ölçer; her zaman yedeğe geç. Diğer yazı tiplerini değişkenleri yazarken (adım 2) tek bir
+  deneme metniyle sına: `listAvailableFontsAsync`'te yok, `loadFontAsync` hata veriyor ya da deneme metninin genişliği
+  0 ise yedeği kullan, deneme katmanını sil. Karar ilk ekrandan önce verilir, çizim sırasında değiştirilmez.
+  Yedek: iOS → Inter, Android → Roboto, web → token'daki yedek aile (yoksa Inter). Token dosyasını değiştirme; yedeği
+  yalnızca Figma değişkenine yaz. Ekran annotation'ına `not: yazı tipi yedek (Inter ← SF Pro)` satırını ekle ve özetin
   **Figma'da elle yapılacak** listesine yaz: `Typography → font-family-… değerini [asıl yazı tipi] yap (kurulunca)`.
 
 ### Adım adım süreç
