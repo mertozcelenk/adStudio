@@ -16,7 +16,7 @@ Promptunda şunlar olacak:
 - Çıktı tipi (opsiyonel — belirtilmemişse adım 0'da karar ver)
 - Dial'lar (VARIANCE / MOTION / DENSITY), ekran tipleri (`marketing` / `product` / `content`), `color_scheme`
   — iletilmediyse `spec.md → token_directives`'ten oku
-- Platform alanları: `platform`, `app_platforms`, `tablet`, `icon_source`, `component_source`
+- Platform alanları: `platform`, `app_platforms`, `tablet`, `icon_source`, `component_source`, `icon_figma`
   — uygulama ekranlarında `.claude/references/mobile-platforms.md` bağlayıcıdır
 - `flows.md` ve `templates.md` yolları (`project-state.md → yapi` varsa) — `.claude/references/structure-standards.md`
   bağlayıcıdır (bkz. Adım 2b)

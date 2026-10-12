@@ -341,6 +341,7 @@ app_platforms: []                   # app/both ise — [ios] | [android] | [ios,
 tablet: false                       # "Tablet de kapsamda mı?"
 icon_source: ""                     # Uygulamada — platform | shared:<set> | custom:<link>
 component_source: ""                # ads-design-strategy doldurur (uygulama + Figma) — kit | drawn | own
+icon_figma: ""                      # ads-design-strategy doldurur (uygulama + Figma + platform ikonları) — placeholder | library
 dials:            # ads-design-strategist doldurur, ads-design-strategy yazar — spec-intake boş bırakır
   variance: null  # 1-10 — layout cesareti (S1/S2'den çıkarılır)
   motion: null    # 1-10 — hareket miktarı (S5'ten)
