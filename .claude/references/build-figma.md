@@ -61,6 +61,23 @@ HTML seçilirse devam et.
 - `component_source: drawn` → bileşenleri platform ölçü ve davranışına uygun çiz, component adını platform adıyla ver
   (`iOS/Switch`, `M3/FilledButton`).
 
+## Platform ikonları (uygulama ekranları)
+
+SF Symbols / Material Symbols eklenti ortamında çizilemez (SF Pro ile aynı neden). `spec.md → icon_figma`:
+- `library` → ikonları dosyadaki kütüphaneden (`search_design_system` ya da dosyadaki component'ler) instance olarak kullan.
+  Kütüphanede bulunamayan ikon için aşağıdaki yer tutucu kuralı geçerli.
+- `placeholder` (ya da boş) → ikonun yerine şekli belli, boyutu doğru bir yer tutucu çiz. Katman adı
+  `Yer tutucu · SF Symbol/<ad>` (Android: `Yer tutucu · Material Symbol/<ad>`). Ekran annotation'ına
+  `not: ikonlar yer tutucu (<ad>, <ad>…)` satırını ekle ve özetin **Figma'da elle yapılacak** listesine yaz:
+  `[ikon adları] → gerçek SF Symbols / Material Symbols ile değiştir`. Bu üç işaret varsa yer tutucu AT-10 / APP-10
+  ihlali sayılmaz; biri eksikse sayılır.
+
+## Ekranlar arası annotation tutarlılığı
+
+Bir ekranın ana frame'i ve durum frame'leri aynı şeyi söyler (ST-8): varsayılan durum, akış adı, davranış notları
+çelişmez. Brief bir bilgiyi vermiyorsa (ör. ekranın ilk açılışta hangi durumda olduğu) kendin seçme — Açık Sorular'a yaz
+ve annotation'da `not: varsayılan durum belirsiz (açık soru)` de.
+
 ## Mobil web (web ekranları, 375 frame) — MW
 
 - Etkileşimli her katmanın (buton, ikon, link) kutusu en az **44×44** (MW-1); küçük görsel öğede saydam hit alanı

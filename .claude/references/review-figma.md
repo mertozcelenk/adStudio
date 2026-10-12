@@ -141,7 +141,7 @@ Kurallar: `references/mobile-platforms.md`.
   `own` ise mevcut kütüphane; yeniden icat edilmiş kontrol.
 - **APP-8** — Figma'da henüz yok (prototip geçişi üretilmiyor).
 - **APP-9** — component adları ve görünümleri platformla.
-- **APP-10** — ikon katmanları `icon_source` ile.
+- **APP-10** — ikon katmanları `icon_source` ile; `Yer tutucu · …` adlı katman annotation `not:` ve "elle yapılacak" listesiyle işaretliyse bulgu değil.
 - **APP-11** — Platform Farkları tablosundaki parçaların iOS ve Android sürümleri.
 - **APP-12** — Tez'in navigasyon / kontrol yapısına etkisi.
 - **APP-13** — tablet frame'inin düzeni.

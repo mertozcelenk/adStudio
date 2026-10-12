@@ -74,6 +74,16 @@ Her iki durumda da çıktı formatını sor:
 Cevabı `component_source` (`kit` | `drawn` | `own`) olarak `token_directives` bloğuna yaz.
 HTML çıktısında bu soru sorulmaz — builder uygulama ekranlarını platform biçiminde çizer (`drawn`).
 
+**Uygulama + Figma + platform ikonları** (`icon_source: platform`, `component_source` `kit` değilse) — çizimden önce uyar:
+> "Figma'ya çizerken iOS / Android'in kendi ikonları (SF Symbols / Material Symbols) otomatik eklenemiyor. İkonların
+> yerine şekli belli yer tutucular koyacağım; bunları sonra Figma'da gerçek ikonlarla değiştirmeniz gerekecek. Dosyanızda
+> zaten bir ikon kütüphanesi varsa onu kullanırım."
+> - `[ ] Anladım, yer tutucuyla devam et`
+> - `[ ] Dosyama ikon kütüphanesi ekleyeceğim, sonra devam et` — kullanıcı ekleyip "hazır" deyince devam et
+
+Cevabı `icon_figma` (`placeholder` | `library`) olarak `token_directives` bloğuna yaz. `kit` seçildiyse ikonlar kitten
+gelir, soru sorulmaz (`icon_figma: library`).
+
 Bu seçimi ve Figma linkini not al — tüm pipeline boyunca builder'a iletilir.
 
 ### project-state.md başlangıç kaydı

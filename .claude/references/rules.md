@@ -120,7 +120,7 @@ Ayrıntı ve alternatifler: aşağıdaki **Yasak Desenler Kataloğu**. `user_exp
 | AT-7 | Placeholder isim yok (`John Doe`, `Acme Corp`…) | Medium | her ekran |
 | AT-8 | Pure `#000000` / `#ffffff` yok (uygulamada sistem zeminine eşlenen zemin token'ları muaf — `mobile-platforms.md → 4`) | Medium | her ekran |
 | AT-9 | Katalogdaki "Süs ve Meta Metinler" maddeleri yok (her biri ayrı bulgu) | Medium | her ekran |
-| AT-10 | Katalogdaki "Görsel" yasakları yok (ışık halesi, dekoratif ızgara / çizgili zemin, sahte yanıp sönen imleç, emoji ikon, elle çizilmiş ikon / süs SVG) | Medium | her ekran |
+| AT-10 | Katalogdaki "Görsel" yasakları yok (ışık halesi, dekoratif ızgara / çizgili zemin, sahte yanıp sönen imleç, emoji ikon, elle çizilmiş ikon / süs SVG). Figma'da eklenti sınırı yüzünden konan, işaretli ikon yer tutucusu muaf (`build-figma.md → Platform ikonları`) | Medium | her ekran |
 | AT-11 | Çıktı stratejist brief'indeki "Reddettiği kalıp"a kaymamış | High | her ekran |
 | AT-12 | Katalogdaki diğer Layout / İçerik maddeleri yok (sıfır noktalı sayılar, "Elevate" kelimeleri, scroll cue, genel adım etiketleri…) | Medium | her ekran |
 
@@ -233,7 +233,7 @@ Stratejist brief'indeki MOTION değeri kullanılır (bantlar: `build-html.md →
 | APP-7 | Yeniden icat edilmiş kontrol yok (div'den switch, sahte action sheet, özel tab bar, özel global menü); bileşen kaynağı `component_source` ile tutarlı | High | uygulama |
 | APP-8 | Ekran geçişleri sistemin (push / sheet / container transform); özel geçiş yok | High | uygulama |
 | APP-9 | Bir platformun kalıbı ötekinde yok (Android'de iOS switch, iOS'ta FAB) | High | uygulama |
-| APP-10 | İkonlar `icon_source` ile tutarlı (platform → SF Symbols / Material Symbols) | Medium | uygulama |
+| APP-10 | İkonlar `icon_source` ile tutarlı (platform → SF Symbols / Material Symbols); Figma'da işaretli yer tutucu muaf (`build-figma.md → Platform ikonları`) | Medium | uygulama |
 | APP-11 | `app_platforms: [ios, android]` ise Platform Farkları tablosundaki parçaların iki versiyonu var | High | uygulama |
 | APP-12 | Brief'teki Tez / Kendi dünyası navigasyonu ya da kontrolleri değiştirmemiş (yapı platformun) | High | uygulama |
 | APP-13 | `tablet: true` ise tablet düzeni yeniden kurgulanmış (büyütülmüş telefon değil) | High | uygulama |

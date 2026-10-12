@@ -35,7 +35,7 @@ uygulama ekranlarında `[marketing]`, `[content]` ve web hareket maddeleri N/A'd
 - [ ] Div/dikdörtgenlerden sahte ürün UI yok (AT-2)
 - [ ] Başlık üstünde eyebrow / kicker yok (Bağlayıcı Kararlar istisnası hariç, `data-eyebrow-allowed`) (AT-4)
 - [ ] Display öğeleri `--font-family-display`, geri kalanı `--font-family-body` kullanıyor; display fontu kaçınma listesinden gerekçesiz değil (AT-3)
-- [ ] Işık halesi / spotlight, dekoratif ızgara veya çizgili zemin, sahte yanıp sönen imleç, emoji ikon yok (AT-10)
+- [ ] Işık halesi / spotlight, dekoratif ızgara veya çizgili zemin, sahte yanıp sönen imleç, emoji ikon yok (AT-10); Figma'da ikon yer tutucusu varsa katman adı, annotation `not:` ve "elle yapılacak" maddesi üçü de var — öyleyse ✓ (bilinen sınır)
 - [ ] Çıktı brief'teki "Reddettiği kalıp"a kaymamış; Kendi dünyası tarifiyle tutarlı (AT-11)
 - [ ] Katalogdaki "Süs ve Meta Metinler" maddelerinin hiçbiri yok (AT-9)
 - [ ] Placeholder isim, dolgu fiiller ("Seamless", "Elevate"), mükemmel sayılar yok (AT-7, AT-12); saf siyah / beyaz ve cream zemin yok (AT-8, AT-6); 3 eşit feature card yok (AT-5)
@@ -75,6 +75,7 @@ uygulama ekranlarında `[marketing]`, `[content]` ve web hareket maddeleri N/A'd
 **Yapı [`yapi` varsa]** (`references/structure-standards.md`)
 - [ ] Her ekranda `data-template` + `data-flow`; template'in bölgeleri ve zorunlu durumlarının hepsi var (ST-8, ST-1, ST-6)
 - [ ] Boş durumlar çıkmaz sokak değil; başka akışı başlatan eylem `data-flow-start` ile işaretli (ST-2)
+- [ ] Figma: bir ekranın ana ve durum frame'lerindeki annotation'lar birbiriyle çelişmiyor (varsayılan durum, akış adı); brief'in söylemediği varsayılan Açık Sorular'da (ST-8)
 - [ ] Akış dalları (hata, iptal onayı) ve `Sonra` bağlantıları ekranda; Ortak Davranış uygulandı; tanımsız işlev yok (ST-3, ST-4, ST-5, ST-7)
 - [ ] `scripts/test/` varsa `node structure.mjs` geçti (ST-8, yalnızca HTML); Figma'da `flows.md` ekran linkleri eklendi (ST-8)
 
