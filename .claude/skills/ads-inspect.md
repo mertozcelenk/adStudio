@@ -49,7 +49,7 @@ Belirtmediyse sor:
   (yoksa `extension-spec.md → ## Korunacaklar`; ikisi de yoksa Korunan kontrolleri atlanır).
 - Her ekran dosyasının `<body data-page-kind>` değerini not et — `[marketing]` işaretli
   kontroller yalnızca `marketing`, `[content]` işaretli kontroller yalnızca `content` ekranlarda uygulanır.
-- Seviyeler `.claude/references/reviewer-checklist.md → Seviye Ölçeği`'nden gelir.
+- Seviyeler `.claude/references/rules.md → Seviye Ölçeği`'nden gelir.
 
 **Otomatik ölçüm:** `scripts/test/tells.mjs` varsa çalıştır:
 
@@ -278,7 +278,7 @@ Toplam bulgu: [n]
 ## Kısıtlamalar
 
 - Yalnızca HTML/CSS modunda çalışır
-- Kural metinleri ve seviyeler `.claude/references/reviewer-checklist.md`'den gelir; bu skill
+- Kural metinleri ve seviyeler `.claude/references/rules.md`'den gelir (kimlikleriyle); bu skill
   yalnızca element bazlı alt kümesini uygular. Sayfalar arası tutarlılık (accent, radius,
   CTA etiketleri, dark mode) için `/ads-check` kullanılır
 - Yalnızca mekanik (●) bulgular üretir — heuristic veya ○ insan testi değerlendirmesi yapmaz

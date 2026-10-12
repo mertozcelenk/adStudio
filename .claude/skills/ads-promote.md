@@ -135,7 +135,7 @@ Bu haritayı Aşama 3'e ilet — atla.
 - Aşama 2'den gelen tam değişken ID haritası
 - Talimat: değişkenleri `get_libraries` ile değil, **Aşama 2'nin ID haritasından** bul; hardcode renk/spacing kullanma.
 
-Figma bağlantısı başarısız olursa → `ads-design-builder.md → Adım 0` sorun giderme akışını uygula.
+Figma bağlantısı başarısız olursa → `build-figma.md → Bağlantı kontrolü` sorun giderme akışını uygula.
 
 ---
 

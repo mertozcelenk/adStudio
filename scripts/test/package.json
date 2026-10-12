@@ -9,9 +9,10 @@
     "tells": "node tells.mjs",
     "structure": "node structure.mjs",
     "all": "node run-all.mjs",
-    "selftest": "node run-all.selftest.mjs; a=$?; node check-fixtures.mjs; b=$?; node check-names.mjs; c=$?; [ $a -eq 0 ] && [ $b -eq 0 ] && [ $c -eq 0 ]",
+    "selftest": "node run-all.selftest.mjs; a=$?; node check-fixtures.mjs; b=$?; node check-names.mjs; c=$?; node check-rules.mjs; e=$?; [ $a -eq 0 ] && [ $b -eq 0 ] && [ $c -eq 0 ] && [ $e -eq 0 ]",
     "fixtures": "node check-fixtures.mjs",
-    "names": "node check-names.mjs"
+    "names": "node check-names.mjs",
+    "rules": "node check-rules.mjs"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.9.0",

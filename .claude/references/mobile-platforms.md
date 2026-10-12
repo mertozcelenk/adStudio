@@ -6,7 +6,7 @@ Figma'da `platform: ios|android`) için tek kaynak. Strategist, builder, ads-ux-
 Kaynak: Apple Human Interface Guidelines, Material Design 3.
 
 Mobil **web** kuralları (375px, dokunma 24/44, hover, güvenli alan, 100vh) burada değil:
-`reviewer-checklist.md → q. Mobil Web`.
+`rules.md → MW` (kontrol: `review-html.md` / `review-figma.md`).
 
 ---
 

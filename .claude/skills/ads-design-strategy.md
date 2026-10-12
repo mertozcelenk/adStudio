@@ -350,7 +350,7 @@ Bu adım adStudio'nun tek teslim kuralıdır; `/ads-iterate`'in review'ları da 
 
 **Teslim engelleri** = reviewer raporlarındaki "Teslim engelleri" maddeleri (`B…`, `U…` — Blocker, High ve
 **Kural**) + `test-results.json`'da `BAŞARISIZ` veya `ÇALIŞTIRILAMADI` olan zorunlu testler.
-Seviye tanımları: `references/reviewer-checklist.md → Seviye Ölçeği`. Medium ve Nitpick teslim engeli değildir.
+Seviye tanımları: `references/rules.md → Seviye Ölçeği`. Medium ve Nitpick teslim engeli değildir.
 
 **Döngü — en fazla 2 tur:**
 

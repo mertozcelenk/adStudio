@@ -13,6 +13,7 @@
  *   3. Çift önek (`ads-ads-`) yok
  *   4. Eski ad kalıntısı yok: "ldf" yalnızca README'deki köken notunda ("türetildi") geçebilir
  *   5. .claude/commands/ varsa .claude/skills/ ile aynı dosyaları içeriyor (kurulumdaki kopya)
+ *   7. Metinlerde anılan referans dosyaları (`rules.md`, `build-html.md`, `*-checklist.md`, `*-standards.md`…) var
  *   6. Agent `tools:` satırındaki her ad Claude Code'un tanıdığı biçimde: yerleşik araç (Read, Bash…) veya
  *      `mcp__<sunucu>__<araç>`. Ad eşleşmezse araç agent'a sessizce verilmez (ör. `use_figma`, `Figma:get_metadata`).
  *
@@ -58,6 +59,11 @@ function* walk(dir) {
   }
 }
 
+const refsDir = join(root, '.claude', 'references');
+// bilerek anılan, var olmaması gereken dosyalar (pipeline-tester "harici referans vermiyor mu" diye sorar)
+const GONE_OK = new Set(['ux-checklist.md']);
+const refFiles = new Set(existsSync(refsDir) ? readdirSync(refsDir) : []);
+const refFileRe = /(?<![\w/-])((?:[a-z0-9]+-)*(?:checklist|standards|platforms)|rules|build-[a-z]+|review-[a-z]+)\.md\b/g;
 const refRe = /(?<![\w-])ads-[a-z0-9]+(?:-[a-z0-9]+)*/g;
 const scope = ['.claude', 'scripts', 'README.md', 'TESTING.md', 'CONTRIBUTING.md'].map(x => join(root, x)).filter(existsSync);
 const files = scope.flatMap(x => (statSync(x).isDirectory() ? [...walk(x)] : [x]));
@@ -78,6 +84,10 @@ for (const p of files) {
       const after = line.slice(m.index + name.length, m.index + name.length + 2);
       if (/^-['"`]/.test(after)) continue;   // tırnak içinde geçici klasör öneki: 'ads-runner-'
       problems.push(`${rel}:${i + 1}: bilinmeyen ad "${name}" (skill / agent yok)`);
+    }
+    // 7. ölü referans dosyası
+    for (const m of line.matchAll(refFileRe)) {
+      if (!refFiles.has(m[1] + '.md') && !GONE_OK.has(m[1] + '.md')) problems.push(`${rel}:${i + 1}: "${m[1]}.md" yok (references/ altında)`);
     }
     // 3. çift önek
     if (/ads-ads-/.test(line)) problems.push(`${rel}:${i + 1}: çift önek "ads-ads-"`);

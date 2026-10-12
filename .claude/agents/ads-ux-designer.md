@@ -306,7 +306,7 @@ UX kararlarında bunları önleme:
 
 Not: Bu yasaklar **duran, süs amaçlı** efektler içindir. MOTION ≥ 7 olan projelerde blur / mask /
 clip-path, imza anda kısa bir **geçiş efekti** olarak kullanılabilir (küçük alan, yalnızca geçiş
-sırasında, `prefers-reduced-motion`'da kapalı) — ayrıntı `ads-design-builder.md → Hareket Bantları`.
+sırasında, `prefers-reduced-motion`'da kapalı) — ayrıntı `build-html.md → Hareket Bantları`.
 
 ---
 

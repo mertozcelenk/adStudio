@@ -323,7 +323,11 @@ Yazı boyutları ve satır yüksekliğinde 4 katı yalnızca öneridir: tipograf
 │   ├── ads-context-scanner-worker.md
 │   └── ads-pipeline-tester.md
 └── references/
-    ├── reviewer-checklist.md   # AI tells kataloğu + HTML/Figma kontrol listeleri + seviye ölçeği
+    ├── rules.md                # Tüm kurallar (kimlik + seviye + kapsam), seviye ölçeği, yasak desen kataloğu
+    ├── build-html.md           # Builder: HTML'de nasıl üretilir (yalnızca HTML işinde okunur)
+    ├── build-figma.md          # Builder: Figma'da nasıl üretilir (yalnızca Figma işinde okunur)
+    ├── review-html.md          # Reviewer: kuralların HTML'de kontrolü
+    ├── review-figma.md         # Reviewer: kuralların Figma'da kontrolü
     ├── preflight-checklist.md  # Builder'ın teslim öncesi öz-kontrolü
     ├── token-standards.md      # Geçerli source değerleri, $value kuralı, zorunlu koleksiyonlar, tema modları
     └── structure-standards.md  # flows.md + templates.md biçimi, temel ekran tipleri, HTML yapı işaretleri
@@ -359,7 +363,7 @@ index.html                      # ads-design-builder navigasyon sayfası
 | `ads-impact-analysis` | `/ads-impact-analysis` | Var olan sisteme ekleme senaryosunda etki analizi yapar |
 | `ads-reference-ingest` | ads-spec-intake tarafından çağrılır | Referans girdileri 9 alanlı formatta çıktı üretir |
 | `ads-import` | `/ads-import` | Mevcut projeyi pipeline'a dahil eder (adStudio / HTML/CSS / Figma) |
-| `ads-check` | `/ads-check` | Çapraz sayfa tutarlılık kontrolü — nav, header, footer, token bağlantıları, accent/radius kilidi, CTA etiketleri, korunan öğeler, dark mode |
+| `ads-check` | `/ads-check` | Çapraz sayfa tutarlılık kontrolü (HTML ve Figma; yalnızca çıktı türünün kontrol dosyasını okur) — ortak öğeler, koparılmış component kopyaları, token bağlantıları, accent/radius kilidi, CTA etiketleri, korunan öğeler, koyu tema; bulgular kural kimliğiyle (CP, TL, RK…) |
 | `ads-inspect` | `/ads-inspect` | Element bazlı mekanik kontrol — buton, tipografi, form, nav, kart; varsa `tells.mjs` ölçümlerini kullanır |
 | `ads-token-layer-builder` | `/ads-token-layer-builder` | Token katmanlarını adım adım inşa eder |
 | `ads-component-library` | `/ads-component-library` | Component library oluşturur — HTML (referans) veya Figma (tam kütüphane) |
