@@ -18,3 +18,13 @@ T3 "Ortak Hesap" projesinin kopyası, istek: `/ads-iterate kartların köşe yuv
 - Builder ekranlarda tanımsız `--card-radius` buldu; kartlar `--modal-radius` ile çiziliyordu. Yeni `radius-2xl` (20px)
   kademesi ekledi ve gerekçesini token JSON'a yazdı. Diğer 4 ekranın `:root` bloğuna yeni token'ı eklemedi (kart yok).
 - Okuma / görsel sınırı bu koşuda gözlemlenmedi (reviewer çalışmadı, builder ekran görüntüsü almadı).
+
+## Test hızı (ücretsiz ölçüm, Personasphere kopyası: 8 ekran + 36 component)
+
+| Çalıştırma | Önce (sırayla) | Sonra |
+|---|---|---|
+| Tüm proje | ~8.4 dk (accessibility 78 sn, responsive 198 sn, tells 167 sn, visual 58 sn) | 2.8 dk (aynı sonuç: 0 engel, 12 uyarı) |
+| `--only screens/` | — | 34 sn |
+| `--only screens/employee-list.html` | — | 4 sn |
+
+Visual baseline yokken artık tarayıcı açmıyor (58 sn → 0.4 sn).

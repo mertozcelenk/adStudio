@@ -269,6 +269,7 @@ Her figma-*.md skill'i için:
 - [ ] Aşama sonu hatırlatması (`/clear` ya da oturumu yeniden aç) `ads-spec-intake`, `ads-token-generator` (yalnızca açık karar yokken), `ads-design-strategy → Adım 7` ve `ads-iterate → Adım 4`'te var mı; öncesinde kayıt kontrolü isteniyor mu?
 - [ ] `ads-iterate → Adım 1` istek verildiyse tekrar sormuyor; `Adım 5` karar sorusunu yalnızca karar sinyali varsa soruyor mu?
 - [ ] `ads-iterate → Review — Etki Bazlı`: yalnızca ortak stil değişikliği hafif review; tam review 2+ ekranın içeriği / yapısı değişince mi?
+- [ ] `run-all.mjs` testleri aynı anda çalıştırıyor; `ads-iterate` küçük değişiklikte `--only` kullanıyor ve raporda gerekirse `/ads-check` öneriyor; visual baseline yokken tarayıcı açmıyor mu?
 - [ ] `ads-design-builder`, `ads-design-reviewer`, `ads-ux-reviewer` → `Okuma ve görsel sınırı`: büyük dosya bölümle okunuyor, ekran görüntüsü sınırlı, yeniden kontrol yalnızca değişen dosya / frame'lere mi?
 
 ---

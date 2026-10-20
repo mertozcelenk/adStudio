@@ -21,7 +21,7 @@
  */
 
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
-import { resolve, join } from 'path';
+import { resolve, join, relative } from 'path';
 
 export const STATUS_LABEL = {
   passed: 'GEÇTİ',
@@ -52,6 +52,28 @@ export function findHtmlFiles(dir) {
     else if (entry.name.endsWith('.html')) results.push(full);
   }
   return results.sort();
+}
+
+// --only <yol,yol…>: yalnızca bu dosyalar ya da klasörler (proje köküne göre; ör. screens/a.html,screens/).
+// Döner: { files, unknown, only } — only null ise filtre yok; unknown hiçbir dosyayla eşleşmeyen girdiler.
+export function applyOnly(root, files) {
+  const value = argValue('--only');
+  if (!value) return { files, unknown: [], only: null };
+  const only = value.split(',').map(s => s.trim().replace(/^\.\//, '')).filter(Boolean);
+  const match = (f, e) => { const r = relative(root, f); return r === e || r.startsWith(e.endsWith('/') ? e : `${e}/`); };
+  return {
+    files: files.filter(f => only.some(e => match(f, e))),
+    unknown: only.filter(e => !files.some(f => match(f, e))),
+    only,
+  };
+}
+
+// applyOnly sonucu test edilecek dosya bırakmıyorsa ya da tanınmayan girdi varsa not_run sonucu döner
+export function onlyProblem(test, scoped) {
+  if (!scoped.only) return null;
+  if (scoped.unknown.length) return { test, status: 'not_run', reason: `--only içinde bulunamayan dosya: ${scoped.unknown.join(', ')}`, findings: [] };
+  if (!scoped.files.length) return { test, status: 'not_run', reason: '--only kapsamında HTML dosyası yok', findings: [] };
+  return null;
 }
 
 export function projectHtmlFiles(root) {

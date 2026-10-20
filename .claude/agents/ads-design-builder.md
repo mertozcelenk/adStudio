@@ -54,6 +54,8 @@ yazmaz — otomatik testler hangi kontrolün uygulanacağına bu kayıtla karar 
 - Kendi kontrolün için ekran görüntüsü: görev başına en fazla 2 (ör. açık + koyu ya da masaüstü + mobil), düzeltme
   sonrası aynı ekran için en fazla 1. Figma'da `frame.screenshot()` için de aynı sınır geçerli.
 - Revision modunda yalnızca bulguların geçtiği dosya / frame'leri aç.
+- Otomatik testleri kendin çalıştırırsan revision ve küçük değişiklikte yalnızca değiştirdiğin dosyalarda çalıştır:
+  `node scripts/test/run-all.mjs --only <dosyalar>` (ortak CSS / token değiştiyse `--only screens/`).
 
 ## Adım 1 — Yeni build mi, revision mı?
 

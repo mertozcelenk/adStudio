@@ -153,7 +153,7 @@ frame'leri tek ekran sayılır; değişen component'ler ayrıca sayılmaz, onlar
 `flows.md` / `templates.md` düzenlemeleri sayıma girmez (yapı etkisi yukarıdaki "Yapı" kuralıyla bulunur).
 **Ortak stil değişikliği tek değişiklik sayılır:** yalnızca ortak bir stil dosyası (ortak CSS, token değeri, Figma'da
 bir component'in stili) değiştiyse ve ekranların içeriği ya da yapısı değişmediyse hafif review uygulanır; HTML'de
-`run-all.mjs` zaten tüm ekranları test eder. Tam review, 2 veya daha fazla ekranın içeriği ya da yapısı değiştiğinde çalışır.
+testler bu durumda `--only screens/` ile tüm ekranlarda çalışır. Tam review, 2 veya daha fazla ekranın içeriği ya da yapısı değiştiğinde çalışır.
 
 **1 dosya etkilendiyse — hafif review:**
 Yalnızca değiştirilen dosyayı kontrol et:
@@ -171,7 +171,11 @@ Yalnızca değiştirilen dosyayı kontrol et:
   iptal onayı) ve `Sonra` bağlantısı bozulmuş mu; boş durum çıkmaz sokak mı; değişiklik `## Ortak Davranış`'a
   aykırı mı (`structure-standards.md → Denetim özeti`).
 
-HTML çıktısında ayrıca `node scripts/test/run-all.mjs` çalıştır. Figma çıktısında hafif review bulgularını gösterdikten
+HTML çıktısında ayrıca otomatik testleri yalnızca etkilenen dosyalarda çalıştır:
+`node scripts/test/run-all.mjs --only <değişen ekran / component dosyaları, virgülle>`; ortak stil (ortak CSS, token
+değeri) değiştiyse `--only screens/`. Builder testleri bu kapsamla zaten çalıştırdıysa `test-results.json`'u oku, yeniden
+çalıştırma. Tamamlama raporuna şunu ekle: "Testler yalnızca etkilenen dosyalarda çalıştı; birkaç küçük değişiklikten
+sonra gerekirse `/ads-check` çalıştırın." Tam review yolunda ve `/ads-design-strategy`'de testler tüm projede çalışır. Figma çıktısında hafif review bulgularını gösterdikten
 sonra ayrıntılı inceleme sorusunu sor (`ads-design-strategy.md → Quick mod → madde 4`); evet → iki reviewer + Adım 6.
 Bulguları `etki` ve `teslimi engeller` alanlarıyla sınıflandır (`references/rules.md → Seviye Ölçeği`).
 Teslim engeli varsa `ads-design-strategy.md → Adım 6` döngüsünü uygula (en fazla 2 tur); yeniden kontrol

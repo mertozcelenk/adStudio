@@ -15,7 +15,7 @@
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 import { relative } from 'path';
-import { projectRoot, projectHtmlFiles, htmlPrecheck, blocksByImpact, statusFrom, finish, crash } from './lib/common.mjs';
+import { projectRoot, projectHtmlFiles, applyOnly, onlyProblem, htmlPrecheck, blocksByImpact, statusFrom, finish, crash } from './lib/common.mjs';
 
 const TEST = 'accessibility';
 const PROJECT_ROOT = projectRoot();
@@ -27,7 +27,10 @@ const IMPACT = { critical: 'Blocker', serious: 'High', moderate: 'Medium', minor
 async function run() {
   const skip = htmlPrecheck(TEST, PROJECT_ROOT);
   if (skip) return finish(skip);
-  const htmlFiles = projectHtmlFiles(PROJECT_ROOT);
+  const scoped = applyOnly(PROJECT_ROOT, projectHtmlFiles(PROJECT_ROOT));
+  const bad = onlyProblem(TEST, scoped);
+  if (bad) return finish(bad);
+  const htmlFiles = scoped.files;
 
   const browser = await chromium.launch();
   const findings = [];
