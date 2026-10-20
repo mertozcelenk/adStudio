@@ -371,6 +371,7 @@ Seviye tanımları: `references/rules.md → Seviye Ölçeği`. Medium ve Nitpic
    - Reviewer'ların "Ne iyi" listeleri — bu kararlar korunur
 2. **Yeniden kontrol:**
    - HTML: `node scripts/test/run-all.mjs` (yeni `test-results.json`)
+   - Builder'ın bu turda değiştirdiği dosya / frame listesini reviewer'lara ilet; yalnızca onlara bakarlar.
    - `ads-design-reviewer` ve `ads-ux-reviewer`'ı **yeniden kontrol** modunda çalıştır: önceki teslim engeli listesini
      ver; her madde için `kapandı` / `açık` yazarlar ve düzeltmenin yol açtığı yeni teslim engelini ekler.
      Medium / Nitpick taraması tekrarlanmaz.
@@ -441,6 +442,10 @@ Kullanıcıya şunu bildir:
 Özet sonunda şunu ekle:
 
 > "Tasarımda değişiklik yapmak veya yeni özellik eklemek için `/ads-iterate` komutunu kullanın."
+
+**Aşama sonu hatırlatması** (Bağlayıcı Karar Kontrolü'nden sonra). Önce kayıt kontrolü: konuşmada geçen kalıcı kararlar `spec.md → Bağlayıcı Kararlar`'da, durum `project-state.md`'de
+mi? Eksikse önce yaz. Sonra mesajın son satırı olarak ekle:
+> "Bu aşama bitti, kayıtlar dosyalarda. Maliyeti düşürmek için `/clear` yazabilir ya da oturumu yeniden açabilirsin; `/ads-iterate` ile kaldığın yerden devam edersin."
 
 ---
 

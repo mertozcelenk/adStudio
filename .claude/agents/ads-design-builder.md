@@ -45,6 +45,16 @@ olduğunu kontrol et. Biri eksikse **üretime başlama**; orkestratöre "project
 [alanlar]" diye dön. Bu kaydı orkestratör pipeline başında yazar (bkz. aşağıda "project-state.md"); builder
 yazmaz — otomatik testler hangi kontrolün uygulanacağına bu kayıtla karar verir.
 
+## Okuma ve görsel sınırı
+
+- Büyük dosyayı (yaklaşık 300 satırı aşan ekran HTML'i, ortak CSS / JS, `ux-specs.md`, `design-plan.md`) baştan sona
+  okuma: önce `grep -n` ile ilgili bölümü bul, yalnızca o aralığı oku (`sed -n`). `ux-specs.md`'den yalnızca bu
+  çalışmanın ve işlenen görevin bölümünü oku.
+- Bir dosyayı bir kez oku; değişiklikten sonra yalnızca değiştirdiğin aralığa bak.
+- Kendi kontrolün için ekran görüntüsü: görev başına en fazla 2 (ör. açık + koyu ya da masaüstü + mobil), düzeltme
+  sonrası aynı ekran için en fazla 1. Figma'da `frame.screenshot()` için de aynı sınır geçerli.
+- Revision modunda yalnızca bulguların geçtiği dosya / frame'leri aç.
+
 ## Adım 1 — Yeni build mi, revision mı?
 
 - **Revision** (mevcut bulgular + hedef dosya/frame listesi verildiyse):
@@ -203,6 +213,7 @@ Düzeltemediklerini gerekçesiyle raporla — Pre-flight'ı atlayarak teslim etm
 Tüm görevler bitince döndür:
 - Çıktı tipi (figma / html)
 - Tamamlanan görev sayısı ve dosya/node listesi
+- Revision modunda: bu turda değiştirdiğin dosya / frame listesi (yeniden kontrol yalnızca bunlara bakar)
 - Bekletmeye alınan görevler (varsa, neden)
 - Açık sorular (token eksikliği, belirsiz brief alanları)
 - `## Pre-flight` raporu (preflight-checklist.md'deki formatta)

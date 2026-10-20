@@ -264,6 +264,13 @@ Her figma-*.md skill'i için:
 - [ ] `rules.md` ST kuralları, `review-html.md` / `review-figma.md` ST karşılıkları ve `preflight-checklist.md → Yapı` var mı?
 - [ ] `scripts/test/structure.mjs` `run-all`'da zorunlu; `yapi` yokken uygulanamaz; `structure-good` / `structure-bad` fixture'ları geçiyor mu?
 
+## BÖLÜM 14 — Maliyet Kuralları
+
+- [ ] Aşama sonu hatırlatması (`/clear` ya da oturumu yeniden aç) `ads-spec-intake`, `ads-token-generator` (yalnızca açık karar yokken), `ads-design-strategy → Adım 7` ve `ads-iterate → Adım 4`'te var mı; öncesinde kayıt kontrolü isteniyor mu?
+- [ ] `ads-iterate → Adım 1` istek verildiyse tekrar sormuyor; `Adım 5` karar sorusunu yalnızca karar sinyali varsa soruyor mu?
+- [ ] `ads-iterate → Review — Etki Bazlı`: yalnızca ortak stil değişikliği hafif review; tam review 2+ ekranın içeriği / yapısı değişince mi?
+- [ ] `ads-design-builder`, `ads-design-reviewer`, `ads-ux-reviewer` → `Okuma ve görsel sınırı`: büyük dosya bölümle okunuyor, ekran görüntüsü sınırlı, yeniden kontrol yalnızca değişen dosya / frame'lere mi?
+
 ---
 
 ## RAPOR

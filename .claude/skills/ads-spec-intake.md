@@ -378,3 +378,7 @@ yanlış bir alan var mı, yoksa bir sonraki adıma (token üretimi / IA) geçel
 Kullanıcı onaylarsa şunu ekle: "Devam etmek için `/ads-token-generator` komutunu
 çalıştırın. Token üretimi yerine IA veya akış tasarımına geçmek isterseniz
 bunu belirtin."
+
+**Aşama sonu hatırlatması** (kullanıcı spec'i onayladıktan sonra). Önce kayıt kontrolü: konuşmada verilen cevaplar ve
+kalıcı kararlar `spec.md`'de mi? Eksikse önce yaz. Sonra mesajın son satırı olarak ekle:
+> "Bu aşama bitti, kayıtlar dosyalarda. Maliyeti düşürmek için `/clear` yazabilir ya da oturumu yeniden açabilirsin; `/ads-token-generator` ile kaldığın yerden devam edersin."

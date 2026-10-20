@@ -22,6 +22,15 @@ Promptunda şunlar olacak:
   `## Ortak Davranış` beklenen davranıştır
 - ads-design-reviewer raporu yalnızca yeniden kontrol turunda gelir (önceki teslim engeli listesiyle); ilk incelemede iki reviewer paralel çalışır, tekilleştirmeyi orkestratör yapar
 
+## Okuma ve görsel sınırı
+
+- Büyük dosyayı (yaklaşık 300 satırı aşan ekran HTML'i, ortak CSS / JS) baştan sona okuma: kontrol ettiğin kural için
+  `grep -n` ile ilgili yeri bul, yalnızca o aralığı oku.
+- Ekran görüntüsü (HTML'de Playwright, Figma'da `get_screenshot`): ilk incelemede ekran başına en fazla 2, toplam en
+  fazla 10. Görsel gerektirmeyen kuralı (token bağlama, metin, yapı) kaynaktan kontrol et.
+- **Yeniden kontrol:** yalnızca açık teslim engellerinin geçtiği ve builder'ın değiştirdiği dosya / frame'leri aç;
+  engel başına en fazla 1 ekran görüntüsü. Değişmeyen ekranları yeniden inceleme.
+
 ## Süreç
 
 ### 1. Brief'i oku

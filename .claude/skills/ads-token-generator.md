@@ -480,7 +480,8 @@ Kullanıcı birebir uygulama isterse kural delinebilir.
 
 Bu skill'i kapatan **her** mesaj sıradaki adım yönlendirmesiyle biter: showcase sorusu yanıtlandığında veya
 atlandığında, showcase teslim edildiğinde ve showcase ya da token seti üzerinde yapılan **her düzeltme turundan sonra**.
-Yönlendirme mesajın **son bloğudur**; ardından başka konu, teklif veya not gelmez. Link teklifi, uyarı gibi ekler
+Yönlendirme mesajın **son bloğudur**; ardından başka konu, teklif veya not gelmez (tek istisna: aşağıdaki aşama sonu
+hatırlatması). Link teklifi, uyarı gibi ekler
 yönlendirmeden önce yazılır.
 
 **Açık karar varsa** (ör. "showcase'den sonra karar verelim" denen font lisansı, ikon kalınlığı): önce kararları
@@ -494,6 +495,11 @@ Açık karar yoksa mevcut duruma göre yönlendir:
 
 **Yeni proje — ilk kez tasarım üretiliyor:**
 > "Token seti hazır. Tasarım pipeline'ını başlatmak için `/ads-design-strategy` komutunu çalıştırın. Bu skill hem Figma hem HTML/CSS çıktısı üretebilir — başlangıçta hangisini istediğinizi sorar."
+
+**Aşama sonu hatırlatması** (yalnızca açık karar yokken, yönlendirmenin hemen altında; showcase düzeltme turlarında
+ekleme). Önce kayıt kontrolü: konuşmada geçen kalıcı kararlar `spec.md → Bağlayıcı Kararlar`'da, durum `project-state.md`'de
+mi? Eksikse önce yaz. Sonra mesajın son satırı olarak ekle:
+> "Bu aşama bitti, kayıtlar dosyalarda. Maliyeti düşürmek için `/clear` yazabilir ya da oturumu yeniden açabilirsin; yukarıdaki komutla kaldığın yerden devam edersin."
 
 ---
 
