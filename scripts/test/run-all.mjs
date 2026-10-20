@@ -19,7 +19,7 @@
  *   node run-all.mjs --out <dosya>           → sonuç dosyası (varsayılan <kök>/test-results.json)
  *   node run-all.mjs --timeout <sn>          → test başına süre sınırı (varsayılan 600; testler aynı anda çalıştığı için
  *                                              tek başına çalışmaya göre daha yavaş ilerler)
- *   node run-all.mjs --only <yol,yol…>       → tarayıcı testleri (accessibility, responsive, tells, visual) yalnızca bu
+ *   node run-all.mjs --only <yol,yol…>       → (boşlukla da ayrılabilir) tarayıcı testleri (accessibility, responsive, tells, visual) yalnızca bu
  *                                              dosya / klasörlerde (ör. screens/a.html,screens/); tokens ve structure
  *                                              her zaman tüm projede. /ads-iterate küçük değişiklikte kullanır.
  *   node run-all.mjs --suite <json>          → test listesini değiştir (run-all'ın kendi testleri için)
@@ -29,7 +29,7 @@ import { spawn } from 'child_process';
 import { existsSync, readFileSync, writeFileSync, mkdtempSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
 import { resolve, join, relative } from 'path';
-import { argValue, projectRoot, outputFormat, STATUS_LABEL } from './lib/common.mjs';
+import { argValue, onlyValue, projectRoot, outputFormat, STATUS_LABEL } from './lib/common.mjs';
 
 const HERE = import.meta.dirname;
 
@@ -98,7 +98,17 @@ async function run() {
   const root = projectRoot();
   const fmt = outputFormat(root);
   const timeoutMs = Number(argValue('--timeout') || 600) * 1000;
-  const only = argValue('--only');
+  const only = onlyValue();
+  // Tanınmayan argümanlar sessizce yok sayılmaz: uyarı + not (yanlış yazılmış kapsam yarım test demektir)
+  const VALUE_FLAGS = ['--root', '--format', '--out', '--timeout', '--suite'];
+  const stray = [];
+  for (let j = 2; j < process.argv.length; j++) {
+    const a = process.argv[j];
+    if (VALUE_FLAGS.includes(a)) { j++; continue; }
+    if (a === '--only') { while (j + 1 < process.argv.length && !process.argv[j + 1].startsWith('--')) j++; continue; }
+    stray.push(a);
+  }
+  if (stray.length) console.log(`UYARI: tanınmayan argüman yok sayıldı: ${stray.join(' ')}\n`);
   const outPath = resolve(argValue('--out') || join(root, 'test-results.json'));
   const tmp = mkdtempSync(join(tmpdir(), 'ads-test-'));
 
@@ -131,6 +141,7 @@ async function run() {
     if (pending.length) notes.push(`Görsel fark var (${pending.length} dosya): her fark incelenmeli — kasıtlıysa kabul edip baseline'ı güncelle (visual.mjs --update --only …), değilse düzelt. İncelenmemiş fark varken teslime hazır denmez.`);
   }
   if (fmt.format === 'figma') notes.push('HTML kontrolleri uygulanamaz; Figma doğrulaması ayrıca gerekli (deep modda ads-design-reviewer + ads-ux-reviewer; quick modda hafif review, kullanıcı isterse reviewer\'lar).');
+  if (stray.length) notes.push(`Tanınmayan argüman yok sayıldı: ${stray.join(' ')} — komutu kontrol edin.`);
   if (only) notes.push(`Tarayıcı testleri yalnızca şu kapsamda çalıştı: ${only}. Sayfalar arası yan etkiler için gerektiğinde /ads-check çalıştırın.`);
   if (code === 2) notes.push('Zorunlu bir doğrulama çalıştırılamadı — sonuç "geçti" sayılmaz.');
   notes.push('Çıkış kodu 0 "teslime hazır" demek değildir: açık teslim engeli olmaması ve çıktı türünün gerektirdiği incelemenin tamamlanması da gerekir.');
