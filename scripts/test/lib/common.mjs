@@ -54,10 +54,21 @@ export function findHtmlFiles(dir) {
   return results.sort();
 }
 
+// --only değeri: virgüllü (--only a.html,b.html) ya da boşluklu (--only a.html b.html) yazım; bir sonraki
+// "--" ile başlayan argümana kadar her şey alınır. Virgülle birleştirilmiş metin ya da null döner.
+export function onlyValue() {
+  const i = process.argv.indexOf('--only');
+  if (i === -1) return null;
+  const parts = [];
+  for (let j = i + 1; j < process.argv.length && !process.argv[j].startsWith('--'); j++) parts.push(process.argv[j]);
+  const value = parts.join(',').split(',').map(s => s.trim()).filter(Boolean).join(',');
+  return value || null;
+}
+
 // --only <yol,yol…>: yalnızca bu dosyalar ya da klasörler (proje köküne göre; ör. screens/a.html,screens/).
 // Döner: { files, unknown, only } — only null ise filtre yok; unknown hiçbir dosyayla eşleşmeyen girdiler.
 export function applyOnly(root, files) {
-  const value = argValue('--only');
+  const value = onlyValue();
   if (!value) return { files, unknown: [], only: null };
   const only = value.split(',').map(s => s.trim().replace(/^\.\//, '')).filter(Boolean);
   const match = (f, e) => { const r = relative(root, f); return r === e || r.startsWith(e.endsWith('/') ? e : `${e}/`); };

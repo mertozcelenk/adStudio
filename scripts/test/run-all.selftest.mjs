@@ -106,6 +106,10 @@ const emptyRoot = mkdtempSync(join(tmp, 'root-'));
   check('--only kapsamı sonuç dosyasında ve notta', report.scope === 'screens/a.html' && report.notes.some(n => n.includes('/ads-check')), JSON.stringify([report.scope, report.notes]));
   const { report: r2 } = runAll('only-unscoped', { root: emptyRoot, suite: [['args', true]], extra: ['--only', 'screens/a.html'] });
   check('--only kapsamsız teste iletilmiyor', r2.tests[0].reason === 'only=yok', r2.tests[0].reason);
+  const { report: r4 } = runAll('only-spaces', { root: emptyRoot, suite: [['args', true, true]], extra: ['--only', 'screens/', 'components/a.html'] });
+  check('--only boşluklu yazımı kabul ediyor', r4.tests[0].reason === 'only=screens/,components/a.html' && r4.scope === 'screens/,components/a.html', JSON.stringify([r4.tests[0].reason, r4.scope]));
+  const { report: r5, stdout: o5 } = runAll('stray-arg', { root: emptyRoot, suite: [['pass', true]], extra: ['--tiemout', '5'] });
+  check('tanınmayan argüman uyarı + not veriyor', /UYARI: tanınmayan argüman/.test(o5) && r5.notes.some(n => n.includes('--tiemout')), JSON.stringify(r5.notes));
   const { report: r3 } = runAll('no-only', { root: emptyRoot, suite: [['pass', true]] });
   check('--only yokken kapsam "tüm proje"', r3.scope === 'tüm proje', r3.scope);
 }
