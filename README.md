@@ -143,6 +143,20 @@ Kurulu değilse pipeline otomatik olarak HTML/CSS moduna geçer.
                     → tam review → düzeltme döngüsü → teslim kapısı
 ```
 
+### Ne zaman hangi yol (maliyet notu)
+
+- **Düz cümle** (ör. "dropdown'daki sayılar sığmamış"): taşan metin, hizalama, tek bir boşluk / boyut / renk, "biraz
+  daha koyu" gibi denemeler. Asistan doğrudan düzeltir; hızlıdır ama builder kuralları, Pre-flight, testler ve
+  inceleme çalışmaz.
+- **`/ads-iterate <istek>`**: sütun yapısı, yeni öğe / buton / durum, birden fazla ekranı etkileyen değişiklik.
+  Builder kurallarıyla uygular, testler ve inceleme çalışır.
+- **`/ads-check`**: birkaç hızlı düzeltmeden sonra sayfalar arası tutarlılık kontrolü.
+- **Aşama aralarında `/clear`** (ya da oturumu yeniden aç): adStudio durumu dosyalarda tutar (`spec.md`,
+  `project-state.md`, `design-brief.md`, `flows.md`), kayıp olmaz. Uzayan konuşmada her adım tüm konuşmayı yeniden
+  okur ve maliyet katlanır; bir saatten uzun aradan sonraki ilk mesaj da konuşmanın tamamını yeniden yükler.
+- **Görsel geri bildirim:** yapıştırılan görsel builder'a gitmez, asistan onu tarif eder. Ayrıntı önemliyse görseli
+  proje klasörüne dosya olarak koy ve yolunu yaz; builder doğrudan açar.
+
 ## Deep Mod Pipeline — Adım Adım
 
 | Adım | Agent | Ne yapar |

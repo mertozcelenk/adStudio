@@ -443,6 +443,10 @@ Kullanıcıya şunu bildir:
 
 > "Tasarımda değişiklik yapmak veya yeni özellik eklemek için `/ads-iterate` komutunu kullanın."
 
+**Aşama sonu hatırlatması** (Bağlayıcı Karar Kontrolü'nden sonra). Önce kayıt kontrolü: konuşmada geçen kalıcı kararlar `spec.md → Bağlayıcı Kararlar`'da, durum `project-state.md`'de
+mi? Eksikse önce yaz. Sonra mesajın son satırı olarak ekle:
+> "Bu aşama bitti, kayıtlar dosyalarda. Maliyeti düşürmek için `/clear` yazabilir ya da oturumu yeniden açabilirsin; `/ads-iterate` ile kaldığın yerden devam edersin."
+
 ---
 
 ## Bağlayıcı Karar Kontrolü

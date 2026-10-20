@@ -54,7 +54,8 @@ Herhangi biri eksikse dur:
 
 ## Adım 1 — İsteği Al
 
-Kullanıcıya sor:
+İstek komutla birlikte (`/ads-iterate <istek>`) ya da konuşmada az önce verildiyse tekrar sorma, doğrudan Adım 2'ye geç.
+İstek yoksa sor:
 > "Ne değiştirmek veya eklemek istiyorsunuz?"
 
 Yanıtı al. Adım 2'ye geç.
@@ -150,6 +151,9 @@ Builder değişikliği uygular, etkilenen dosyayı günceller ve Pre-flight rapo
 Builder'ın güncellediği dosya sayısını say. **Figma çıktısında birim ekrandır:** bir ekranın ana frame'i ve durum
 frame'leri tek ekran sayılır; değişen component'ler ayrıca sayılmaz, onları kullanan ekranlarla birlikte değerlendirilir.
 `flows.md` / `templates.md` düzenlemeleri sayıma girmez (yapı etkisi yukarıdaki "Yapı" kuralıyla bulunur).
+**Ortak stil değişikliği tek değişiklik sayılır:** yalnızca ortak bir stil dosyası (ortak CSS, token değeri, Figma'da
+bir component'in stili) değiştiyse ve ekranların içeriği ya da yapısı değişmediyse hafif review uygulanır; HTML'de
+`run-all.mjs` zaten tüm ekranları test eder. Tam review, 2 veya daha fazla ekranın içeriği ya da yapısı değiştiğinde çalışır.
 
 **1 dosya etkilendiyse — hafif review:**
 Yalnızca değiştirilen dosyayı kontrol et:
@@ -173,7 +177,7 @@ Bulguları `etki` ve `teslimi engeller` alanlarıyla sınıflandır (`references
 Teslim engeli varsa `ads-design-strategy.md → Adım 6` döngüsünü uygula (en fazla 2 tur); yeniden kontrol
 yukarıdaki maddeler + `run-all.mjs`'tir (kontrast/boyut değerleri gerçekten düzelmiş mi doğrula).
 
-**2+ dosya etkilendiyse — tam review:**
+**2+ dosya etkilendiyse — tam review** (ortak stil değişikliği istisnası yukarıda):
 `ads-design-reviewer` ve `ads-ux-reviewer`'ı paralel çalıştır, ardından `ads-design-strategy.md → Adım 6` döngüsünü
 ve teslim kapısını uygula.
 
@@ -271,11 +275,16 @@ Bekleyen görev varsa kullanıcıya bildir:
 **Çapraz sayfa hatırlatması:** Etkilenen dosya (Figma'da ekran) sayısı 2 veya daha fazlaysa rapora şunu ekle:
 > "Birden fazla sayfada değişiklik yapıldı. Sunum öncesinde tutarlılık kontrolü için `/ads-check` çalıştırmanızı öneririm."
 
+**Aşama sonu hatırlatması** (Adım 5'ten sonra, mesajın son satırı; backlog'da bekleyen görev olsa da). Önce kayıt kontrolü:
+konuşmada geçen kalıcı kararlar `spec.md → Bağlayıcı Kararlar`'da, durum `project-state.md`'de mi? Eksikse önce yaz.
+> "Bu aşama bitti, kayıtlar dosyalarda. Maliyeti düşürmek için `/clear` yazabilir ya da oturumu yeniden açabilirsin; `/ads-iterate` ile kaldığın yerden devam edersin."
+
 ---
 
 ## Adım 5 — Bağlayıcı Karar Kontrolü
 
-Tamamlama raporundan sonra şunu sor:
+Konuşmada bir karar sinyali geçtiyse ("hep böyle kalsın", "artık kullanılmayacak", "her yerde böyle olsun") tamamlama
+raporundan sonra şunu sor; sinyal yoksa sorma, rapora `Kalıcı karar: yok` yaz:
 
 > "Bu iterasyonda kalıcı bir tasarım kararı aldık mı? (örn. 'X hep böyle kalacak', 'Y artık kullanılmayacak')"
 
