@@ -370,10 +370,14 @@ Seviye tanımları: `references/rules.md → Seviye Ölçeği`. Medium ve Nitpic
    - Yalnızca 1. turda: Medium / Nitpick bulguları — öneri olarak, uygulaması isteğe bağlı
    - Reviewer'ların "Ne iyi" listeleri — bu kararlar korunur
 2. **Yeniden kontrol:**
-   - HTML: `node scripts/test/run-all.mjs` (yeni `test-results.json`)
+   - HTML: `node scripts/test/run-all.mjs` (yeni `test-results.json`). Builder düzeltmeden sonra testleri zaten
+     çalıştırdıysa onun `test-results.json`'unu kullan, yeniden çalıştırma.
    - Builder'ın bu turda değiştirdiği dosya / frame listesini reviewer'lara ilet; yalnızca onlara bakarlar.
-   - `ads-design-reviewer` ve `ads-ux-reviewer`'ı **yeniden kontrol** modunda çalıştır: önceki teslim engeli listesini
-     ver; her madde için `kapandı` / `açık` yazarlar ve düzeltmenin yol açtığı yeni teslim engelini ekler.
+   - **Yeniden kontrolü reviewer yapar, orkestratör yapmaz.** Engeli hangi reviewer bildirdiyse o reviewer yeniden
+     kontrol modunda çalışır (engeller yalnızca birinden geldiyse yalnızca o). Orkestratörün kendi doğrulaması
+     (dosyaya bakmak, test sonucunu okumak) bunun yerine geçmez; reviewer çalışmadan engel `kapandı` sayılmaz ve
+     "Teslime hazır" denmez. İstisna: `/ads-iterate` hafif review yolu (orada yeniden kontrolü orkestratör yapar).
+   - Reviewer'a önceki teslim engeli listesini ver; her madde için `kapandı` / `açık` yazarlar ve düzeltmenin yol açtığı yeni teslim engelini ekler.
      Medium / Nitpick taraması tekrarlanmaz.
    - Yeniden kontrolde bir reviewer'ın teslim engeli olarak bildirdiği **her** madde listeye girer — ilk
      incelemede aynı konu Medium / Nitpick olarak geçmiş olsa bile. Orkestratör seviyeyi düşüremez, "tekrar"

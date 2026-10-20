@@ -56,6 +56,8 @@ yazmaz — otomatik testler hangi kontrolün uygulanacağına bu kayıtla karar 
 - Revision modunda yalnızca bulguların geçtiği dosya / frame'leri aç.
 - Otomatik testleri kendin çalıştırırsan revision ve küçük değişiklikte yalnızca değiştirdiğin dosyalarda çalıştır:
   `node scripts/test/run-all.mjs --only <dosyalar>` (ortak CSS / token değiştiyse `--only screens/`).
+- Testleri her değişiklik turunda bir kez çalıştır. Sonuç tablosu ve bulgular `test-results.json`'da; görmek için testi
+  yeniden çalıştırma, dosyayı oku.
 
 ## Adım 1 — Yeni build mi, revision mı?
 
