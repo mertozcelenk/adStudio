@@ -203,7 +203,7 @@ kendi başına eklemez; tasarımcıya sorulur: **kapsama ekle** (önce plan ve U
 
 **Otomatik testler**
 `scripts/test/` kurulumla gelir. `run-all.mjs` erişilebilirlik, token kullanımı, responsive, AI tells, yapı (flow / template) ve görsel
-karşılaştırmayı çalıştırır; biri çökse de diğerleri sürer, sonuç `test-results.json`'a yazılır. Her test dört
+karşılaştırmayı aynı anda çalıştırır (küçük değişiklikte `--only` ile yalnızca etkilenen dosyalarda); biri çökse de diğerleri sürer, sonuç `test-results.json`'a yazılır. Her test dört
 sonuçtan birini verir: geçti / başarısız / çalıştırılamadı / uygulanamaz (ör. Figma projesinde HTML testi).
 `check-run.mjs` bir çalışmanın bıraktığı dosyaları denetler: iddia edilen teslim durumu testlerin ve istisnaların
 izin verdiğini aşamaz. Ayrıntı ve fixture'lar: `TESTING.md`; uçtan uca kayıt: `test-runs/`.

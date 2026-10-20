@@ -5,7 +5,7 @@
  * Kullanım:
  *   node visual.mjs                    → karşılaştırma modu (baseline yoksa [BASELINE YOK])
  *   node visual.mjs --update           → baseline oluştur veya güncelle (onaylı teslimden sonra)
- *   node visual.mjs --update --only screens/a.html,screens/b.html
+ *   node visual.mjs --update --only screens/a.html,screens/b.html   (klasör de olur: screens/)
  *                                      → yalnızca incelenip kabul edilen dosyaların baseline'ını güncelle
  *   node visual.mjs --max-diff 0.1     → izin verilen farklı piksel oranı, yüzde (varsayılan 0.05)
  *   node visual.mjs --snapshots <dir>  → baseline klasörü (varsayılan scripts/test/snapshots)
@@ -29,14 +29,13 @@ import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, relative, join } from 'path';
-import { projectRoot, projectHtmlFiles, htmlPrecheck, argValue, finish, crash } from './lib/common.mjs';
+import { projectRoot, projectHtmlFiles, applyOnly, onlyProblem, htmlPrecheck, argValue, finish, crash } from './lib/common.mjs';
 
 const TEST = 'visual';
 const PROJECT_ROOT = projectRoot();
 const SNAPSHOT_DIR = resolve(argValue('--snapshots') || resolve(import.meta.dirname, 'snapshots'));
 const MAX_DIFF_PERCENT = Number(argValue('--max-diff') ?? 0.05);
 const UPDATE_MODE = process.argv.includes('--update');
-const ONLY = (argValue('--only') || '').split(',').map(f => f.trim()).filter(Boolean);
 
 function snapshotPath(htmlFile) {
   const rel = relative(PROJECT_ROOT, htmlFile).replace(/\//g, '__').replace('.html', '.png');
@@ -69,11 +68,14 @@ function compareScreens(baselineBuf, currentBuf) {
 async function run() {
   const skip = htmlPrecheck(TEST, PROJECT_ROOT);
   if (skip) return finish(skip);
-  let htmlFiles = projectHtmlFiles(PROJECT_ROOT);
-  if (ONLY.length) {
-    const unknown = ONLY.filter(f => !htmlFiles.some(h => relative(PROJECT_ROOT, h) === f));
-    if (unknown.length) return finish({ test: TEST, status: 'not_run', reason: `--only içinde bulunamayan dosya: ${unknown.join(', ')}`, findings: [] });
-    htmlFiles = htmlFiles.filter(h => ONLY.includes(relative(PROJECT_ROOT, h)));
+  const scoped = applyOnly(PROJECT_ROOT, projectHtmlFiles(PROJECT_ROOT));
+  const bad = onlyProblem(TEST, scoped);
+  if (bad) return finish(bad);
+  const htmlFiles = scoped.files;
+
+  // Onaylı baseline hiç yoksa tarayıcıyı açmadan çık (karşılaştırılacak bir şey yok)
+  if (!UPDATE_MODE && !htmlFiles.some(f => existsSync(snapshotPath(f)))) {
+    return finish({ test: TEST, status: 'not_run', reason: 'görsel karşılaştırma yapılamadı: onaylı baseline yok (ilk üretim) — teslim onaylanınca node visual.mjs --update', checked: 0, findings: [] });
   }
 
   mkdirSync(SNAPSHOT_DIR, { recursive: true });

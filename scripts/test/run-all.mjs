@@ -1,5 +1,5 @@
 /**
- * Tüm testleri çalıştırır, sonuçları tek tabloda ve test-results.json'da toplar.
+ * Tüm testleri aynı anda çalıştırır, sonuçları tek tabloda ve test-results.json'da toplar.
  * Bir test başarısız olsa, çökse veya zaman aşımına uğrasa da diğerleri çalışır.
  *
  * Genel çıkış kodu (öncelik sırasıyla):
@@ -17,7 +17,11 @@
  *   node run-all.mjs --root <dizin>          → başka bir proje kökü
  *   node run-all.mjs --format html|figma     → çıktı türünü açıkça ver
  *   node run-all.mjs --out <dosya>           → sonuç dosyası (varsayılan <kök>/test-results.json)
- *   node run-all.mjs --timeout <sn>          → test başına süre sınırı (varsayılan 300)
+ *   node run-all.mjs --timeout <sn>          → test başına süre sınırı (varsayılan 600; testler aynı anda çalıştığı için
+ *                                              tek başına çalışmaya göre daha yavaş ilerler)
+ *   node run-all.mjs --only <yol,yol…>       → tarayıcı testleri (accessibility, responsive, tells, visual) yalnızca bu
+ *                                              dosya / klasörlerde (ör. screens/a.html,screens/); tokens ve structure
+ *                                              her zaman tüm projede. /ads-iterate küçük değişiklikte kullanır.
  *   node run-all.mjs --suite <json>          → test listesini değiştir (run-all'ın kendi testleri için)
  */
 
@@ -32,12 +36,12 @@ const HERE = import.meta.dirname;
 // visual "inceleme" rolündedir: baseline ilk onaylı teslimden sonra oluşur; fark kasıtlı bir değişiklik de
 // olabileceği için genel kodu otomatik belirlemez, ama her fark incelenip kabul edilmeli ya da düzeltilmelidir.
 const DEFAULT_SUITE = [
-  { name: 'accessibility', script: 'accessibility.mjs', required: true },
+  { name: 'accessibility', script: 'accessibility.mjs', required: true, scoped: true },
   { name: 'tokens',        script: 'tokens.mjs',        required: true },
-  { name: 'responsive',    script: 'responsive.mjs',    required: true },
-  { name: 'tells',         script: 'tells.mjs',         required: true },
+  { name: 'responsive',    script: 'responsive.mjs',    required: true, scoped: true },
+  { name: 'tells',         script: 'tells.mjs',         required: true, scoped: true },
   { name: 'structure',     script: 'structure.mjs',     required: true },
-  { name: 'visual',        script: 'visual.mjs',        required: false, role: 'review' },
+  { name: 'visual',        script: 'visual.mjs',        required: false, role: 'review', scoped: true },
 ];
 
 function loadSuite() {
@@ -47,10 +51,11 @@ function loadSuite() {
   return JSON.parse(readFileSync(suitePath, 'utf8')).map(t => ({ ...t, script: resolve(base, t.script) }));
 }
 
-function runOne(test, root, format, timeoutMs, tmp) {
+function runOne(test, root, format, timeoutMs, tmp, only) {
   const jsonPath = join(tmp, `${test.name}.json`);
   const args = [resolve(HERE, test.script), '--root', root, '--json', jsonPath, ...(test.args || [])];
   if (format) args.push('--format', format);
+  if (only && test.scoped) args.push('--only', only);
 
   return new Promise(done => {
     const started = Date.now();
@@ -92,20 +97,19 @@ function overall(results) {
 async function run() {
   const root = projectRoot();
   const fmt = outputFormat(root);
-  const timeoutMs = Number(argValue('--timeout') || 300) * 1000;
+  const timeoutMs = Number(argValue('--timeout') || 600) * 1000;
+  const only = argValue('--only');
   const outPath = resolve(argValue('--out') || join(root, 'test-results.json'));
   const tmp = mkdtempSync(join(tmpdir(), 'ads-test-'));
 
   console.log(`Proje: ${root}`);
   console.log(`Çıktı türü: ${fmt.format ? `${fmt.format} (${fmt.source})` : `bilinmiyor — ${fmt.reason}`}\n`);
 
-  const results = [];
-  for (const test of loadSuite().map(t => ({ role: t.required ? 'required' : (t.role || 'review'), ...t }))) {
-    process.stdout.write(`  ${test.name.padEnd(14)} … `);
-    const r = await runOne(test, root, argValue('--format'), timeoutMs, tmp);
-    results.push(r);
-    console.log(`${STATUS_LABEL[r.status]}${r.reason ? ` — ${r.reason}` : ''}`);
-  }
+  const suite = loadSuite().map(t => ({ role: t.required ? 'required' : (t.role || 'review'), ...t }));
+  if (only) console.log(`Kapsam (tarayıcı testleri): ${only}\n`);
+  console.log(`  ${suite.length} test aynı anda çalışıyor…`);
+  const results = await Promise.all(suite.map(test => runOne(test, root, argValue('--format'), timeoutMs, tmp, only)));
+  for (const r of results) console.log(`  ${r.name.padEnd(14)} … ${STATUS_LABEL[r.status]}${r.reason ? ` — ${r.reason}` : ''}`);
   rmSync(tmp, { recursive: true, force: true });
 
   const code = overall(results);
@@ -127,6 +131,7 @@ async function run() {
     if (pending.length) notes.push(`Görsel fark var (${pending.length} dosya): her fark incelenmeli — kasıtlıysa kabul edip baseline'ı güncelle (visual.mjs --update --only …), değilse düzelt. İncelenmemiş fark varken teslime hazır denmez.`);
   }
   if (fmt.format === 'figma') notes.push('HTML kontrolleri uygulanamaz; Figma doğrulaması ayrıca gerekli (deep modda ads-design-reviewer + ads-ux-reviewer; quick modda hafif review, kullanıcı isterse reviewer\'lar).');
+  if (only) notes.push(`Tarayıcı testleri yalnızca şu kapsamda çalıştı: ${only}. Sayfalar arası yan etkiler için gerektiğinde /ads-check çalıştırın.`);
   if (code === 2) notes.push('Zorunlu bir doğrulama çalıştırılamadı — sonuç "geçti" sayılmaz.');
   notes.push('Çıkış kodu 0 "teslime hazır" demek değildir: açık teslim engeli olmaması ve çıktı türünün gerektirdiği incelemenin tamamlanması da gerekir.');
 
@@ -136,6 +141,7 @@ async function run() {
     format_source: fmt.source || null,
     generated_at: new Date().toISOString(),
     exit_code: code,
+    scope: only || 'tüm proje',
     blocking_findings: blocking.length,
     visual_review: visualReview,
     warnings,

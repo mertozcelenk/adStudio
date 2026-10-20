@@ -16,7 +16,7 @@
 import { chromium } from 'playwright';
 import { existsSync, readFileSync } from 'fs';
 import { relative, join } from 'path';
-import { projectRoot, projectHtmlFiles, htmlPrecheck, finish, crash, APP_VIEWPORTS, bodyPlatform } from './lib/common.mjs';
+import { projectRoot, projectHtmlFiles, applyOnly, onlyProblem, htmlPrecheck, finish, crash, APP_VIEWPORTS, bodyPlatform } from './lib/common.mjs';
 
 const TEST = 'responsive';
 const PROJECT_ROOT = projectRoot();
@@ -59,10 +59,13 @@ async function run() {
   if (skip) return finish(skip);
 
   const indexPath = join(PROJECT_ROOT, 'index.html');
-  const htmlFiles = [
+  const scoped = applyOnly(PROJECT_ROOT, [
     ...(existsSync(indexPath) ? [indexPath] : []),
     ...projectHtmlFiles(PROJECT_ROOT),
-  ];
+  ]);
+  const bad = onlyProblem(TEST, scoped);
+  if (bad) return finish(bad);
+  const htmlFiles = scoped.files;
   let checked = 0;
 
   const browser = await chromium.launch();

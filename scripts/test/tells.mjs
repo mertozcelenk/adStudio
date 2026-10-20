@@ -47,7 +47,7 @@
 import { chromium } from 'playwright';
 import { existsSync, readFileSync } from 'fs';
 import { relative, join, sep } from 'path';
-import { projectRoot, findHtmlFiles, htmlPrecheck, blocksByImpact, statusFrom, finish, crash, APP_VIEWPORTS, bodyPlatform } from './lib/common.mjs';
+import { projectRoot, findHtmlFiles, applyOnly, onlyProblem, htmlPrecheck, blocksByImpact, statusFrom, finish, crash, APP_VIEWPORTS, bodyPlatform } from './lib/common.mjs';
 
 const TEST = 'tells';
 const PROJECT_ROOT = projectRoot();
@@ -649,13 +649,16 @@ async function runPass(browser, file, viewport, mode, device, mobileContext) {
 
 async function run() {
   const screenDir = join(PROJECT_ROOT, 'screens');
-  const htmlFiles = [
+  const scoped = applyOnly(PROJECT_ROOT, [
     ...findHtmlFiles(join(PROJECT_ROOT, 'components')),
     ...findHtmlFiles(screenDir),
-  ];
+  ]);
 
   const skip = htmlPrecheck(TEST, PROJECT_ROOT);
   if (skip) return finish(skip);
+  const bad = onlyProblem(TEST, scoped);
+  if (bad) return finish(bad);
+  const htmlFiles = scoped.files;
 
   const spec = readSpec();
   const tablet = process.argv.includes('--tablet') || spec.tablet;

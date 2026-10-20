@@ -16,6 +16,8 @@
  *   - visual: baseline yokken "karşılaştırma yapılamadı" notu (genel kod değişmez); değişmeyen sayfa geçer;
  *     fark yakalanır ve .diff.png gerçek fark haritasıdır (kırmızı = raporlanan); farklar "inceleme bekliyor"
  *     listesine girer; --update --only yalnızca kabul edilen dosyanın baseline'ını günceller
+ *   - testler aynı anda çalışır; --only yalnızca kapsamlı (scoped) testlere iletilir, kapsam sonuç dosyasında
+ *     ve notta görünür; visual --only klasör kabul eder
  *   - check-names: yazım hatalı atıf, name ≠ dosya adı, eski ad kalıntısı, eksik commands kopyası
  *   - check-run: teslim üst sınırı (testler, istisnalar, görsel inceleme), istisna biçimi, project-state alanları
  *   - plan-gate: önceki çalışmadan kalan / kimliksiz COMPLETE işareti reddedilir, eksik görev ve başlıksız
@@ -38,7 +40,7 @@ function runAll(name, { suite, root, extra = [] }) {
   const args = [join(HERE, 'run-all.mjs'), '--root', root, '--out', out, ...extra];
   if (suite) {
     const suitePath = join(tmp, `${name}.suite.json`);
-    writeFileSync(suitePath, JSON.stringify(suite.map(([n, required]) => ({ name: n, script: join(FAKE, `${n}.mjs`), required }))));
+    writeFileSync(suitePath, JSON.stringify(suite.map(([n, required, scoped]) => ({ name: n, script: join(FAKE, `${n}.mjs`), required, scoped }))));
     args.push('--suite', suitePath);
   }
   const res = spawnSync(process.execPath, args, { encoding: 'utf8' });
@@ -88,6 +90,24 @@ const emptyRoot = mkdtempSync(join(tmp, 'root-'));
 {
   const { code } = runAll('optional', { root: emptyRoot, suite: [['fail', false], ['pass', true]] });
   check('zorunlu olmayan test başarısız → genel kod 0', code === 0, `kod ${code}`);
+}
+
+{
+  const started = Date.now();
+  runAll('parallel', { root: emptyRoot, suite: [['slow', true], ['slow', true], ['slow', true]] });
+  const secs = (Date.now() - started) / 1000;
+  check('testler aynı anda çalışıyor (3 × 1.5 sn < 4 sn)', secs < 4, `${secs} sn`);
+}
+
+{
+  const { report } = runAll('only', { root: emptyRoot, suite: [['args', true, true], ['pass', true]], extra: ['--only', 'screens/a.html'] });
+  const a = report.tests.find(t => t.name === 'args');
+  check('--only kapsamlı teste iletiliyor', a.reason === 'only=screens/a.html', a.reason);
+  check('--only kapsamı sonuç dosyasında ve notta', report.scope === 'screens/a.html' && report.notes.some(n => n.includes('/ads-check')), JSON.stringify([report.scope, report.notes]));
+  const { report: r2 } = runAll('only-unscoped', { root: emptyRoot, suite: [['args', true]], extra: ['--only', 'screens/a.html'] });
+  check('--only kapsamsız teste iletilmiyor', r2.tests[0].reason === 'only=yok', r2.tests[0].reason);
+  const { report: r3 } = runAll('no-only', { root: emptyRoot, suite: [['pass', true]] });
+  check('--only yokken kapsam "tüm proje"', r3.scope === 'tüm proje', r3.scope);
 }
 
 // Gerçek testlerle: uygulanabilirlik project-state.md'den
@@ -167,6 +187,8 @@ rmSync(join(figmaRoot, 'project-state.md'));
   check('visual: yalnızca kabul edilen dosyanın baseline\'ı güncellendi (b hâlâ bekliyor)',
     JSON.stringify(vr.report.visual_review?.pending_review) === JSON.stringify(['screens/b.html']), JSON.stringify(vr.report.visual_review));
   check('visual: --only bilinmeyen dosyada çalıştırılamadı', visual('--update', '--only', 'screens/yok.html').status === 'not_run', '');
+  const dirOnly = visual('--only', 'screens/');
+  check('visual: --only klasör kabul ediyor (2 dosya karşılaştırıldı)', dirOnly.checked === 2, JSON.stringify(dirOnly));
 }
 
 // plan-gate: plan ↔ UX spec geçiş kontrolü
