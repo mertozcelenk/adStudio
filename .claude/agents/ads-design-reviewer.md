@@ -24,6 +24,15 @@ Promptunda şunlar olacak:
 - Dial'lar (VARIANCE / MOTION / DENSITY), ekran tipleri (`marketing` / `product` / `content`), `color_scheme`
   — iletilmediyse `spec.md → token_directives`'ten oku
 
+## Okuma ve görsel sınırı
+
+- Büyük dosyayı (yaklaşık 300 satırı aşan ekran HTML'i, ortak CSS / JS) baştan sona okuma: kontrol ettiğin kural için
+  `grep -n` ile ilgili yeri bul, yalnızca o aralığı oku.
+- Ekran görüntüsü (HTML'de Playwright, Figma'da `get_screenshot`): ilk incelemede ekran başına en fazla 2, toplam en
+  fazla 10. Görsel gerektirmeyen kuralı (token bağlama, metin, yapı) kaynaktan kontrol et.
+- **Yeniden kontrol:** yalnızca açık teslim engellerinin geçtiği ve builder'ın değiştirdiği dosya / frame'leri aç;
+  engel başına en fazla 1 ekran görüntüsü. Değişmeyen ekranları yeniden inceleme.
+
 ## Süreç
 
 ### 1. Referans dosyalarını oku

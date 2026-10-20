@@ -371,6 +371,7 @@ Seviye tanımları: `references/rules.md → Seviye Ölçeği`. Medium ve Nitpic
    - Reviewer'ların "Ne iyi" listeleri — bu kararlar korunur
 2. **Yeniden kontrol:**
    - HTML: `node scripts/test/run-all.mjs` (yeni `test-results.json`)
+   - Builder'ın bu turda değiştirdiği dosya / frame listesini reviewer'lara ilet; yalnızca onlara bakarlar.
    - `ads-design-reviewer` ve `ads-ux-reviewer`'ı **yeniden kontrol** modunda çalıştır: önceki teslim engeli listesini
      ver; her madde için `kapandı` / `açık` yazarlar ve düzeltmenin yol açtığı yeni teslim engelini ekler.
      Medium / Nitpick taraması tekrarlanmaz.
