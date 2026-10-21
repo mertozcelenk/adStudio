@@ -242,6 +242,7 @@ Her figma-*.md skill'i için:
 - [ ] `ads-design-reviewer.md` raporunda "Otomatik testler" ve "Teslim engelleri" (B kimlikli) bölümleri, yeniden kontrol modu var mı?
 - [ ] `ads-design-planner.md`: `design-plan.md` her zaman yazılıyor, Notion/Jira kopya; `ADS_PLAN run=… tasks=…` işareti var mı?
 - [ ] `ads-ux-designer.md`: `ux-specs.md`'ye ekleme (önceki bölümler korunur) ve `UX_SPEC_STATUS: COMPLETE run=… tasks=…` işareti var mı?
+- [ ] Planner ve UX agent'ı var olan dosyaları (`design-plan.md`, `ux-specs.md`, `flows.md`, `templates.md`) `Write` ile baştan yazmıyor, `Edit` ile yalnızca ilgili bölümü ekliyor mu; `tools:` satırlarında Edit var mı? (`ux-specs.md`'de yeni bölüm en üste, `design-plan.md`'de önceki çalışmaların altına)
 - [ ] `ads-design-strategy.md → Adım 3c → 4`: `plan-gate.mjs --run` kullanılıyor mu?
 - [ ] Quick mod hafif review ile teslim kapısından geçiyor (run-all + hafif review maddeleri, Adım 6 durumları); yeniden kontrolde reviewer'ın bildirdiği yeni engel orkestratörce düşürülemiyor mu?
 - [ ] Kapsam kararı: builder yeni özellik/ekran/veri toplama/vaat/akış gerektiren engelde "kapsam kararı gerekli" diye dönüyor; Adım 6'da üç seçenek (kapsama ekle → plan + UX önce / vaadi koruyan geçici çözüm / istisna → `## Teslim İstisnaları`) ve "İstisna onayıyla teslim edilebilir" durumu var mı?

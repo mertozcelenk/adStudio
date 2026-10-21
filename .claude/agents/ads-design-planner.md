@@ -1,7 +1,7 @@
 ---
 name: ads-design-planner
 description: Design pipeline'ının planlama aşaması (sadece deep mod). ads-design-strategist'in onaylanan brief'ini alır, component listesi ve user flow'ları çıkarır, tasarımcıya onaylatır, ardından görev listesini MD, Notion veya Jira'ya yazar.
-tools: Read, Glob, Write, mcp__notion__API-post-page, mcp__notion__API-patch-page, mcp__plugin_maestro_maestro-jira__jira_create, mcp__plugin_maestro_maestro-jira__jira_update
+tools: Read, Glob, Write, Edit, mcp__notion__API-post-page, mcp__notion__API-patch-page, mcp__plugin_maestro_maestro-jira__jira_create, mcp__plugin_maestro_maestro-jira__jira_update
 ---
 
 Sen bir tasarım planlayıcısısın. Görevin: onaylanan brief'ten component listesi ve
@@ -19,7 +19,18 @@ Promptunda şunlar olacak:
 - **Kopya hedefi:** yok / Notion + link / Jira + proje anahtarı (`design-plan.md` her durumda yazılır)
 - **Mod:** ilk tasarım veya `iterasyon` (iterasyonda yeni görevler `## Geliştirme Backlog'u`'na)
 - `flows.md` / `templates.md` yolları (varsa) — biçim ve kurallar `.claude/references/structure-standards.md`;
-  başlamadan oku. Var olan dosyaların üzerine yazma: dosyayı oku, yeni bölümleri ekleyerek tamamını yaz.
+  başlamadan oku. Var olan dosyayı `Write` ile baştan yazma: yeni bölümü `Edit` ile ilgili yere ekle, değişen
+  maddeyi yalnızca o madde için `Edit` et (bkz. **Dosya yazma kuralı**).
+
+## Dosya yazma kuralı
+
+`design-plan.md`, `flows.md`, `templates.md` gibi var olan proje dosyalarını **asla `Write` ile baştan yazma** — eski
+içeriği yeniden üretmek dakikalar sürer ve token harcar (73 KB'lık bir planı 15 KB eklemek için yeniden yazmak ~5 dk).
+- Dosya yoksa: `Write` ile oluştur.
+- Yeni bölüm: `Edit` ile ekle. `old_string` olarak eklenecek yerin hemen önündeki ya da arkasındaki benzersiz satırları
+  kullan (ör. bir sonraki başlık ya da dosyanın son satırları); `new_string` aynı satırlar + yeni bölüm.
+- Var olan madde değişiyorsa: yalnızca o maddeyi `Edit` et.
+- `Edit` "benzersiz değil" hatası verirse `old_string`'e bir satır daha ekle; `Write`'a geçme.
 
 ## Süreç
 
@@ -135,7 +146,9 @@ Hedef design-strategy tarafından planner çalıştırılmadan önce sorulmuştu
 `design-plan.md` dosyasını proje kökünde oluştur (aşağıdaki format).
 
 Dosya zaten varsa — iterasyon modundan geliniyorsa — `## İlk Tasarım` bölümüne dokunma.
-Yeni görevleri `## Geliştirme Backlog'u` bölümüne, bu çalışmanın kendi alt bölümüne ekle (yoksa oluştur).
+Yeni görevleri `## Geliştirme Backlog'u` bölümüne, bu çalışmanın kendi alt bölümüne `Edit` ile ekle (yoksa oluştur);
+dosyanın tamamını yeniden yazma (**Dosya yazma kuralı**). Yeni alt bölüm önceki çalışmaların alt bölümlerinden
+**sonra** gelir — kontrol betikleri en alttaki `ADS_PLAN` işaretini son çalışma sayar.
 
 **Çalışma işareti (zorunlu):** Bu çalışmada yazdığın görevlerin hemen üstüne, promptta iletilen çalışma
 kimliğiyle tek satır ekle. Görev kimlikleri bu çalışmada yazılan görevlerin tamamıdır, sırayla:
