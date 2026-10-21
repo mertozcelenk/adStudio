@@ -20,6 +20,10 @@
  *     ve notta görünür; visual --only klasör kabul eder
  *   - check-names: yazım hatalı atıf, name ≠ dosya adı, eski ad kalıntısı, eksik commands kopyası
  *   - check-run: teslim üst sınırı (testler, istisnalar, görsel inceleme), istisna biçimi, project-state alanları
+ *   - context-pack: bu çalışmanın plan / UX bölümü (işaret başlığın üstünde), ortak kararlar, anahtarlı akış ve
+ *     template girer; ilgisiz akış girmez; geniş kapsamlı eski spec yalnızca listelenir
+ *   - probe: adım sonrası odak, ölçüm, tam ekran içinde mi, bilinmeyen adım hata olarak raporlanır
+ *   - check-names: var olan dosyayı baştan yazdıran talimat ve Edit'siz Edit talimatı yakalanır
  *   - plan-gate: önceki çalışmadan kalan / kimliksiz COMPLETE işareti reddedilir, eksik görev ve başlıksız
  *     spec yakalanır, doğru çalışma geçer ve önceki çalışmanın bölümü korunmuş olur
  */
@@ -291,6 +295,71 @@ rmSync(join(figmaRoot, 'project-state.md'));
   mkdirSync(join(root, '.claude', 'commands'));
   writeFileSync(join(root, '.claude', 'commands', 'ads-iterate.md'), 'x');
   check('check-names: commands kopyasında eksik skill yakalanır', /commands\/ads-check\.md eksik/.test(cn().stdout), cn().stdout);
+}
+
+// context-pack: bağlam paketi
+{
+  const root = mkdtempSync(join(tmp, 'pack-'));
+  const w = (f, t) => { mkdirSync(join(root, f, '..'), { recursive: true }); writeFileSync(join(root, f), t); };
+  w('project-state.md', 'cikti_formati: html\nplatform: web\n\n# P\n\n## Üretilen Dosyalar\n- x\n\n## Açık maddeler\n- YP-1 açık\n');
+  w('spec.md', '# S\n## Amaç\nuzun amaç\n## Bağlayıcı Kararlar\n- logo korunur\n<!-- BEGIN:token_directives -->\nx: 1\n<!-- END:token_directives -->\n');
+  w('flows.md', '# F\n## Ortak Davranış\n- geri al\n## F-01 — Liste\nT-LIST\n## F-02 — Şema\nT-CHART kanvas\n');
+  w('templates.md', '# T\n## Kabuk — çerçeve\nsidebar\n## T-LIST — grid\n## T-CHART — kanvas\nzoom\n');
+  w('design-plan.md', '# P\n## İlk Tasarım\n<!-- ADS_PLAN run=20261001-0900 tasks=TASK-001,TASK-002 -->\n- [x] TASK-001: Foundation\n- [x] TASK-002: Org chart canvas\n' +
+    "## Geliştirme Backlog'u\n### İterasyon 20261005-1000 — Kişi şeması\n<!-- ADS_PLAN run=20261005-1000 tasks=TASK-003 -->\n- [ ] TASK-003: Person org chart\n");
+  w('ux-specs.md', '# UX Specs\n\n<!-- UX_SPEC_STATUS: COMPLETE run=20261005-1000 tasks=TASK-003 -->\n## Çalışma 20261005-1000\n### UX Spec — TASK-003\n- Yapı: T-CHART\nYENİ-SPEC\n' +
+    '<!-- UX_SPEC_STATUS: COMPLETE run=20261001-0900 tasks=TASK-001,TASK-002 -->\n## Çalışma 20261001-0900\n### Ortak UX Kararları\nORTAK-KARAR\n' +
+    '### UX Spec — TASK-001\n- Yapı: T-LIST, T-CRUD, T-CHART, T-FORM\nGENİŞ-SPEC\n### UX Spec — TASK-002\n- Yapı: T-CHART\nESKİ-ŞEMA-SPEC\n');
+  w('screens/org-chart.html', '<p>x</p>'); w('screens/list.html', '<p>y</p>'); w('assets/app.css', 'a{}');
+  const out = join(root, 'pack.md');
+  const res = spawnSync(process.execPath, [join(HERE, 'context-pack.mjs'), '--root', root, '--run', '20261005-1000', '--keys', 'T-CHART,org-chart', '--out', out], { encoding: 'utf8' });
+  const pack = existsSync(out) ? readFileSync(out, 'utf8') : '';
+  check('context-pack: paket yazıldı', res.status === 0 && pack.length > 0, res.stdout + res.stderr);
+  check('context-pack: bu çalışmanın UX bölümü (işaret başlığın üstünde) girer', pack.includes('YENİ-SPEC'), '');
+  check('context-pack: bu çalışmanın plan bölümü girer', pack.includes('TASK-003: Person org chart'), '');
+  check('context-pack: önceki çalışmanın ortak kararları girer', pack.includes('ORTAK-KARAR'), '');
+  check('context-pack: doğrudan ilgili eski spec girer', pack.includes('ESKİ-ŞEMA-SPEC'), '');
+  check('context-pack: geniş kapsamlı eski spec içeriği girmez, yalnızca listelenir', !pack.includes('GENİŞ-SPEC') && pack.includes('TASK-001'), '');
+  check('context-pack: anahtarlı akış girer, ilgisiz akış girmez', pack.includes('F-02 — Şema') && !pack.includes('F-01 — Liste'), '');
+  check('context-pack: Bağlayıcı Kararlar ve token_directives girer, ilgisiz spec bölümü girmez',
+    pack.includes('logo korunur') && pack.includes('BEGIN:token_directives') && !pack.includes('uzun amaç'), '');
+  check('context-pack: ilgili ekran dosyası listelenir, ilgisiz ekran listelenmez', pack.includes('screens/org-chart.html') && !pack.includes('screens/list.html'), '');
+  check('context-pack: --run yoksa kullanım hatası (1)', spawnSync(process.execPath, [join(HERE, 'context-pack.mjs'), '--root', root]).status === 1, '');
+}
+
+// probe: hazır ölçüm betiği
+{
+  const root = mkdtempSync(join(tmp, 'probe-'));
+  mkdirSync(join(root, 'screens'));
+  writeFileSync(join(root, 'screens', 'p.html'), '<!doctype html><html><body><div id="box"><button id="a">A</button><button id="b">B</button>' +
+    '<div id="panel" hidden>panel</div></div><button id="out">Dış</button></body></html>');
+  const probe = (...a) => spawnSync(process.execPath, [join(HERE, 'probe.mjs'), '--root', root, '--file', 'screens/p.html', ...a], { encoding: 'utf8' });
+  const res = probe('--steps', 'click:#a; press:Tab; nope:x; fullscreen:#box', '--measure', '#b, #panel, #out', '--theme', 'dark');
+  const line = res.stdout.split('\n').find(l => l.startsWith('{'));
+  const r = line ? JSON.parse(line) : {};
+  check('probe: çalıştı (çıkış 0)', res.status === 0 && !!line, res.stdout + res.stderr);
+  check('probe: adım sonrası odak kaydedilir (Tab → #b)', r.steps?.[1]?.active?.startsWith('button#b'), JSON.stringify(r.steps));
+  check('probe: bilinmeyen adım hata olarak raporlanır, betik durmaz', /bilinmeyen adım/.test(r.steps?.[2]?.error || '') && r.steps?.length === 4, JSON.stringify(r.steps));
+  check('probe: hidden öğe görünmez ölçülür', r.measure?.find(m => m.sel === '#panel')?.visible === false, JSON.stringify(r.measure));
+  check('probe: tam ekran dışındaki öğe işaretlenir', r.fullscreen === '#box' && r.measure?.find(m => m.sel === '#out')?.insideFullscreen === false, JSON.stringify(r));
+  check('probe: tema dark', r.theme === 'dark', '');
+  check('probe: --file yoksa kullanım hatası (1)', spawnSync(process.execPath, [join(HERE, 'probe.mjs'), '--root', root]).status === 1, '');
+}
+
+// check-names: dosya yazma kuralı
+{
+  const root = mkdtempSync(join(tmp, 'write-'));
+  mkdirSync(join(root, '.claude', 'agents'), { recursive: true });
+  const agent = (n, tools, body) => writeFileSync(join(root, '.claude', 'agents', `${n}.md`), `---\nname: ${n}\ntools: ${tools}\n---\n${body}\n`);
+  const cn = () => spawnSync(process.execPath, [join(HERE, 'check-names.mjs'), '--root', root], { encoding: 'utf8' });
+  agent('ads-design-planner', 'Read, Write, Edit', 'Yeni bölümü `Edit` ile ekle.');
+  check('check-names: Edit aracı olan Edit talimatı geçer', cn().status === 0, cn().stdout);
+  agent('ads-design-planner', 'Read, Write', 'Yeni bölümü `Edit` ile ekle.');
+  check('check-names: Edit aracı olmadan Edit talimatı yakalanır', /tools: satırında Edit yok/.test(cn().stdout), cn().stdout);
+  agent('ads-design-planner', 'Read, Write, Edit', 'Dosyayı oku, yeni bölümleri ekleyerek tamamını yaz.');
+  check('check-names: dosyayı baştan yazdıran talimat yakalanır', /tamamını yeniden yazdıran/.test(cn().stdout), cn().stdout);
+  agent('ads-design-planner', 'Read, Write', '- [ ] `Edit` ile mi ekliyor?');
+  check('check-names: kontrol listesi sorusundaki `Edit` talimat sayılmaz', cn().status === 0, cn().stdout);
 }
 
 rmSync(tmp, { recursive: true, force: true });
