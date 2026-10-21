@@ -23,15 +23,38 @@ Promptunda şunlar olacak:
 - `flows.md` ve `templates.md` yolları (`yapi` varsa) — ST kuralları
 - Dial'lar (VARIANCE / MOTION / DENSITY), ekran tipleri (`marketing` / `product` / `content`), `color_scheme`
   — iletilmediyse `spec.md → token_directives`'ten oku
+- **Bağlam paketi** yolu (`/ads-iterate`'ten gelindiyse; `.ads/context-<kimlik>.md`)
+- **Mod:** normal ya da `birleşik` (bkz. **Birleşik mod**)
 
 ## Okuma ve görsel sınırı
 
+- **Bağlam paketi verildiyse önce onu oku** — çalışmanın planı, UX spec'i, Bağlayıcı Kararlar, ilgili akış / template
+  bölümleri oradadır. `design-plan.md`, `ux-specs.md`, `spec.md`, `project-state.md`'yi baştan okuma; pakette olmayan
+  bilgi için `grep -n` ile ilgili satırı bul, yalnızca o aralığı oku.
 - Büyük dosyayı (yaklaşık 300 satırı aşan ekran HTML'i, ortak CSS / JS) baştan sona okuma: kontrol ettiğin kural için
   `grep -n` ile ilgili yeri bul, yalnızca o aralığı oku.
 - Ekran görüntüsü (HTML'de Playwright, Figma'da `get_screenshot`): ilk incelemede ekran başına en fazla 2, toplam en
   fazla 10. Görsel gerektirmeyen kuralı (token bağlama, metin, yapı) kaynaktan kontrol et.
+- **Ölçüm için kendi Playwright betiğini yazma; `scripts/test/probe.mjs` kullan** (odak, konum, görünürlük, tam ekran
+  içinde mi, axe; `--shot` ile ekran görüntüsü): `node scripts/test/probe.mjs --file screens/x.html --theme both
+  --steps "click:#a; press:Space" --measure "#a, #panel" --axe`. JSON'un yanıtladığı soru için görüntü okuma.
 - **Yeniden kontrol:** yalnızca açık teslim engellerinin geçtiği ve builder'ın değiştirdiği dosya / frame'leri aç;
   engel başına en fazla 1 ekran görüntüsü. Değişmeyen ekranları yeniden inceleme.
+
+## Birleşik mod
+
+`/ads-iterate → Adım 3B` (mevcut template'ten yeni ekran) tek reviewer çalıştırır: sen. Tasarım kontrollerine ek olarak
+UX kontrolünü de yaparsın; ayrıca `ads-ux-reviewer` çalışmaz.
+- `.claude/agents/ads-ux-reviewer.md`'den `## Kanıt Temeli` ve `## Kontrol Listesi` bölümlerini oku (`grep -n` ile
+  başlıkları bul, o aralığı oku) ve uygula: brief'e göre heuristic ağırlığı, Nielsen heuristic'leri, component binding,
+  WCAG manuel kontrol, mobil (uygulama ekranlarında).
+- Etkileşim durumlarını mutlaka çalıştırarak dene (`probe.mjs`): daralt / aç, filtre değişimi, tam ekran, panel, hata ve
+  boş durumlar — odak kayboluyor mu (`active: BODY`), etkileşilen öğe yerinde kalıyor mu, panel / toast tam ekranın
+  içinde mi. Kaynak okuyarak "çalışıyor olmalı" deme.
+- Rapor tek: `## Design Review` yapısı; UX bulguları aynı listelere girer, kimlikleri `B…`, başlıkta heuristic etiketi
+  (`[H3]`, `[a11y 2.4.3]`) ve kanıt sembolü (●/◐/○). `ads-ux-reviewer`'daki `○ İnsan Testi Gereken` ve
+  `Kontrol edilmedi → belirsiz` bölümlerini rapora ekle.
+- Yeniden kontrolde de tek reviewer sensin; tasarım ve UX engellerinin ikisini de kontrol edersin.
 
 ## Süreç
 

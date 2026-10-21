@@ -139,9 +139,16 @@ Kurulu değilse pipeline otomatik olarak HTML/CSS moduna geçer.
 /ads-iterate
   ├── Bağlayıcı kararla çelişen istek → "kararı güncelle / karar kalsın" sorusu
   ├── Küçük değişiklik → uygular → hafif review + otomatik testler → teslim kapısı
-  └── Büyük özellik → planlar (design-plan.md Geliştirme Backlog'u) → ads-ux-designer → plan-gate → uygular
-                    → tam review → düzeltme döngüsü → teslim kapısı
+  ├── Şablondan yeni ekran → bağlam paketi → planner (birleşik: plan + UX spec) → tek soru durağı → plan-gate
+  │                        → uygular → tek birleşik reviewer → düzeltme döngüsü → teslim kapısı
+  └── Yeni akış / karmaşık → bağlam paketi → planner → tek soru durağı → ads-ux-designer → plan-gate → uygular
+                           → iki reviewer → düzeltme döngüsü → teslim kapısı
 ```
+
+Seviyeyi asistan önerir, sen onaylarsın. Orta ve büyük işlerde en fazla iki soru durağı vardır (başlarken ve plan
+yazılınca); agent'lar açık kararları kendi seçmez, durağa taşır. Agent'lar büyük dosyaları baştan okumaz, önce
+`.ads/context-<kimlik>.md` bağlam paketini okur (`scripts/test/context-pack.mjs`); ölçümler için hazır
+`scripts/test/probe.mjs` kullanılır.
 
 ### Ne zaman hangi yol (maliyet notu)
 
@@ -149,7 +156,8 @@ Kurulu değilse pipeline otomatik olarak HTML/CSS moduna geçer.
   daha koyu" gibi denemeler. Asistan doğrudan düzeltir; hızlıdır ama builder kuralları, Pre-flight, testler ve
   inceleme çalışmaz.
 - **`/ads-iterate <istek>`**: sütun yapısı, yeni öğe / buton / durum, birden fazla ekranı etkileyen değişiklik.
-  Builder kurallarıyla uygular, testler ve inceleme çalışır.
+  Builder kurallarıyla uygular, testler ve inceleme çalışır. Mevcut bir şablondan yeni ekran orta seviyedir (birleşik plan,
+  tek reviewer); yeni akış ya da yeni etkileşim modeli tam süreçtir.
 - **`/ads-check`**: birkaç hızlı düzeltmeden sonra sayfalar arası tutarlılık kontrolü.
 - **Aşama aralarında `/clear`** (ya da oturumu yeniden aç): adStudio durumu dosyalarda tutar (`spec.md`,
   `project-state.md`, `design-brief.md`, `flows.md`), kayıp olmaz. Uzayan konuşmada her adım tüm konuşmayı yeniden
@@ -355,9 +363,10 @@ project-state.md                # çıktı türü (orkestratör başta yazar) + 
 test-results.json               # run-all.mjs çıktısı — test başına sonuç ve bulgular
 design-brief.md                 # onaylı stratejist brief'i — sonraki adımlar ve /ads-iterate okur; önceki sürüm design-brief.[tarih].md
 design-plan.md                  # ads-design-planner çıktısı — İlk Tasarım + Geliştirme Backlog'u
-ux-specs.md                     # ads-ux-designer çıktısı — her çalışma kendi bölümünde (run kimliği), önceki bölümler korunur
+ux-specs.md                     # ads-ux-designer çıktısı — her çalışma kendi bölümünde (run kimliği, en yeni en üstte), önceki bölümler korunur
 flows.md                        # Ortak Davranış + kullanıcı akışları (önkoşul / sonra) — kalıcı, yeni kapsam eklenir
 templates.md                    # Ekran tipleri: bölgeler, zorunlu durumlar, davranış — kalıcı, yeni kapsam eklenir
+.ads/                           # geçici çalışma dosyaları: request-<kimlik>.md, context-<kimlik>.md (bağlam paketi) — silinebilir
 components/[katman]/[ad].html   # ads-design-builder HTML çıktısı
 screens/[ad].html               # ads-design-builder ekran çıktısı
 index.html                      # ads-design-builder navigasyon sayfası

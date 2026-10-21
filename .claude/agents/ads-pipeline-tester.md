@@ -169,8 +169,12 @@ Her figma-*.md skill'i için:
 **iterate.md:**
 - [ ] Küçük / büyük değişiklik ayrımı var mı?
 - [ ] Küçük değişiklik: direkt `ads-design-builder` çağrısı yapıyor mu?
-- [ ] Büyük özellik: planner → onay → builder → reviewer akışı var mı?
-- [ ] Büyük özellikte planner'a `iterasyon` modu iletiliyor mu?
+- [ ] Üç seviye var mı: küçük (3A), şablondan yeni ekran (3B: birleşik planner + tek birleşik reviewer), yeni akış (3C: planner → UX → iki reviewer); seviyeyi orkestratör önerip kullanıcı mı onaylıyor?
+- [ ] 3C'de planner'a `iterasyon`, 3B'de `birleşik` modu iletiliyor mu?
+- [ ] Orta / büyük işte en fazla iki soru durağı var mı (başlarken + plan sonrası; ayrı "Başlayalım mı?" yok), onaylı kararlar planner'a iletilip yeniden sorulmuyor mu, agent'lar açık kararı kendi seçmiyor mu?
+- [ ] Bağlam paketi (`context-pack.mjs`) planner'dan önce ve builder'dan önce üretiliyor, her agent'a yolu iletiliyor mu?
+- [ ] Builder ve reviewer'lar ölçüm için `probe.mjs` kullanıyor, kendi Playwright betiğini yazmıyor mu; builder test betiklerinin kaynağını okumuyor, `sleep` kullanmıyor mu?
+- [ ] Düzeltme turu yeni builder'la ve odaklı brief'le (paket + değişen dosyalar + dosya:satır bulgular) mı çalışıyor?
 - [ ] Backlog'a tamamlandı kaydı yazılıyor mu?
 - [ ] `## İlk Tasarım` bölümüne dokunmadığı belirtilmiş mi?
 

@@ -20,6 +20,7 @@ Promptunda şunlar olacak:
   — uygulama ekranlarında `.claude/references/mobile-platforms.md` bağlayıcıdır
 - `flows.md` ve `templates.md` yolları (`project-state.md → yapi` varsa) — `.claude/references/structure-standards.md`
   bağlayıcıdır (bkz. Adım 2b)
+- **Bağlam paketi** yolu (`.ads/context-<kimlik>.md`, `/ads-iterate`'ten gelindiyse) — bkz. **Okuma ve görsel sınırı**
 
 ---
 
@@ -47,23 +48,37 @@ yazmaz — otomatik testler hangi kontrolün uygulanacağına bu kayıtla karar 
 
 ## Okuma ve görsel sınırı
 
+- **Bağlam paketi verildiyse önce onu oku.** Bu çalışmanın planı, UX spec'i, ilgili akış / template bölümleri, Bağlayıcı
+  Kararlar ve ilgili dosya listesi oradadır; `ux-specs.md`, `design-plan.md`, `spec.md`, `project-state.md`'yi ayrıca
+  baştan okuma. Pakette olmayan bilgi için kaynak dosyada `grep -n` ile ilgili satırı bul, yalnızca o aralığı oku.
 - Büyük dosyayı (yaklaşık 300 satırı aşan ekran HTML'i, ortak CSS / JS, `ux-specs.md`, `design-plan.md`) baştan sona
   okuma: önce `grep -n` ile ilgili bölümü bul, yalnızca o aralığı oku (`sed -n`). `ux-specs.md`'den yalnızca bu
   çalışmanın ve işlenen görevin bölümünü oku.
 - Bir dosyayı bir kez oku; değişiklikten sonra yalnızca değiştirdiğin aralığa bak.
-- Kendi kontrolün için ekran görüntüsü: görev başına en fazla 2 (ör. açık + koyu ya da masaüstü + mobil), düzeltme
-  sonrası aynı ekran için en fazla 1. Figma'da `frame.screenshot()` için de aynı sınır geçerli.
+- **Test betiklerinin kaynak kodunu okuma** (`scripts/test/*.mjs`). Kurallar `references/rules.md` ve pre-flight
+  listesinde, bulgular `test-results.json`'da (kural kimliği, dosya, seçici, mesaj).
+- **Ölçüm için kendi Playwright betiğini yazma; `scripts/test/probe.mjs` kullan.** Odak nereye gitti, öğe görünür mü,
+  kart kaydı mı, panel tam ekranın içinde mi, axe ihlali var mı — hepsi JSON çıktısıyla yanıtlanır:
+  `node scripts/test/probe.mjs --file screens/x.html --query "?id=1" --theme both --steps "click:#a; press:Space" --measure "#a, #panel" --axe`
+  (adımlar ve seçenekler betiğin başındaki açıklamada). Ekran görüntüsü gerekiyorsa aynı komuta `--shot <dosya.png>` ekle.
+- Ekran görüntüsü yalnızca görsel bir soruyu yanıtlamak için (yerleşim, hiyerarşi, renk); `probe.mjs` JSON'unun
+  yanıtladığı soru için görüntü okuma. Sınır: **ekran başına en fazla 2** (ör. açık + koyu ya da masaüstü + mobil),
+  düzeltme sonrası aynı ekran için en fazla 1. Figma'da `frame.screenshot()` için de aynı sınır geçerli.
 - Revision modunda yalnızca bulguların geçtiği dosya / frame'leri aç.
 - Otomatik testleri kendin çalıştırırsan revision ve küçük değişiklikte yalnızca değiştirdiğin dosyalarda çalıştır:
   `node scripts/test/run-all.mjs --only <dosyalar>` (ortak CSS / token değiştiyse `--only screens/`).
-- Testleri her değişiklik turunda bir kez çalıştır. Sonuç tablosu ve bulgular `test-results.json`'da; görmek için testi
-  yeniden çalıştırma, dosyayı oku.
+- Testleri her değişiklik turunda **bir kez**, turun sonunda ve ön planda çalıştır (arka planda başlatıp `sleep` ile
+  bekleme). Test bulgusunu düzelttiysen yeniden kontrolü yalnızca o dosyada yap (`--only <dosya>`). Sonuç tablosu ve
+  bulgular `test-results.json`'da; görmek için testi yeniden çalıştırma, dosyayı oku.
 
 ## Adım 1 — Yeni build mi, revision mı?
 
 - **Revision** (mevcut bulgular + hedef dosya/frame listesi verildiyse):
   Yalnızca belirtilen bulgulara göre düzelt. Planı baştan işleme.
   Adım 2-4'ü atla, doğrudan düzeltmeye geç. Düzeltme bitince Pre-flight'ı yine çalıştır.
+  - Promptta bağlam paketi, önceki turda değişen dosyaların listesi ve **dosya:satır** konumlu bulgular gelir. Bulgunun
+    satırına git ve çevresini oku; projeyi yeniden keşfetme (`project-state.md`'nin tamamı, test betikleri, ortak JS / CSS'in
+    tamamı okunmaz).
   - **Teslim engelleri** (`B…` / `U…` kimlikli) zorunludur. Her biri için dönüşte `düzeltildi` ya da
     `düzeltilemedi — [neden]` yaz; düzeltilemeyeni sessizce atlama.
   - **Kapsam kararı:** Bir engeli kapatmak yeni bir özellik, ekran, veri toplama, ürün vaadi veya kullanıcı
