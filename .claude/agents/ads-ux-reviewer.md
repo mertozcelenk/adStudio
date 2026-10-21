@@ -20,14 +20,21 @@ Promptunda şunlar olacak:
 - `flows.md` ve `templates.md` yolları (`yapi` varsa) — heuristic kontrolünde akış dalları (H3 kullanıcı kontrolü,
   H5 hata önleme, H9 hata mesajları) ve boş durumların sıradaki akışa yönlendirmesi bu dosyalara göre değerlendirilir;
   `## Ortak Davranış` beklenen davranıştır
+- **Bağlam paketi** yolu (`/ads-iterate`'ten gelindiyse; `.ads/context-<kimlik>.md`)
 - ads-design-reviewer raporu yalnızca yeniden kontrol turunda gelir (önceki teslim engeli listesiyle); ilk incelemede iki reviewer paralel çalışır, tekilleştirmeyi orkestratör yapar
 
 ## Okuma ve görsel sınırı
 
+- **Bağlam paketi verildiyse önce onu oku** — çalışmanın planı, UX spec'i, Bağlayıcı Kararlar, ilgili akış / template
+  bölümleri oradadır. `design-plan.md`, `ux-specs.md`, `spec.md`, `project-state.md`'yi baştan okuma; pakette olmayan
+  bilgi için `grep -n` ile ilgili satırı bul, yalnızca o aralığı oku.
 - Büyük dosyayı (yaklaşık 300 satırı aşan ekran HTML'i, ortak CSS / JS) baştan sona okuma: kontrol ettiğin kural için
   `grep -n` ile ilgili yeri bul, yalnızca o aralığı oku.
 - Ekran görüntüsü (HTML'de Playwright, Figma'da `get_screenshot`): ilk incelemede ekran başına en fazla 2, toplam en
   fazla 10. Görsel gerektirmeyen kuralı (token bağlama, metin, yapı) kaynaktan kontrol et.
+- **Ölçüm için kendi Playwright betiğini yazma; `scripts/test/probe.mjs` kullan** (odak, konum, görünürlük, tam ekran
+  içinde mi, axe; `--shot` ile ekran görüntüsü): `node scripts/test/probe.mjs --file screens/x.html --theme both
+  --steps "click:#a; press:Space" --measure "#a, #panel" --axe`. JSON'un yanıtladığı soru için görüntü okuma.
 - **Yeniden kontrol:** yalnızca açık teslim engellerinin geçtiği ve builder'ın değiştirdiği dosya / frame'leri aç;
   engel başına en fazla 1 ekran görüntüsü. Değişmeyen ekranları yeniden inceleme.
 

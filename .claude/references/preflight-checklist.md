@@ -13,7 +13,8 @@ maddede kuralı ve o dosyadaki satırını oku. Figma'da `yalnızca HTML` / `Fig
 1. Her maddeyi işaretle: `✓` geçti · `✗` geçmedi · `N/A` uygulanmaz (gerekçesiyle).
 2. `✗` olan her maddeyi **düzelt**, ardından tekrar işaretle.
 3. Düzeltilemeyen `✗` kalırsa raporda nedenini yaz — tamamlanmış gibi gösterme.
-4. `scripts/test/` varsa `node tells.mjs` çalıştır, sonucunu ilgili maddelere işle.
+4. `scripts/test/` varsa tells sonucunu ilgili maddelere işle: bu turda `run-all.mjs` çalıştırdıysan sonucu
+   `test-results.json`'dan al (tells run-all'un içinde; `tells.mjs`'i ayrıca çalıştırma), çalıştırmadıysan `node tells.mjs`.
    Çalıştırılamazsa "tells.mjs çalıştırılamadı, kaynak analiziyle kontrol edildi" yaz.
 
 `[marketing]` maddeleri yalnızca marketing ekranlarında, `[content]` maddeleri yalnızca content

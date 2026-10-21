@@ -14,6 +14,8 @@
  *   4. Eski ad kalıntısı yok: "ldf" yalnızca README'deki köken notunda ("türetildi") geçebilir
  *   5. .claude/commands/ varsa .claude/skills/ ile aynı dosyaları içeriyor (kurulumdaki kopya)
  *   7. Metinlerde anılan referans dosyaları (`rules.md`, `build-html.md`, `*-checklist.md`, `*-standards.md`…) var
+ *   8. Dosya yazma kuralı: talimatlar var olan bir dosyanın "tamamını yaz"masını istemiyor; talimatında `Edit`
+ *      geçen agent'ın `tools:` satırında Edit var (yoksa agent dosyayı Write ile baştan yazmak zorunda kalır).
  *   6. Agent `tools:` satırındaki her ad Claude Code'un tanıdığı biçimde: yerleşik araç (Read, Bash…) veya
  *      `mcp__<sunucu>__<araç>`. Ad eşleşmezse araç agent'a sessizce verilmez (ör. `use_figma`, `Figma:get_metadata`).
  *
@@ -111,6 +113,25 @@ for (const n of agents) {
   for (const t of line[1].split(',').map(s => s.trim()).filter(Boolean)) {
     if (!BUILTIN.has(t) && !MCP_RE.test(t)) {
       problems.push(`.claude/agents/${n}.md: tools: "${t}" tanınmayan araç adı (yerleşik araç veya mcp__<sunucu>__<araç> olmalı)`);
+    }
+  }
+}
+
+// 8. dosya yazma kuralı — var olan dosyayı baştan yazdıran ifade yok; `Edit` isteyen agent'ın aracı var
+const REWRITE = /tamamını (yeniden )?yaz(?!ma)|tek bir `Write` ile kaydet/;
+for (const [dir, names] of [[skillsDir, skills], [agentsDir, agents]]) {
+  for (const n of names) {
+    const rel = relative(root, join(dir, `${n}.md`));
+    const text = readFileSync(join(dir, `${n}.md`), 'utf8');
+    text.split('\n').forEach((line, i) => {
+      if (REWRITE.test(line)) problems.push(`${rel}:${i + 1}: dosyanın tamamını yeniden yazdıran talimat — Edit ile yalnızca ilgili bölümü ekle`);
+    });
+    if (dir === agentsDir) {
+      const tools = (text.match(/^tools:\s*(.*)$/m) || [])[1];
+      const instructs = text.split('\n').some(l => /`Edit`/.test(l) && !/^\s*- \[ \]/.test(l)); // kontrol listesi soruları sayılmaz
+      if (tools !== undefined && instructs && !tools.split(',').map(t => t.trim()).includes('Edit')) {
+        problems.push(`${rel}: talimatta \`Edit\` geçiyor ama tools: satırında Edit yok`);
+      }
     }
   }
 }

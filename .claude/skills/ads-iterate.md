@@ -1,6 +1,6 @@
 ---
 name: ads-iterate
-description: Mevcut bir tasarım projesini düzenler veya yeni özellikler ekler. Küçük değişiklikleri direkt uygular, büyük özellikleri design-plan.md'nin "Geliştirme Backlog'u" bölümüne planlar ve sırayla çalıştırır.
+description: Mevcut bir tasarım projesini düzenler veya yeni özellikler ekler. İşi üç seviyeden birine yönlendirir — küçük değişikliği direkt uygular, mevcut şablondan yeni ekranı birleşik plan + tek reviewer ile, yeni akışı tam süreçle (planner, UX, iki reviewer) yapar.
 ---
 
 # Iterate — Mevcut Projeyi Geliştir
@@ -62,39 +62,74 @@ Yanıtı al. Adım 2'ye geç.
 
 ---
 
-## Adım 2 — Büyüklüğü Değerlendir
+## Adım 2 — Seviyeyi Değerlendir
 
-İsteği şu kriterlere göre değerlendir:
+Seviye ekran sayısına değil, **yeni karar ihtiyacına ve etkiye** göre seçilir:
 
 **Küçük değişiklik** — tek bir component veya ekranı etkiliyor, yeni akış gerektirmiyor:
 - Renk, tipografi, boşluk düzenlemesi
 - Tek bir component'a eleman ekleme
 - Mevcut bir ekranın içeriğini güncelleme
-→ **Adım 3A**'ya geç
+→ **Adım 3A**
 
-**Büyük özellik** — birden fazla component veya ekran gerektiriyor, yeni user flow içeriyor:
-- Yeni ekran ekleme
-- Çok adımlı akış tasarımı
-- Yeni component grubu
-→ **Adım 3B**'ye geç
+**Şablondan yeni ekran (orta)** — yeni ekran veya ekranın büyük bir genişlemesi, ama üçü birden doğru:
+- `templates.md`'deki **mevcut** bir template'e oturuyor (yeni template gerekmiyor)
+- Mevcut bir akışın varyantı ya da tek adımlık yeni giriş (yeni çok adımlı akış yok)
+- Yeni bir etkileşim modeli yok (yeni wizard, yeni sürükle-bırak, yeni gerçek zamanlı davranış değil)
 
-Sınırda kalıyorsa büyük kabul et.
+Örnek: mevcut T-CHART'tan "Person Organization Chart" ekranı; mevcut T-LIST'ten yeni bir liste ekranı.
+→ **Adım 3B**
 
-### Yapı (flow ve template) — her iki yolda da
+**Yeni akış / karmaşık özellik (büyük)** — yeni çok adımlı akış, yeni template, yeni etkileşim modeli ya da birden
+fazla akışı değiştiren iş. Örnek: yeni ödeme akışı, yetki wizard'ına yeni adım dalı.
+→ **Adım 3C**
+
+Seviyeyi orkestratör **önerir**, kullanıcı onaylar (Soru durağı 1). Kendi başına kesinleştirme.
+
+### Soru durakları (orta ve büyük)
+
+Kullanıcıya iş başına **en fazla iki durakta** soru sorulur; her durak tek bir soru penceresidir (birden çok soru
+aynı pencerede). Agent'lar hiçbir açık kararı kendi başına seçmez (varsayım yok) — kararı bir sonraki durağa taşır.
+
+- **Durak 1 — işe başlarken:** seviye önerisi (gerekçesi ve örnekle) + istekte baştan görünen açık ürün kararları
+  (ör. "sayfa ilk açıldığında ne görünsün?"). Claude Code plan modunda plan onaylandıysa o onay Durak 1 sayılır;
+  plan bu soruları içermeli.
+- **Durak 2 — plan yazıldıktan sonra:** plan özeti (görev ve ekran sayısı) + planner'ın döndürdüğü açık kararlar +
+  token kapsam uyarısı (varsa) + başlama onayı. Ayrıca "Başlayalım mı?" diye sorulmaz; Durak 2'deki onay başlama onayıdır.
+- **Aynı kararı iki kez sorma.** Kullanıcının bu konuşmada verdiği her karar (Durak 1 cevapları, plan modu onayındaki
+  kararlar) planner'a **onaylı kararlar** olarak iletilir; planner bunları açık karar olarak döndürmez, orkestratör
+  yeniden sormaz.
+- İş sırasında gerçekten yeni ortaya çıkan kapsam kararı (`ads-design-strategy.md → Adım 6 → Kapsam kararı`) ayrıca sorulur.
+
+### Bağlam paketi (orta ve büyük)
+
+Büyük proje dosyalarını (`ux-specs.md`, `design-plan.md`, `project-state.md`) her agent'a baştan okutmamak için:
+
+1. Çalışma kimliği üret: `date +%Y%m%d-%H%M`.
+2. İsteği ve onaylı kararları `.ads/request-<kimlik>.md` dosyasına yaz (kullanıcının cümlesi + Durak cevapları).
+3. Anahtarları belirle: etkilenen ekran dosya adları, template ve akış kimlikleri, ana component adları
+   (ör. `T-CHART,org-chart,F-02,org-node`).
+4. `node scripts/test/context-pack.mjs --run <kimlik> --keys "<anahtarlar>" --request-file .ads/request-<kimlik>.md`
+   → `.ads/context-<kimlik>.md`. Planner / UX yazdıktan sonra, builder'dan önce **yeniden çalıştır** (paket yeni plan
+   ve spec bölümünü alır).
+5. Her agent'a paket yolunu ilet. Agent'lar önce paketi okur; pakette olmayan bilgi için büyük dosyada yalnızca o
+   bölümü arar (`grep -n` + aralık), dosyanın tamamını okumaz.
+
+### Yapı (flow ve template) — her seviyede
 
 `project-state.md → yapi` alanı varsa `flows.md` ve `templates.md` bu projenin kalıcı yapı kaydıdır
 (`.claude/references/structure-standards.md`). Etkilenen dosyaları sayarken:
 - **Template değişikliği** (bölge, zorunlu durum, davranış): o template'i kullanan **tüm ekranlar** etkilenen dosyadır.
 - **Akış değişikliği** (adım, dal, `Sonra`): o akışın ekranları + o akışı `Önkoşul` gösteren akışların ekranları
   etkilenen dosyadır.
-- Yeni akış veya yeni ekran = büyük özellik (Adım 3B) ve kapsam ekleme; önce `flows.md` / `templates.md`'ye eklenir.
+- Yeni ekran (Adım 3B) ve yeni akış (Adım 3C) kapsam eklemedir; önce `flows.md` / `templates.md`'ye eklenir.
 
-`yapi` alanı yoksa (katman öncesi kurulmuş proje) büyük özellikte bir kez sor:
+`yapi` alanı yoksa (katman öncesi kurulmuş proje) orta veya büyük işte Durak 1'de sor:
 > "Bu projede akış ve ekran tipi kaydı (flows.md, templates.md) yok. Bu özellikle birlikte oluşturayım mı?
 > Sonraki değişikliklerde hangi ekranların etkilendiği buradan bulunur."
-Evet → Adım 3B'de planner mevcut ekranlardan da çıkararak yazar, `yapi` alanı eklenir. Hayır → eski yolla devam.
+Evet → planner mevcut ekranlardan da çıkararak yazar, `yapi` alanı eklenir. Hayır → eski yolla devam.
 
-### Bağlayıcı karar değişikliği (her iki yolda da)
+### Bağlayıcı karar değişikliği (her seviyede)
 
 Bu adım adStudio'da bağlayıcı bir kararın değiştirilmesinin tek yoludur; `/ads-design-strategy` de bunu kullanır.
 
@@ -130,7 +165,7 @@ Sonuç:
 extension-spec'te `Modernizasyon kapsamı` tanımlı değilse, değişiklikleri şu sırayla
 öner ve kullanıcının seçtiği adımda dur: 1. Tipografi → 2. Boşluk ve ritim →
 3. Renk ayarı (marka accent'i korunur) → 4. Hareket → 5. Hero / ana section kurgusu →
-6. Blok değişimi. İlk dört adım yapısal değildir; 5 ve 6 büyük özellik (Adım 3B) olarak işlenir.
+6. Blok değişimi. İlk dört adım yapısal değildir; 5 ve 6 seviyesine göre Adım 3B veya 3C olarak işlenir.
 
 ---
 
@@ -192,40 +227,60 @@ ve teslim kapısını uygula.
 
 ---
 
-## Adım 3B — Büyük Özellik (Planla ve Uygula)
+## Adım 3B — Şablondan Yeni Ekran (birleşik plan, tek reviewer)
+
+1. **Bağlam paketi** (Adım 2 → Bağlam paketi).
+2. **Plan + UX spec:** `ads-design-planner`'ı **birleşik modda** çalıştır. İlet:
+   - **Çalışma kimliği**, kullanıcının isteği, **onaylı kararlar** (Durak 1 ve plan modu onayı)
+   - Bağlam paketi yolu, `[proje-adı]-tokens.json` yolu, çıktı formatı
+   - **Mod:** `birleşik` — görevleri `design-plan.md → ## Geliştirme Backlog'u`'na, UX spec'leri `ux-specs.md`'ye,
+     gerekirse akış / template eklerini `flows.md` / `templates.md`'ye yazar (`ads-design-planner.md → Birleşik mod`)
+
+   Planner açık kararları seçmeden döndürür; kendisi kullanıcıya sormaz.
+3. **Durak 2** (Adım 2 → Soru durakları): plan özeti + açık kararlar + token kapsam (aşağıdaki **Token Kapsam
+   Kontrolü**) + başlama onayı, tek soru penceresinde. Cevapları `.ads/request-<kimlik>.md`'ye ekle ve
+   `design-plan.md`'deki ilgili karar satırına `Edit` ile işle (ör. `K-1: Fullscreen kalsın — onay: kullanıcı`).
+4. **Geçiş kontrolü:** `node scripts/test/plan-gate.mjs --run <kimlik>` (`ads-design-strategy.md → Adım 3c → Adım 4 Geçiş Kontrolü`).
+5. **Paketi yeniden üret**, ardından `ads-design-builder`'ı çalıştır: görevler, çalışma kimliği, paket yolu,
+   tokens yolu, çıktı formatı. Builder görevleri sırayla işler; tamamlananları `[x]` olarak işaretler.
+6. **Review — tek birleşik reviewer:** `ads-design-reviewer`'ı **birleşik modda** çalıştır (tasarım + UX kontrol
+   listesi tek agent'ta; `ads-design-reviewer.md → Birleşik mod`). Ardından `ads-design-strategy.md → Adım 6`
+   döngüsünü ve teslim kapısını uygula; yeniden kontrolü de birleşik reviewer yapar.
+
+---
+
+## Adım 3C — Yeni Akış / Karmaşık Özellik (tam süreç)
 
 ### Plan
 
-Önce bu iterasyon için bir çalışma kimliği üret: `date +%Y%m%d-%H%M` (örn. `20261002-1415`).
-
-`ads-design-planner` agent'ını **iterasyon modunda** çalıştır. Şunları ilet:
+Bağlam paketini üret (Adım 2 → Bağlam paketi). `ads-design-planner` agent'ını **iterasyon modunda** çalıştır. Şunları ilet:
 - **Çalışma kimliği**
-- Kullanıcının özellik isteği
-- `spec.md` içeriği
+- Kullanıcının özellik isteği ve **onaylı kararlar**
+- Bağlam paketi yolu (spec, brief, akış ve template bölümleri buradan; `spec.md`'nin tamamını iletme)
 - `[proje-adı]-tokens.json` yolu
 - Mevcut çıktı formatı
 - **Mod:** `iterasyon` — planner yeni görevleri `design-plan.md`'nin `## Geliştirme Backlog'u` bölümüne yazar, `## İlk Tasarım` bölümüne dokunmaz
-- `flows.md` ve `templates.md` yolları (`yapi` varsa; yoksa yukarıdaki soruya verilen cevap)
+- `flows.md` ve `templates.md` yolları (`yapi` varsa; yoksa Durak 1'deki cevap)
 
 Planner şunları üretir:
 - Özelliği görevlere böler (katman sırasına göre)
 - Yeni akışı `flows.md`'ye `Önkoşul` / `Sonra` ile **ekler**, ekranlarını mevcut template'lere bağlar (gerekirse yeni
   template ekler); var olan akışları yalnızca özellik gerektiriyorsa ve bunu göstererek değiştirir
-- User flow boşluklarını tespit eder
-- Kullanıcıya onaylatır
+- User flow boşluklarını ve açık kararları tespit eder; kullanıcıya kendisi sormaz, orkestratöre döndürür
 
-### Onay
+### Onay — Durak 2
 
-Kullanıcıdan onay al:
-> "Bu özellik için [n] görev planlandı. [design-plan.md → Geliştirme Backlog'u bölümünde görebilirsiniz.]
-> Başlayalım mı?"
+Planner dönünce **tek soru penceresinde** sor: plan özeti ("Bu özellik için [n] görev planlandı —
+design-plan.md → Geliştirme Backlog'u"), planner'ın açık kararları, token kapsam uyarısı (aşağıda) ve başlama onayı.
+Ayrı bir "Başlayalım mı?" sorusu sorma.
 
 ### Token Kapsam Kontrolü
 
-Onay alındıktan sonra, UX tasarımına geçmeden önce planner'ın oluşturduğu component listesini mevcut `[proje-adı]-tokens.json` ile karşılaştır:
+Durak 2'den **önce** planner'ın oluşturduğu component listesini mevcut `[proje-adı]-tokens.json` ile karşılaştır
+(soru Durak 2'ye girsin):
 
 - Listede yeni bir component tipi var mı (mevcut token'larda karşılığı olmayan avatar, chip, modal, indeks şeridi vb.)?
-- Varsa kullanıcıya bildir:
+- Varsa Durak 2'ye şu soruyu ekle:
 
 > "Bu özellik için [yeni component listesi] mevcut token setinde tam karşılığı olmayan değerler içerebilir. Devam etmeden önce `/ads-token-generator` çalıştırmanızı öneririm — eksik token'lar eklensin mi?"
 
@@ -236,8 +291,8 @@ Kullanıcı hayır derse veya yeni component tipi yoksa: doğrudan UX tasarımı
 
 Onay gelince önce `ads-ux-designer` agent'ını çalıştır. Şunları ilet:
 - **Çalışma kimliği**
-- Backlog'a eklenen yeni görevler
-- `spec.md` içeriği
+- Backlog'a eklenen yeni görevler ve onaylı kararlar
+- Bağlam paketi yolu
 - `[proje-adı]-tokens.json` yolu
 - `flows.md` ve `templates.md` yolları
 
@@ -247,9 +302,9 @@ Agent her görev için UX pattern seçer ve spec'leri `ux-specs.md`'ye, bu itera
 ### Uygula
 
 Builder'ı başlatmadan önce `ads-design-strategy.md → Adım 3c → Adım 4 Geçiş Kontrolü`nü bu iterasyonun
-çalışma kimliğiyle uygula. Kontrol geçince `ads-design-builder` agent'ını çalıştır:
+çalışma kimliğiyle uygula ve **bağlam paketini yeniden üret**. Kontrol geçince `ads-design-builder` agent'ını çalıştır:
 - `design-plan.md`'nin `## Geliştirme Backlog'u` bölümündeki yeni görevler ve **çalışma kimliği**
-- `ux-specs.md` yolu (builder bu çalışmanın bölümünü `run=` kimliğiyle bulur)
+- Bağlam paketi yolu (plan ve UX spec bölümü pakette)
 - `flows.md` ve `templates.md` yolları
 - `[proje-adı]-tokens.json` yolu
 - Mevcut çıktı formatı
@@ -258,8 +313,8 @@ Builder görevleri sırayla işler; tamamlananları `[x]` olarak işaretler.
 
 ### Review
 
-Büyük özellik tamamlandıktan sonra `ads-design-reviewer` ve `ads-ux-reviewer`'ı paralel çalıştır, ardından
-`ads-design-strategy.md → Adım 6` döngüsünü ve teslim kapısını uygula.
+Özellik tamamlandıktan sonra `ads-design-reviewer` ve `ads-ux-reviewer`'ı paralel çalıştır (ikisine de paket yolu),
+ardından `ads-design-strategy.md → Adım 6` döngüsünü ve teslim kapısını uygula.
 
 ---
 

@@ -169,8 +169,12 @@ Her figma-*.md skill'i için:
 **iterate.md:**
 - [ ] Küçük / büyük değişiklik ayrımı var mı?
 - [ ] Küçük değişiklik: direkt `ads-design-builder` çağrısı yapıyor mu?
-- [ ] Büyük özellik: planner → onay → builder → reviewer akışı var mı?
-- [ ] Büyük özellikte planner'a `iterasyon` modu iletiliyor mu?
+- [ ] Üç seviye var mı: küçük (3A), şablondan yeni ekran (3B: birleşik planner + tek birleşik reviewer), yeni akış (3C: planner → UX → iki reviewer); seviyeyi orkestratör önerip kullanıcı mı onaylıyor?
+- [ ] 3C'de planner'a `iterasyon`, 3B'de `birleşik` modu iletiliyor mu?
+- [ ] Orta / büyük işte en fazla iki soru durağı var mı (başlarken + plan sonrası; ayrı "Başlayalım mı?" yok), onaylı kararlar planner'a iletilip yeniden sorulmuyor mu, agent'lar açık kararı kendi seçmiyor mu?
+- [ ] Bağlam paketi (`context-pack.mjs`) planner'dan önce ve builder'dan önce üretiliyor, her agent'a yolu iletiliyor mu?
+- [ ] Builder ve reviewer'lar ölçüm için `probe.mjs` kullanıyor, kendi Playwright betiğini yazmıyor mu; builder test betiklerinin kaynağını okumuyor, `sleep` kullanmıyor mu?
+- [ ] Düzeltme turu yeni builder'la ve odaklı brief'le (paket + değişen dosyalar + dosya:satır bulgular) mı çalışıyor?
 - [ ] Backlog'a tamamlandı kaydı yazılıyor mu?
 - [ ] `## İlk Tasarım` bölümüne dokunmadığı belirtilmiş mi?
 
@@ -242,6 +246,7 @@ Her figma-*.md skill'i için:
 - [ ] `ads-design-reviewer.md` raporunda "Otomatik testler" ve "Teslim engelleri" (B kimlikli) bölümleri, yeniden kontrol modu var mı?
 - [ ] `ads-design-planner.md`: `design-plan.md` her zaman yazılıyor, Notion/Jira kopya; `ADS_PLAN run=… tasks=…` işareti var mı?
 - [ ] `ads-ux-designer.md`: `ux-specs.md`'ye ekleme (önceki bölümler korunur) ve `UX_SPEC_STATUS: COMPLETE run=… tasks=…` işareti var mı?
+- [ ] Planner ve UX agent'ı var olan dosyaları (`design-plan.md`, `ux-specs.md`, `flows.md`, `templates.md`) `Write` ile baştan yazmıyor, `Edit` ile yalnızca ilgili bölümü ekliyor mu; `tools:` satırlarında Edit var mı? (`ux-specs.md`'de yeni bölüm en üste, `design-plan.md`'de önceki çalışmaların altına)
 - [ ] `ads-design-strategy.md → Adım 3c → 4`: `plan-gate.mjs --run` kullanılıyor mu?
 - [ ] Quick mod hafif review ile teslim kapısından geçiyor (run-all + hafif review maddeleri, Adım 6 durumları); yeniden kontrolde reviewer'ın bildirdiği yeni engel orkestratörce düşürülemiyor mu?
 - [ ] Kapsam kararı: builder yeni özellik/ekran/veri toplama/vaat/akış gerektiren engelde "kapsam kararı gerekli" diye dönüyor; Adım 6'da üç seçenek (kapsama ekle → plan + UX önce / vaadi koruyan geçici çözüm / istisna → `## Teslim İstisnaları`) ve "İstisna onayıyla teslim edilebilir" durumu var mı?

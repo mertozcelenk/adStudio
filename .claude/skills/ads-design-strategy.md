@@ -364,7 +364,10 @@ Seviye tanımları: `references/rules.md → Seviye Ölçeği`. Medium ve Nitpic
 
 **Döngü — en fazla 2 tur:**
 
-1. **Düzelt:** `ads-design-builder`'ı çalıştır. İlet:
+1. **Düzelt:** `ads-design-builder`'ı revision modunda **yeni** bir agent olarak çalıştır (ilk builder'a devam
+   ettirme: bağlamı büyüktür ve her adımda yeniden faturalanır). Projeyi yeniden keşfetmemesi için odaklı brief ilet:
+   - Bağlam paketi yolu (`/ads-iterate`'ten gelindiyse) ve önceki turda builder'ın değiştirdiği dosya listesi
+   - Her engelin **dosya:satır** konumu (reviewer raporundan; yoksa reviewer'ın gösterdiği fonksiyon / seçici)
    - Orijinal brief
    - Açık teslim engelleri (kimlikleriyle, tekilleştirilmiş)
    - Yalnızca 1. turda: Medium / Nitpick bulguları — öneri olarak, uygulaması isteğe bağlı
@@ -374,7 +377,9 @@ Seviye tanımları: `references/rules.md → Seviye Ölçeği`. Medium ve Nitpic
      çalıştırdıysa onun `test-results.json`'unu kullan, yeniden çalıştırma.
    - Builder'ın bu turda değiştirdiği dosya / frame listesini reviewer'lara ilet; yalnızca onlara bakarlar.
    - **Yeniden kontrolü reviewer yapar, orkestratör yapmaz.** Engeli hangi reviewer bildirdiyse o reviewer yeniden
-     kontrol modunda çalışır (engeller yalnızca birinden geldiyse yalnızca o). Orkestratörün kendi doğrulaması
+     kontrol modunda çalışır (engeller yalnızca birinden geldiyse yalnızca o; `/ads-iterate → Adım 3B`'de tek
+     birleşik reviewer). Yeniden kontrol agent'ı yeni başlatılır ve yalnızca engel listesi + değişen dosyalarla
+     çalışır. Orkestratörün kendi doğrulaması
      (dosyaya bakmak, test sonucunu okumak) bunun yerine geçmez; reviewer çalışmadan engel `kapandı` sayılmaz ve
      "Teslime hazır" denmez. İstisna: `/ads-iterate` hafif review yolu (orada yeniden kontrolü orkestratör yapar).
    - Reviewer'a önceki teslim engeli listesini ver; her madde için `kapandı` / `açık` yazarlar ve düzeltmenin yol açtığı yeni teslim engelini ekler.
