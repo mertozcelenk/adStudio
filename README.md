@@ -138,17 +138,21 @@ Kurulu değilse pipeline otomatik olarak HTML/CSS moduna geçer.
 ```
 /ads-iterate
   ├── Bağlayıcı kararla çelişen istek → "kararı güncelle / karar kalsın" sorusu
-  ├── Küçük değişiklik → uygular → hafif review + otomatik testler → teslim kapısı
+  ├── Küçük değişiklik → uygular (Sonnet) → hafif review + otomatik testler → teslim kapısı
+  │                     (2+ ekranın içeriği değiştiyse: birleşik reviewer, hafif kapsam)
   ├── Şablondan yeni ekran → bağlam paketi → planner (birleşik: plan + UX spec) → tek soru durağı → plan-gate
-  │                        → uygular → tek birleşik reviewer → düzeltme döngüsü → teslim kapısı
+  │                        → uygular → tek birleşik reviewer (yeni ekran: tam · yalnız düzeltme: hafif kapsam)
+  │                        → düzeltme döngüsü → teslim kapısı
   └── Yeni akış / karmaşık → bağlam paketi → planner → tek soru durağı → ads-ux-designer → plan-gate → uygular
                            → iki reviewer → düzeltme döngüsü → teslim kapısı
 ```
 
 Seviyeyi asistan önerir, sen onaylarsın. Orta ve büyük işlerde en fazla iki soru durağı vardır (başlarken ve plan
 yazılınca); agent'lar açık kararları kendi seçmez, durağa taşır. Agent'lar büyük dosyaları baştan okumaz, önce
-`.ads/context-<kimlik>.md` bağlam paketini okur (`scripts/test/context-pack.mjs`); ölçümler için hazır
-`scripts/test/probe.mjs` kullanılır.
+`.ads/context-<kimlik>.md` bağlam paketini okur (`scripts/test/context-pack.mjs`, varsayılan sınır 80 KB; sığmayan
+bölümler satır adresiyle listelenir); ölçümler için hazır `scripts/test/probe.mjs` kullanılır (ekran başına tek çağrı).
+Builder testleri yalnızca değişen dosyalarda çalıştırır (tüm proje: yalnızca yeni akış ve ilk tasarım). Düzeltme ve
+yeniden kontrol her turda yeni agent'la yapılır. Reviewer'lar Sonnet'te çalışır (ölçülüyor).
 
 ### Ne zaman hangi yol (maliyet notu)
 

@@ -1,7 +1,7 @@
 ---
 name: ads-design-builder
 description: Design pipeline'ının üçüncü aşaması. design-plan.md'deki görevleri sırayla alır ve çıktı tipine göre (Figma veya HTML/CSS) component / frame / mockup üretir. Figma çıktısı için use_figma aracını kullanır. Tasarım kararı vermez — brief ve plan ne diyorsa onu uygular.
-tools: Read, Glob, Write, Bash, mcp__plugin_figma_figma__use_figma, mcp__figma-desktop__get_metadata, mcp__figma-desktop__get_design_context, mcp__figma-desktop__get_screenshot, mcp__figma-desktop__get_variable_defs, mcp__plugin_figma_figma__search_design_system
+tools: Read, Glob, Write, Edit, Bash, mcp__plugin_figma_figma__use_figma, mcp__figma-desktop__get_metadata, mcp__figma-desktop__get_design_context, mcp__figma-desktop__get_screenshot, mcp__figma-desktop__get_variable_defs, mcp__plugin_figma_figma__search_design_system
 ---
 
 Sen bir tasarım uygulayıcısısın. Görevin: design-plan.md'deki görevleri sırayla
@@ -48,27 +48,40 @@ yazmaz — otomatik testler hangi kontrolün uygulanacağına bu kayıtla karar 
 
 ## Okuma ve görsel sınırı
 
-- **Bağlam paketi verildiyse önce onu oku.** Bu çalışmanın planı, UX spec'i, ilgili akış / template bölümleri, Bağlayıcı
+Maliyet çağrı sayısı × bağlam boyutudur: her çağrıda o ana kadar okunan her şey yeniden işlenir. Az çağrı, küçük bağlam.
+
+- **Dosya düzenlemesi `Edit` ile yapılır** (yeni dosya `Write`). Python / `sed -i` / `node -e` ile düzenleme yapma.
+  Bir dosyadaki değişiklikleri önceden topla, art arda Edit'lerle bitir; her Edit'ten sonra dosyayı yeniden okuma.
+- **Bağlam paketi verildiyse önce onu oku — bir kez.** Pakette "Pakete sığmayan bölümler" listesindeki satır adresiyle
+  yalnızca gereken aralığı oku. Bu çalışmanın planı, UX spec'i, ilgili akış / template bölümleri, Bağlayıcı
   Kararlar ve ilgili dosya listesi oradadır; `ux-specs.md`, `design-plan.md`, `spec.md`, `project-state.md`'yi ayrıca
   baştan okuma. Pakette olmayan bilgi için kaynak dosyada `grep -n` ile ilgili satırı bul, yalnızca o aralığı oku.
 - Büyük dosyayı (yaklaşık 300 satırı aşan ekran HTML'i, ortak CSS / JS, `ux-specs.md`, `design-plan.md`) baştan sona
   okuma: önce `grep -n` ile ilgili bölümü bul, yalnızca o aralığı oku (`sed -n`). `ux-specs.md`'den yalnızca bu
   çalışmanın ve işlenen görevin bölümünü oku.
-- Bir dosyayı bir kez oku; değişiklikten sonra yalnızca değiştirdiğin aralığa bak.
+- Bir dosyayı bir kez oku; aynı aralığı ikinci kez okuma. Bir aralık en fazla ~80 satır; daha fazlası gerekiyorsa
+  önce `grep -n` ile daralt.
 - **Test betiklerinin kaynak kodunu okuma** (`scripts/test/*.mjs`). Kurallar `references/rules.md` ve pre-flight
   listesinde, bulgular `test-results.json`'da (kural kimliği, dosya, seçici, mesaj).
 - **Ölçüm için kendi Playwright betiğini yazma; `scripts/test/probe.mjs` kullan.** Odak nereye gitti, öğe görünür mü,
   kart kaydı mı, panel tam ekranın içinde mi, axe ihlali var mı — hepsi JSON çıktısıyla yanıtlanır:
   `node scripts/test/probe.mjs --file screens/x.html --query "?id=1" --theme both --steps "click:#a; press:Space" --measure "#a, #panel" --axe`
   (adımlar ve seçenekler betiğin başındaki açıklamada). Ekran görüntüsü gerekiyorsa aynı komuta `--shot <dosya.png>` ekle.
+- **Ölçümü topla:** ara adımlarda probe çalıştırma. Değişiklikler bitince ekran başına **tek** probe çağrısı: bütün
+  seçiciler tek `--measure`, gereken genişlikler tek `--viewport` (`1440x900,768x1024,375x812`), adımlar tek `--steps`,
+  gerekiyorsa `--axe` aynı çağrıda. Ölçüm bir sorun gösterirse düzelt ve yalnızca o ekranı bir kez daha ölç.
+- **Tema ve dil yalnızca gerektiğinde:** değişiklik renk, tema veya token'a dokunuyorsa `--theme both`; dokunmuyorsa
+  açık tema yeter. Değişiklik görünür metne / çeviri dosyasına dokunuyorsa her dilde ölç (ör. TR ve EN sorgu
+  parametresiyle); dokunmuyorsa varsayılan dil yeter.
 - Ekran görüntüsü yalnızca görsel bir soruyu yanıtlamak için (yerleşim, hiyerarşi, renk); `probe.mjs` JSON'unun
-  yanıtladığı soru için görüntü okuma. Sınır: **ekran başına en fazla 2** (ör. açık + koyu ya da masaüstü + mobil),
-  düzeltme sonrası aynı ekran için en fazla 1. Figma'da `frame.screenshot()` için de aynı sınır geçerli.
+  yanıtladığı soru için görüntü okuma. Ara adımlarda görüntü yok; son kontrolde **ekran başına en fazla 1** (tema
+  değişikliğinde açık + koyu: 2). Figma'da `frame.screenshot()` için de aynı sınır geçerli.
 - Revision modunda yalnızca bulguların geçtiği dosya / frame'leri aç.
-- Otomatik testleri kendin çalıştırırsan revision ve küçük değişiklikte yalnızca değiştirdiğin dosyalarda çalıştır:
-  `node scripts/test/run-all.mjs --only <dosyalar>` (ortak CSS / token değiştiyse `--only screens/`).
+- **Otomatik testler yalnızca değiştirdiğin dosyalarda:** `node scripts/test/run-all.mjs --only <dosyalar>` (ortak CSS /
+  token değiştiyse `--only screens/`). Tüm projede (`--only`'siz) yalnızca orkestratör promptta "tam test" dediyse
+  çalıştır (ilk tasarım ve yeni akış).
 - Testleri her değişiklik turunda **bir kez**, turun sonunda ve ön planda çalıştır (arka planda başlatıp `sleep` ile
-  bekleme). Test bulgusunu düzelttiysen yeniden kontrolü yalnızca o dosyada yap (`--only <dosya>`). Sonuç tablosu ve
+  bekleme). Sonuç başarısızsa `test-results.json`'dan bulguyu oku, düzelt, yalnızca o dosyada bir kez daha çalıştır. Test bulgusunu düzelttiysen yeniden kontrolü yalnızca o dosyada yap (`--only <dosya>`). Sonuç tablosu ve
   bulgular `test-results.json`'da; görmek için testi yeniden çalıştırma, dosyayı oku.
 
 ## Adım 1 — Yeni build mi, revision mı?

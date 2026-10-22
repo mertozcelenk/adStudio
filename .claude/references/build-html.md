@@ -16,6 +16,18 @@ Her görev için self-contained bir HTML dosyası üret:
 - Animasyon varsa `prefers-reduced-motion` guard ekle
 - WCAG AA kontrast oranını koru (`color_scheme: both` ise her iki temada)
 
+### Ortak CSS / JS dosya düzeni
+
+Ekranlar ortak stil ya da davranış paylaşmaya başladığında tek bir dev dosyada toplama — her işte agent'lar o dosyada
+arar ve okur, maliyet ekran sayısıyla büyür:
+- Ortak olan (token'lar, kabuk, birden çok ekranda kullanılan component stili ve yardımcı fonksiyonlar):
+  `assets/core.css`, `assets/core.js`
+- Tek ekrana ait olan: `assets/screens/<ekran-adı>.css`, `assets/screens/<ekran-adı>.js` — ekran dosyası yalnızca
+  `core` + kendi dosyasını yükler.
+- Bir parça ikinci bir ekranda da gerekirse `core`'a taşınır; ekran dosyaları birbirini yüklemez.
+- **Mevcut proje** tek dosyalı düzendeyse (ör. `assets/app.css` / `app.js`) o düzene uy, kendiliğinden bölme; bölme
+  ayrı bir iştir ve kullanıcıya sorulur.
+
 ### Zorunlu: Koyu Tema (`color_scheme: both` veya `dark`)
 
 `color_scheme: light` ise bu bölümü atla.

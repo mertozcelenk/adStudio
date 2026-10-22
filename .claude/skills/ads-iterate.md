@@ -15,6 +15,20 @@ Dosya varsa kullanıcıya "kaldığım yerden devam et / yeni başlat" sor.
 Her adım tamamlandığında `/tmp/ads-iterate-{RUN_ID}.json` dosyasını güncelle.
 Başarıyla tamamlanınca dosyayı sil.
 
+## Maliyet kuralları (her seviyede)
+
+Maliyet, çağrı sayısı × o anki bağlam boyutudur; büyüyen bir konuşmada her mesaj öncekilerin hepsini yeniden işler.
+- **Konuşma temizliği:** Bu konuşmada önceki bir işin tamamlama raporu zaten varsa (aynı oturumda ikinci iş), yeni işe
+  başlamadan önce tek satırla öner: "Önceki iş bitti; maliyeti düşürmek için önce `/clear` yazıp isteği yeniden
+  verebilirsin." Kullanıcı devam derse devam et.
+- **Canlı site / tarayıcı incelemesi ana konuşmada yapılmaz:** canlı sistemde bir şeye bakmak gerekiyorsa (ör.
+  "canlıda arama kaç karakterle başlıyor") bunu `general-purpose` agent'a `model: "haiku"` ile tek, açık bir soru
+  olarak ver ("şu sayfada şunu bul, yalnızca cevabı ve kanıtı döndür"); ekran görüntüleri ana bağlama girmez.
+- **Agent'a devam ettirme yok:** düzeltme ve yeniden kontrol turlarında builder'a / reviewer'a `SendMessage` ile devam
+  ettirilmez; her tur yeni agent ve odaklı brief ile başlar (`ads-design-strategy.md → Adım 6`).
+- **Testler:** builder testleri yalnızca değişen dosyalarda (`--only`) çalıştırır. Builder prompt'una "tam test" notu
+  yalnızca Adım 3C'de eklenir.
+
 ---
 
 ## Token Standartları
@@ -171,7 +185,8 @@ extension-spec'te `Modernizasyon kapsamı` tanımlı değilse, değişiklikleri 
 
 ## Adım 3A — Küçük Değişiklik (Direkt Uygula)
 
-`ads-design-builder` agent'ını çalıştır. Şunları ilet:
+`ads-design-builder` agent'ını Agent çağrısında **`model: "sonnet"`** ile çalıştır (küçük işte Sonnet denemesi —
+ölçülüyor; düzeltme turu ve 3B / 3C builder'ı Opus kalır). Şunları ilet:
 - Kullanıcının değişiklik isteği
 - Hangi dosyanın etkileneceği (`components/` veya `screens/` altındaki ilgili dosya)
 - `[proje-adı]-tokens.json` yolu
@@ -188,7 +203,8 @@ frame'leri tek ekran sayılır; değişen component'ler ayrıca sayılmaz, onlar
 `flows.md` / `templates.md` düzenlemeleri sayıma girmez (yapı etkisi yukarıdaki "Yapı" kuralıyla bulunur).
 **Ortak stil değişikliği tek değişiklik sayılır:** yalnızca ortak bir stil dosyası (ortak CSS, token değeri, Figma'da
 bir component'in stili) değiştiyse ve ekranların içeriği ya da yapısı değişmediyse hafif review uygulanır; HTML'de
-testler bu durumda `--only screens/` ile tüm ekranlarda çalışır. Tam review, 2 veya daha fazla ekranın içeriği ya da yapısı değiştiğinde çalışır.
+testler bu durumda `--only screens/` ile tüm ekranlarda çalışır. 2 veya daha fazla ekranın içeriği ya da yapısı
+değiştiyse birleşik reviewer **hafif kapsamda** çalışır (aşağıda); küçük değişiklikte tam review yoktur.
 
 **1 dosya etkilendiyse — hafif review:**
 Yalnızca değiştirilen dosyayı kontrol et:
@@ -210,15 +226,16 @@ HTML çıktısında ayrıca otomatik testleri yalnızca etkilenen dosyalarda ça
 `node scripts/test/run-all.mjs --only <değişen ekran / component dosyaları, virgülle>`; ortak stil (ortak CSS, token
 değeri) değiştiyse `--only screens/`. Builder testleri bu kapsamla zaten çalıştırdıysa `test-results.json`'u oku, yeniden
 çalıştırma. Tamamlama raporuna şunu ekle: "Testler yalnızca etkilenen dosyalarda çalıştı; birkaç küçük değişiklikten
-sonra gerekirse `/ads-check` çalıştırın." Tam review yolunda ve `/ads-design-strategy`'de testler tüm projede çalışır. Figma çıktısında hafif review bulgularını gösterdikten
+sonra gerekirse `/ads-check` çalıştırın." Testler tüm projede yalnızca Adım 3C'de ve `/ads-design-strategy`'de çalışır. Figma çıktısında hafif review bulgularını gösterdikten
 sonra ayrıntılı inceleme sorusunu sor (`ads-design-strategy.md → Quick mod → madde 4`); evet → iki reviewer + Adım 6.
 Bulguları `etki` ve `teslimi engeller` alanlarıyla sınıflandır (`references/rules.md → Seviye Ölçeği`).
 Teslim engeli varsa `ads-design-strategy.md → Adım 6` döngüsünü uygula (en fazla 2 tur); yeniden kontrol
 yukarıdaki maddeler + `run-all.mjs`'tir (kontrast/boyut değerleri gerçekten düzelmiş mi doğrula).
 
-**2+ dosya etkilendiyse — tam review** (ortak stil değişikliği istisnası yukarıda):
-`ads-design-reviewer` ve `ads-ux-reviewer`'ı paralel çalıştır, ardından `ads-design-strategy.md → Adım 6` döngüsünü
-ve teslim kapısını uygula.
+**2+ dosya etkilendiyse — birleşik reviewer, hafif kapsam** (ortak stil değişikliği istisnası yukarıda):
+`ads-design-reviewer`'ı `mod: birleşik`, `kapsam: hafif` ile çalıştır (`ads-design-reviewer.md → Hafif kapsam`); builder'ın
+değiştirdiği dosya listesini ve bağlam paketini (varsa) ilet. Ardından `ads-design-strategy.md → Adım 6` döngüsünü ve
+teslim kapısını uygula.
 
 `design-plan.md` varsa `## Geliştirme Backlog'u` bölümüne tamamlanmış olarak ekle:
 ```
@@ -244,7 +261,9 @@ ve teslim kapısını uygula.
 5. **Paketi yeniden üret**, ardından `ads-design-builder`'ı çalıştır: görevler, çalışma kimliği, paket yolu,
    tokens yolu, çıktı formatı. Builder görevleri sırayla işler; tamamlananları `[x]` olarak işaretler.
 6. **Review — tek birleşik reviewer:** `ads-design-reviewer`'ı **birleşik modda** çalıştır (tasarım + UX kontrol
-   listesi tek agent'ta; `ads-design-reviewer.md → Birleşik mod`). Ardından `ads-design-strategy.md → Adım 6`
+   listesi tek agent'ta; `ads-design-reviewer.md → Birleşik mod`). **Kapsam:** iş yeni ekran ya da yeni akış
+   içeriyorsa `tam`; yalnızca mevcut ekranlarda düzeltme / ortak component değişikliğiyse `hafif`
+   (`ads-design-reviewer.md → Hafif kapsam`). Builder'ın değiştirdiği dosya listesini ilet. Ardından `ads-design-strategy.md → Adım 6`
    döngüsünü ve teslim kapısını uygula; yeniden kontrolü de birleşik reviewer yapar.
 
 ---
@@ -304,6 +323,7 @@ Agent her görev için UX pattern seçer ve spec'leri `ux-specs.md`'ye, bu itera
 Builder'ı başlatmadan önce `ads-design-strategy.md → Adım 3c → Adım 4 Geçiş Kontrolü`nü bu iterasyonun
 çalışma kimliğiyle uygula ve **bağlam paketini yeniden üret**. Kontrol geçince `ads-design-builder` agent'ını çalıştır:
 - `design-plan.md`'nin `## Geliştirme Backlog'u` bölümündeki yeni görevler ve **çalışma kimliği**
+- "Tam test" notu (yeni akış: testler tüm projede çalışır)
 - Bağlam paketi yolu (plan ve UX spec bölümü pakette)
 - `flows.md` ve `templates.md` yolları
 - `[proje-adı]-tokens.json` yolu
