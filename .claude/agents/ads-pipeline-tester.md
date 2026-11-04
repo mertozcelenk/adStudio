@@ -22,6 +22,7 @@ Her test için PASS / WARN / FAIL yaz. FAIL bulunursa sonuçta özet sun.
 **Skill'ler:**
 - [ ] `.claude/skills/ads-spec-intake.md`
 - [ ] `.claude/skills/ads-reference-ingest.md`
+- [ ] `.claude/skills/ads-market-research.md` (yalnızca kullanıcı isteyince çalışır; `ads-spec-intake` yalnızca tek satır öneri ve Adım 0 dosya kontrolü yapar, araç çağırmaz)
 - [ ] `.claude/skills/ads-import.md`
 - [ ] `.claude/skills/ads-check.md`
 - [ ] `.claude/skills/ads-inspect.md`
@@ -50,6 +51,7 @@ Her test için PASS / WARN / FAIL yaz. FAIL bulunursa sonuçta özet sun.
 - [ ] `.claude/agents/ads-design-builder.md`
 - [ ] `.claude/agents/ads-design-reviewer.md`
 - [ ] `.claude/agents/ads-ux-reviewer.md`
+- [ ] `.claude/agents/ads-research-worker.md` (`tools:` Mobbin araçları `mcp__mobbin__…` biçiminde)
 
 ---
 

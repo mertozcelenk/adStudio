@@ -38,6 +38,14 @@ olarak işaretle.
 **"Açık Sorular / TBD" bölümüne sahte madde ekleme.** Bu bölüm sadece
 gerçekten sorulmuş ama cevaplanmamış alanları içerir.
 
+### 0. Araştırma dosyası (varsa)
+`research/market-analysis.md` yoksa bu adımı atla: hiçbir şey sorma, araç çağırma. Varsa ve `decision: pending` blok
+içeriyorsa `references/research-apply.md` 1. adımı çalıştır (tek toplu soru). Kabul edilen ya da değiştirilen öneri ilgili
+sorunun cevabı sayılır: o soruyu tekrar sorma, cevabı "araştırma R<n>" kaynağıyla not et. `hypothesis` ve `stale`
+öneriler kullanıcı kabul etmeden spec'e yazılmaz (Doğrulama İlkesi). Araştırmanın cevaplayamadığı sorular (platform,
+renk şeması, tablet, erişilebilirlik, ikon seti, kurumsal kimlik kılavuzu) normal sorulur. Spec taslağı yazılırken
+`research-apply.md` 2–5. adımlarını uygula.
+
 ### 1. Ortak Bağlam
 - Proje adı / kısa tanım
 - Amaç ve hedef kullanıcı kim
@@ -349,6 +357,7 @@ dials:            # ads-design-strategist doldurur, ads-design-strategy yazar �
   source: ""      # inferred | user_explicit (tasarımcı düzelttiyse)
 brand_guide_mode: false   # Kurumsal kimlik kılavuzu seçildiyse true
 brand_guide_source: ""    # PDF adı, link veya "kullanıcı liste verdi"
+research: ""           # no | pending | done:<tarih> — pazar/rakip analizi (research-apply.md yazar; "no" yalnızca kullanıcı istemediğini söylerse)
 preserved_layers: []      # brand_guide_mode true ise — örn. ["colors", "typography"]
 ```
 <!-- END:token_directives -->
@@ -378,6 +387,11 @@ yanlış bir alan var mı, yoksa bir sonraki adıma (token üretimi / IA) geçel
 Kullanıcı onaylarsa şunu ekle: "Devam etmek için `/ads-token-generator` komutunu
 çalıştırın. Token üretimi yerine IA veya akış tasarımına geçmek isterseniz
 bunu belirtin."
+
+**Pazar/rakip analizi önerisi.** `research/market-analysis.md` yoksa ve `token_directives.research` `done` ya da `no`
+değilse, aynı mesaja tek satır ekle: "İstersen token üretiminden önce pazar ve rakip analizi de yapabilirim
+(`/ads-market-research`); istemezsen doğrudan token'a geçebilirsin." Bu bir soru değildir: cevap beklenmez, araç
+çağrılmaz, rapor kendiliğinden başlatılmaz. Kullanıcı "istemiyorum" derse `research: no` yaz.
 
 **Aşama sonu hatırlatması** (kullanıcı spec'i onayladıktan sonra). Önce kayıt kontrolü: konuşmada verilen cevaplar ve
 kalıcı kararlar `spec.md`'de mi? Eksikse önce yaz. Sonra mesajın son satırı olarak ekle:

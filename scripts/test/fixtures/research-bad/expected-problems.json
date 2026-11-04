@@ -1,0 +1,16 @@
+{
+  "problems": [
+    "başlıkta \"tarih: YYYY-AA-GG\" yok",
+    "başlıkta \"is_modeli:\" yok",
+    "R1 iki kez tanımlı",
+    "R2 field \"color\" izinli değil",
+    "R2 status \"guess\" izinli değil",
+    "R2 \"proposal:\" boş ya da yok",
+    "R2 decision modified ama \"final:\" yok",
+    "R3 \"rejected\" ama Bağlayıcı Kararlar'da var",
+    "R9 araştırma dosyasında yok",
+    "[Araştırma] satırında \"research/market-analysis.md R<n>\" kaynağı yok",
+    "R1 \"accepted\" ama Bağlayıcı Kararlar'da yok",
+    "R2 \"modified\" ama Bağlayıcı Kararlar'da yok"
+  ]
+}

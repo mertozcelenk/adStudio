@@ -56,6 +56,14 @@ aynı bilgisayardaki başka kurulumlarla karışmaz.
 /ads-design-strategy      # Tasarım pipeline'ını başlat (quick veya deep mod)
 ```
 
+**İstersen pazar ve rakip analizi** (hiçbir akış kendiliğinden başlatmaz; spec-intake sonunda tek satır öneri çıkar):
+```
+/ads-market-research      # rapor + research/market-analysis.md; spec'e yalnızca kabul ettiklerin yazılır
+```
+Analiz spec'ten önce ya da sonra çalışabilir. Önce çalışırsa `ads-spec-intake` dosyayı okur ve önerileri tek toplu soruyla
+sorar; sonra çalışırsa aktarım analizin sonunda yapılır. `hypothesis` ve `stale` öneriler siz kabul etmeden spec'e girmez.
+Dosya biçimi: `.claude/references/research-file.md`. Mobbin bağlı değilse worker mağaza ve web kaynaklarına geçer, rapor bunu belirtir.
+
 **Hali hazırda bir projen varsa:**
 ```
 /ads-import               # Projeyi otomatik tespit eder ve doğru akışı başlatır
@@ -334,6 +342,7 @@ Yazı boyutları ve satır yüksekliğinde 4 katı yalnızca öneridir: tipograf
 │   ├── ads-context-scanner.md
 │   ├── ads-impact-analysis.md
 │   ├── ads-reference-ingest.md
+│   ├── ads-market-research.md     # isteğe bağlı pazar / rakip analizi
 │   ├── ads-token-layer-builder.md
 │   ├── ads-check.md
 │   ├── ads-inspect.md
@@ -347,8 +356,11 @@ Yazı boyutları ve satır yüksekliğinde 4 katı yalnızca öneridir: tipograf
 │   ├── ads-ux-designer.md
 │   ├── ads-token-generator-worker.md
 │   ├── ads-context-scanner-worker.md
+│   ├── ads-research-worker.md     # rakip ekranlarını toplar (Haiku)
 │   └── ads-pipeline-tester.md
 └── references/
+    ├── research-file.md        # research/market-analysis.md biçimi ve spec eşlemesi
+    ├── research-apply.md       # kabul edilen önerileri spec'e aktarma adımı
     ├── rules.md                # Tüm kurallar (kimlik + seviye + kapsam), seviye ölçeği, yasak desen kataloğu
     ├── build-html.md           # Builder: HTML'de nasıl üretilir (yalnızca HTML işinde okunur)
     ├── build-figma.md          # Builder: Figma'da nasıl üretilir (yalnızca Figma işinde okunur)
@@ -390,6 +402,7 @@ index.html                      # ads-design-builder navigasyon sayfası
 | `ads-impact-analysis` | `/ads-impact-analysis` | Var olan sisteme ekleme senaryosunda etki analizi yapar |
 | `ads-reference-ingest` | ads-spec-intake tarafından çağrılır | Referans girdileri 9 alanlı formatta çıktı üretir |
 | `ads-import` | `/ads-import` | Mevcut projeyi pipeline'a dahil eder (adStudio / HTML/CSS / Figma) |
+| `ads-market-research` | `/ads-market-research` | İsteğe bağlı pazar ve rakip analizi: rapor + kabul edilen önerileri spec'e aktarır |
 | `ads-check` | `/ads-check` | Çapraz sayfa tutarlılık kontrolü (HTML ve Figma; yalnızca çıktı türünün kontrol dosyasını okur) — ortak öğeler, koparılmış component kopyaları, token bağlantıları, accent/radius kilidi, CTA etiketleri, korunan öğeler, koyu tema; bulgular kural kimliğiyle (CP, TL, RK…) |
 | `ads-inspect` | `/ads-inspect` | Element bazlı mekanik kontrol — buton, tipografi, form, nav, kart; varsa `tells.mjs` ölçümlerini kullanır |
 | `ads-token-layer-builder` | `/ads-token-layer-builder` | Token katmanlarını adım adım inşa eder |
@@ -407,3 +420,4 @@ index.html                      # ads-design-builder navigasyon sayfası
 | `ads-ux-reviewer` | design-strategy (deep) | Heuristic, binding, WCAG 2.2 POUR manuel kontrol |
 | `ads-token-generator-worker` | token-generator | Figma'dan ham token verisi çeker |
 | `ads-context-scanner-worker` | context-scanner | Web ve Figma kaynaklarını tarar |
+| `ads-research-worker` | market-research | Rakip ekranlarını Mobbin → mağaza → web sırasıyla toplar; yalnızca bulgu döndürür |

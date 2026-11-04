@@ -1,0 +1,374 @@
+<!--
+  RAKİP ANALİZİ RAPOR ŞABLONU
+  - Artifact iskeleti yayında eklenir: <html>/<head>/<body> yazma.
+  - Köşeli parantezli metinler [ÖRNEK] yer tutucudur; gerçek içerikle değiştir.
+  - Renk token'ları ve --f-display konuya göre değiştirilebilir; sınıf adları ve yapı aynı kalır.
+  - Bileşenler: .pump (rakam şeridi), .bars (pazar payı), .tbl (tablo kabı), .matrix (özellik matrisi),
+    .brand (marka kartı), .proscons, .grid2/.card, .rule, .flag, a.c (kaynak etiketi),
+    .voice, .dial (ton ayarı), .say (böyle yaz / yazma), .pri (MVP), .pos (konumlandırma cümlesi), .sources
+-->
+<title>[Rapor Adı]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: tek sütun rapor, 760px okuma genişliği; tablolar kendi kaydırma kabında; kaynaklar metin içinde numaralı */
+:root{
+  --bg:#f3f5f6; --surface:#ffffff; --ink:#14232b; --muted:#56656d; --line:#d6dde0;
+  --accent:#b8640a; --accent-soft:#f6e6d2; --petrol:#0f4c5c; --petrol-soft:#dcebee;
+  --warn:#9a3412; --ok:#166534; --ok-soft:#dcfce7; --bad:#b91c1c; --bad-soft:#fee2e2;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f171b; --surface:#172329; --ink:#e4ecef; --muted:#9aabb3; --line:#2a3a42;
+  --accent:#f0a24a; --accent-soft:#3a2a17; --petrol:#7cc4d4; --petrol-soft:#18333b; --warn:#fb923c;
+  --ok:#86efac; --ok-soft:#14321f; --bad:#fca5a5; --bad-soft:#3b1a1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f171b; --surface:#172329; --ink:#e4ecef; --muted:#9aabb3; --line:#2a3a42;
+  --accent:#f0a24a; --accent-soft:#3a2a17; --petrol:#7cc4d4; --petrol-soft:#18333b; --warn:#fb923c;
+  --ok:#86efac; --ok-soft:#14321f; --bad:#fca5a5; --bad-soft:#3b1a1a; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;padding-inline:16px;padding-block:32px 64px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,7vw,3.4rem);letter-spacing:.01em}
+h2{font-size:2rem}
+h3{font-size:1.3rem;font-weight:600}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);max-width:62ch}
+.meta{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:14px;border-bottom:3px solid var(--ink);padding-bottom:24px}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--f-mono);font-size:.78rem}
+nav.toc a{text-decoration:none}
+a{color:var(--petrol)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px}
+sup{line-height:0}
+a.c{font-family:var(--f-mono);font-size:.68rem;font-weight:500;text-decoration:none;color:var(--petrol);background:var(--petrol-soft);border-radius:2px;padding:1px 4px;margin-left:2px;white-space:nowrap}
+a.c:hover{background:var(--petrol);color:var(--surface)}
+.summary{background:var(--petrol-soft);border-radius:4px;padding:20px 22px}
+.summary li::marker{color:var(--petrol)}
+.pump{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.readout{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.readout b{font-family:var(--f-mono);font-weight:500;font-size:1.6rem;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.readout b small{font-size:.8rem;color:var(--muted);margin-left:4px}
+.readout span{font-size:.85rem;color:var(--muted);line-height:1.35}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.wide table{min-width:680px}
+/* Özellik matrisi */
+.matrix td,.matrix th{text-align:center;white-space:nowrap}
+.matrix td:first-child,.matrix th:first-child{text-align:left;white-space:normal;min-width:180px}
+.m-yes{color:var(--ok);font-weight:600}
+.m-no{color:var(--muted)}
+.m-unk{color:var(--warn);font-family:var(--f-mono)}
+.counts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.counts div{border-top:3px solid var(--petrol);padding-top:8px;font-size:.88rem;color:var(--muted)}
+.counts b{display:block;font-family:var(--f-mono);font-weight:500;font-size:1.3rem;color:var(--ink);font-variant-numeric:tabular-nums}
+/* Marka kartı */
+.brand dl{display:grid;grid-template-columns:120px 1fr;gap:6px 12px;margin:0;font-size:.9rem}
+.brand dt{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.brand dd{margin:0;min-width:0}
+@media (max-width:480px){.brand dl{grid-template-columns:1fr}.brand dt{padding-top:6px}}
+.proscons{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.9rem}
+.proscons ul{padding-left:1.1em}
+.proscons .pro li::marker{content:"+ ";color:var(--ok)}
+.proscons .con li::marker{content:"– ";color:var(--bad)}
+@media (max-width:480px){.proscons{grid-template-columns:1fr}}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:130px 1fr 64px;align-items:center;gap:12px;font-size:.92rem}
+.bar .track{height:14px;background:var(--line);border-radius:2px;position:relative}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--petrol);border-radius:2px}
+.bar.lead .fill{background:var(--accent)}
+.bar .v{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+.scale{display:grid;grid-template-columns:130px 1fr 64px;gap:12px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.scale div{display:flex;justify-content:space-between}
+@media (max-width:480px){.bar,.scale{grid-template-columns:96px 1fr 52px;gap:8px}}
+.note{font-size:.85rem;color:var(--muted)}
+.flag{display:inline-block;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:2px;background:var(--accent-soft);color:var(--warn);white-space:nowrap}
+.flag.src{background:var(--petrol-soft);color:var(--petrol)}
+.rule{border-left:3px solid var(--accent);padding:4px 0 4px 16px;display:flex;flex-direction:column;gap:8px}
+.pos{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:2px;padding:14px 18px;font-size:1.05rem;line-height:1.5}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card p{font-size:.93rem}
+.card .tag{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.card .lnk{font-family:var(--f-mono);font-size:.78rem;margin-top:auto}
+.pri{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.pri h3{display:flex;align-items:baseline;gap:8px}
+.pri h3 em{font-style:normal;font-family:var(--f-mono);font-size:.72rem;color:var(--muted);font-weight:400;letter-spacing:.06em}
+.pri ul{font-size:.93rem}
+.say{font-size:.9rem}
+.say .yes,.say .no{display:block;padding:6px 8px;border-radius:3px}
+.say .yes{background:var(--ok-soft);color:var(--ok)}
+.say .no{background:var(--bad-soft);color:var(--bad);text-decoration:line-through;text-decoration-thickness:1px}
+.voice{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.voice div{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.voice b{font-family:var(--f-display);font-size:1.25rem;font-weight:600}
+.voice span{font-size:.85rem;color:var(--muted);line-height:1.4}
+.dial{display:flex;flex-direction:column;gap:12px}
+.dial-row{display:grid;grid-template-columns:110px 1fr 110px;gap:12px;align-items:center;font-size:.85rem}
+.dial-row span:last-child{text-align:right}
+.dial-track{height:6px;background:var(--line);border-radius:3px;position:relative}
+.dial-track i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);border:2px solid var(--surface)}
+@media (max-width:480px){.dial-row{grid-template-columns:80px 1fr 80px;gap:8px}}
+.sources ol{margin:0;padding-left:1.8em;display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--muted)}
+.sources li{scroll-margin-top:24px}
+.sources li:target{background:var(--accent-soft);border-radius:2px}
+.sources a{word-break:break-word}
+.sources h3{margin-top:12px}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Pazar araştırması · [İş modeli]</div>
+  <h1>[Rapor Adı]</h1>
+  <p class="lede">[Raporun amacı, tek cümle; hedef kitle dahil: "… için, [hedef kitle] odağında".]</p>
+  <p class="meta">[Tarih] · Masa başı araştırma · Numaralı etiketler sayfa sonundaki kaynaklara gider</p>
+  <nav class="toc" aria-label="İçindekiler">
+    <a href="#pazar">Pazar</a><a href="#mevzuat">Mevzuat</a><a href="#rakipler">Rakipler</a><a href="#uygulamalar">Uygulamalar</a><a href="#global">Global</a><a href="#kullanicilar">Hedef kitle</a><a href="#firsatlar">Fırsatlar</a><a href="#konum">Neden biz</a><a href="#tasarim">Tasarım dili</a><a href="#ton">Tone of voice</a><a href="#mvp">MVP</a><a href="#karar">Bulgu → karar</a><a href="#adimlar">Sonraki adımlar</a><a href="#kaynaklar">Kaynaklar</a>
+  </nav>
+</header>
+
+<section>
+  <h2>Yönetici özeti</h2>
+  <ul class="summary">
+    <li><strong>[Tespit.]</strong> [Açıklama.]<sup><a class="c" href="#k1">1</a></sup></li>
+    <li><strong>Hedef kitle: [birincil kitle].</strong> [Hangi bulgudan çıktığı.]<sup><a class="c" href="#k2">2</a></sup></li>
+    <li><strong>Neden biz: [tek cümlelik gerekçe].</strong> [Dayandığı rakip boşluğu.]<sup><a class="c" href="#k5">5</a></sup></li>
+  </ul>
+</section>
+
+<section id="pazar">
+  <div class="eyebrow">1 · Pazar görünümü</div>
+  <h2>[Pazar adı]</h2>
+  <div class="pump" role="list">
+    <div class="readout" role="listitem"><b>[34,5]<small>[birim]</small></b><span>[Açıklama, dönem]<sup><a class="c" href="#k1">1</a></sup></span></div>
+  </div>
+  <h3>[Pazar payları (dönem)]<sup><a class="c" href="#k2">2</a></sup></h3>
+  <!-- Ölçek: genişlik = değer / ölçek üst sınırı × 100% -->
+  <div class="bars" aria-label="Pazar payı çubuk grafiği, ölçek yüzde 0 ile 30 arası">
+    <div class="bar lead"><span>[Lider]</span><div class="track"><div class="fill" style="width:87%"></div></div><span class="v">%26,1</span></div>
+    <div class="scale"><span></span><div><span>0</span><span>10</span><span>20</span><span>30</span></div><span></span></div>
+  </div>
+</section>
+
+<section id="mevzuat">
+  <div class="eyebrow">2 · Mevzuat</div>
+  <h2>[Düzenleme adı]</h2>
+  <div class="rule"><p><strong>[Yürürlük]</strong> [Kural.]<sup><a class="c" href="#k3">3</a></sup></p></div>
+  <p><strong>Tasarıma etkisi:</strong> [Kural → arayüz sonucu.]</p>
+  <p class="note"><span class="flag">Teyit</span> [Doğrulama notu.]</p>
+</section>
+
+<section id="rakipler">
+  <div class="eyebrow">3 · Rakip analizi</div>
+  <h2>Rakipler</h2>
+  <div class="counts">
+    <div><b>[6/8]</b>[markada araçta ödeme var]</div>
+  </div>
+  <h3>Özellik matrisi</h3>
+  <div class="tbl wide">
+    <table class="matrix">
+      <thead><tr><th>Özellik</th><th>[Rakip A]</th><th>[Rakip B]</th><th>[Rakip C <span class="flag">Eklendi</span>]</th></tr></thead>
+      <tbody>
+        <tr><td>[Özellik]</td><td class="m-yes">✓<sup><a class="c" href="#k4">4</a></sup></td><td class="m-no">–</td><td class="m-unk">?</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">✓ var · – yok · ? doğrulanamadı</p>
+
+  <h3>Marka kartları</h3>
+  <div class="grid2">
+    <div class="card brand">
+      <span class="tag">[Pazar payı · şube sayısı]</span>
+      <h3>[Rakip A]</h3>
+      <dl>
+        <dt>Program</dt><dd>[Ad]</dd>
+        <dt>Mekanik</dt><dd>[Kazanım / değer]<sup><a class="c" href="#k4">4</a></sup></dd>
+        <dt>Kanallar</dt><dd>[iOS · Android · Web]</dd>
+        <dt>Ödeme</dt><dd>[QR, araçta ödeme…]</dd>
+        <dt>Ekosistem</dt><dd>[Ortaklıklar]</dd>
+        <dt>Hedef kitle</dt><dd>[Hedeflediği segment; kampanya dili / yorum profili]<sup><a class="c" href="#k4">4</a></sup></dd>
+        <dt>Mağaza puanı</dt><dd>[4,7 (35 bin)] <span class="flag">Teyit</span></dd>
+        <dt>Odak</dt><dd>[Yalnızca kullanıcı not verdiyse]</dd>
+      </dl>
+      <div class="proscons">
+        <ul class="pro"><li>[Artı]</li></ul>
+        <ul class="con"><li>[Eksi]</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="uygulamalar">
+  <div class="eyebrow">4 · Uygulamalar</div>
+  <h2>Rakip uygulamaların mağaza linkleri</h2>
+  <div class="tbl wide"><table>
+    <thead><tr><th>Marka</th><th>Uygulama</th><th>Mağaza</th><th>Not</th></tr></thead>
+    <tbody><tr><td><strong>[Rakip]</strong></td><td>[Ad]</td><td><a href="[url]">[Google Play]</a></td><td>[Not]</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="global">
+  <div class="eyebrow">5 · Global örnekler</div>
+  <h2>Dünyada neler yapılıyor</h2>
+  <div class="grid2">
+    <div class="card"><span class="tag">[Bölge · ölçek]</span><h3>[Program]</h3><p>[Açıklama.]<sup><a class="c" href="#k5">5</a></sup></p></div>
+  </div>
+</section>
+
+<section id="kullanicilar">
+  <div class="eyebrow">6 · Hedef kitle ve kullanıcılar</div>
+  <h2>Kimin için yapıyoruz</h2>
+  <h3>Rakiplerin hedeflediği kitleler</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Rakip</th><th>Hedeflediği kitle</th><th>Dayanak</th></tr></thead>
+    <tbody><tr><td><strong>[Rakip A]</strong></td><td>[Segment]</td><td>[Kampanya dili / yorum profili]<sup><a class="c" href="#k4">4</a></sup></td></tr></tbody>
+  </table></div>
+  <h3>Boşta kalan segment</h3>
+  <p>[Rakiplerin hizmet etmediği ya da yorumlarda memnuniyetsiz görünen kitle.]<sup><a class="c" href="#k5">5</a></sup></p>
+  <div class="rule">
+    <p><span class="flag">Hipotez</span> <strong>Birincil kitle:</strong> [Kitle]. <strong>İkincil kitle:</strong> [Kitle].</p>
+    <p>[Gerekçe: hangi bulgulardan çıktığı.]<sup><a class="c" href="#k2">2</a></sup></p>
+  </div>
+  <h3>Persona taslakları</h3>
+  <p class="note"><span class="flag">Hipotez</span> Kullanıcı görüşmeleriyle doğrulanmalı.</p>
+  <div class="grid2">
+    <div class="card"><span class="tag">[Hacim · sıklık]</span><h3>[Persona]</h3><p>[Motivasyon, ihtiyaç, kaybettiren şey.]</p></div>
+  </div>
+</section>
+
+<section id="firsatlar">
+  <div class="eyebrow">7 · Fırsatlar</div>
+  <h2>Ayrışma alanları</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Fırsat</th><th>Neden</th></tr></thead>
+    <tbody><tr><td><strong>[Fırsat]</strong></td><td>[Bulgu]<sup><a class="c" href="#k6">6</a></sup></td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="konum">
+  <div class="eyebrow">8 · Konumlandırma</div>
+  <h2>Neden bizi tercih etsinler</h2>
+  <div class="grid2">
+    <div class="card"><span class="tag">[Dayandığı boşluk]</span><h3>[Gerekçe]</h3><p>[Rakiplerde durum ve bizim farkımız.]<sup><a class="c" href="#k5">5</a></sup></p></div>
+  </div>
+  <h3>Rakiplerden daha iyi yapabileceklerimiz</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Rakip zayıflığı / şikâyet</th><th>Rakiplerde bugün</th><th>Bizim cevabımız</th><th>Kopyalanabilirlik</th></tr></thead>
+    <tbody><tr><td>[Şikâyet]<sup><a class="c" href="#k5">5</a></sup></td><td>[Durum]</td><td><strong>[Cevap]</strong></td><td>[Kolay / Orta / Zor]</td></tr></tbody>
+  </table></div>
+  <h3>Masada olması gerekenler</h3>
+  <ul>
+    <li><strong>[Özellik]</strong>: [8 markadan 7'sinde var; eksikse tercih edilmeyiz.]<sup><a class="c" href="#k4">4</a></sup></li>
+  </ul>
+  <h3>Konumlandırma cümlesi</h3>
+  <p class="pos">[Hedef kitle] için, [ihtiyaç] isteyenlere [ürün] [fayda] sağlar; [ana rakip]'ten farklı olarak [ayrıştırıcı].</p>
+  <p class="note"><span class="flag">Hipotez</span> Gerekçeler masa başı araştırmadan çıkarıldı; kurum içi varlıklarla ve kullanıcı görüşmeleriyle doğrulanmalı.</p>
+</section>
+
+<section id="tasarim">
+  <div class="eyebrow">9 · Tasarım dili</div>
+  <h2>Görsel dil ve arayüz yönü</h2>
+  <h3>Rakip ekranlarından gözlemler</h3>
+  <div class="grid2">
+    <div class="card"><span class="tag">[Marka · ülke] <span class="flag src">[Mobbin]</span></span><h3>[Kalıp adı]</h3><p>[Gözlem.]</p><a class="lnk" href="[url]">[Mobbin'de gör →]</a></div>
+    <div class="card"><span class="tag">[Marka] <span class="flag">Görsel yok</span></span><h3>[Kalıp adı]</h3><p>[Metinle tarif.] Benzer kalıp için: <a href="[url]">[global örnek]</a></p></div>
+  </div>
+  <h3>Tasarım ilkeleri</h3>
+  <ul><li><strong>[İlke.]</strong> [Açıklama.]</li></ul>
+  <h3>Görsel dil önerisi</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Alan</th><th>Öneri</th></tr></thead>
+    <tbody><tr><td><strong>Renk</strong></td><td>[Öneri]</td></tr></tbody>
+  </table></div>
+  <h3>Ana ekran anatomisi (öneri)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Sıra</th><th>Bölüm</th><th>İçerik</th></tr></thead>
+    <tbody><tr><td class="num">1</td><td>[Bölüm]</td><td>[İçerik]</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="ton">
+  <div class="eyebrow">10 · Tone of voice</div>
+  <h2>Uygulama nasıl konuşmalı</h2>
+  <h3>Rakiplerin dili</h3>
+  <ul><li><strong>[Gözlem.]</strong> "[Gerçek ifade]"<sup><a class="c" href="#k7">7</a></sup></li></ul>
+  <h3>Önerilen ses: [ses adı]</h3>
+  <div class="voice">
+    <div><b>[Özellik]</b><span>[Açıklama]</span></div>
+  </div>
+  <h3>Ton ayarı</h3>
+  <!-- left: 0–100% skala üzerindeki konum -->
+  <div class="dial" aria-label="Ton skalaları">
+    <div class="dial-row"><span>Resmî</span><div class="dial-track"><i style="left:65%"></i></div><span>Samimi</span></div>
+    <div class="dial-row"><span>Ciddi</span><div class="dial-track"><i style="left:40%"></i></div><span>Eğlenceli</span></div>
+    <div class="dial-row"><span>Sade</span><div class="dial-track"><i style="left:25%"></i></div><span>Coşkulu</span></div>
+    <div class="dial-row"><span>Genel</span><div class="dial-track"><i style="left:85%"></i></div><span>Kesin</span></div>
+  </div>
+  <h3>Anlara göre örnek metinler</h3>
+  <div class="tbl wide"><table>
+    <thead><tr><th>An</th><th>Böyle yaz</th><th>Böyle yazma</th></tr></thead>
+    <tbody><tr><td><strong>[An]</strong></td><td class="say"><span class="yes">[İyi örnek]</span></td><td class="say"><span class="no">[Kötü örnek]</span></td></tr></tbody>
+  </table></div>
+  <h3>Kelime listesi</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Kullan</th><th>Kullanma</th><th>Neden</th></tr></thead>
+    <tbody><tr><td>[kelime]</td><td>[kelime]</td><td>[neden]</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="mvp">
+  <div class="eyebrow">11 · MVP</div>
+  <h2>MVP özellik önceliklendirmesi</h2>
+  <div class="pri">
+    <div class="card"><h3>Must <em>İlk sürüm</em></h3><ul><li>[Özellik]</li></ul></div>
+    <div class="card"><h3>Should <em>Kısa vade</em></h3><ul><li>[Özellik]</li></ul></div>
+    <div class="card"><h3>Could <em>Sonraki sürümler</em></h3><ul><li>[Özellik]</li></ul></div>
+  </div>
+  <h3>Kaçınılacak UX hataları</h3>
+  <ul><li>[Hata]</li></ul>
+</section>
+
+<section id="karar">
+  <div class="eyebrow">12 · Bulgu → karar</div>
+  <h2>Öneriler neye dayanıyor</h2>
+  <div class="tbl wide"><table>
+    <thead><tr><th>Bulgu</th><th>Karar</th><th>Etkilediği</th></tr></thead>
+    <tbody><tr><td>[Bulgu]<sup><a class="c" href="#k6">6</a></sup></td><td>[Karar]</td><td>[MVP / Tasarım / Ton]</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="adimlar">
+  <div class="eyebrow">13 · Sonraki adımlar</div>
+  <h2>Araştırmadan tasarıma</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Adım</th><th>Ne yapılır</th><th>Çıktı</th></tr></thead>
+    <tbody><tr><td class="num">1</td><td>[İş]</td><td>[Çıktı]</td></tr></tbody>
+  </table></div>
+</section>
+
+<section class="sources" id="kaynaklar">
+  <h2>Kaynaklar</h2>
+  <h3>Pazar ve mevzuat</h3>
+  <ol>
+    <li id="k1"><a href="[url]">[Yayın: başlık]</a></li>
+  </ol>
+  <h3>Rakipler</h3>
+  <ol start="4">
+    <li id="k4"><a href="[url]">[Yayın: başlık]</a></li>
+  </ol>
+</section>
+
+</div>
