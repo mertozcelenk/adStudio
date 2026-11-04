@@ -363,7 +363,7 @@ async function run() {
     for (const file of htmlFiles) {
       const label = relative(PROJECT_ROOT, file);
       const html = readFileSync(file, 'utf8');
-      const linked = [...html.matchAll(/<link\b[^>]*href=["']([^"']+\.css)["']/gi)]
+      const linked = [...html.matchAll(/<link\b[^>]*href=["']([^"'?#]+\.css)(?:[?#][^"']*)?["']/gi)]
         .map(m => relative(PROJECT_ROOT, resolve(dirname(file), m[1])));
       if (!darkDefinedIn.has(label) && !linked.some(l => darkDefinedIn.has(l))) {
         findings.push({ ...base, rule: 'tokens/dark-theme-missing', file: label, selector: null, theme: 'dark', impact: 'High', blocks: true, msg: 'Token setinde koyu tema değerleri var ama sayfada koyu tema tanımı yok ([data-theme="dark"] / prefers-color-scheme: dark)' });
