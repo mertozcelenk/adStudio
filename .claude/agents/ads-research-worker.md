@@ -2,7 +2,7 @@
 name: ads-research-worker
 description: Invoke this agent to collect raw competitor screen evidence for a research skill — searching Mobbin, then store pages and official sites, and returning structured findings. Collection only; it never interprets, decides or talks to the user. Use whenever ads-market-research needs competitor screens, so images and pages stay out of the main conversation.
 tools: Read, WebSearch, WebFetch, mcp__mobbin__search_screens, mcp__mobbin__search_flows, mcp__mobbin__search_sections
-model: haiku
+model: sonnet
 ---
 
 # Research Worker

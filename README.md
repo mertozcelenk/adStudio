@@ -356,7 +356,7 @@ Yazı boyutları ve satır yüksekliğinde 4 katı yalnızca öneridir: tipograf
 │   ├── ads-ux-designer.md
 │   ├── ads-token-generator-worker.md
 │   ├── ads-context-scanner-worker.md
-│   ├── ads-research-worker.md     # rakip ekranlarını toplar (Haiku)
+│   ├── ads-research-worker.md     # rakip ekranlarını toplar
 │   └── ads-pipeline-tester.md
 └── references/
     ├── research-file.md        # research/market-analysis.md biçimi ve spec eşlemesi
