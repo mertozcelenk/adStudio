@@ -24,6 +24,8 @@
  *     template girer; ilgisiz akış girmez; geniş kapsamlı eski spec yalnızca listelenir
  *   - probe: adım sonrası odak, ölçüm, tam ekran içinde mi, bilinmeyen adım hata olarak raporlanır
  *   - check-names: var olan dosyayı baştan yazdıran talimat ve Edit'siz Edit talimatı yakalanır
+ *   - check-names: geçersiz agent / Agent çağrısı model değeri yakalanır
+ *   - context-pack: boyut sınırında sığmayan bölüm satır adresiyle listelenir, başlığında anahtar geçen önce girer
  *   - plan-gate: önceki çalışmadan kalan / kimliksiz COMPLETE işareti reddedilir, eksik görev ve başlıksız
  *     spec yakalanır, doğru çalışma geçer ve önceki çalışmanın bölümü korunmuş olur
  */
@@ -292,6 +294,13 @@ rmSync(join(figmaRoot, 'project-state.md'));
   agent('ads-ux-reviewer', 'Bu kural LDF\'den kaldı');
   check('check-names: eski ad kalıntısı yakalanır', /eski ad kalıntısı/.test(cn().stdout), cn().stdout);
   agent('ads-ux-reviewer', '');
+  writeFileSync(join(root, '.claude', 'agents', 'ads-ux-reviewer.md'), '---\nname: ads-ux-reviewer\nmodel: sonet\n---\n');
+  check('check-names: geçersiz agent model değeri yakalanır', /model: "sonet" geçersiz/.test(cn().stdout), cn().stdout);
+  skill('ads-check', 'builder\'ı `model: "fast"` ile çalıştır');
+  check('check-names: skill\'teki geçersiz Agent model değeri yakalanır', /ads-check\.md:\d+: model: "fast" geçersiz/.test(cn().stdout), cn().stdout);
+  writeFileSync(join(root, '.claude', 'agents', 'ads-ux-reviewer.md'), '---\nname: ads-ux-reviewer\nmodel: sonnet\n---\n');
+  skill('ads-check', 'builder\'ı `model: "sonnet"` ile çalıştır');
+  check('check-names: geçerli model değerleri geçer', cn().status === 0, cn().stdout);
   mkdirSync(join(root, '.claude', 'commands'));
   writeFileSync(join(root, '.claude', 'commands', 'ads-iterate.md'), 'x');
   check('check-names: commands kopyasında eksik skill yakalanır', /commands\/ads-check\.md eksik/.test(cn().stdout), cn().stdout);
@@ -325,6 +334,16 @@ rmSync(join(figmaRoot, 'project-state.md'));
     pack.includes('logo korunur') && pack.includes('BEGIN:token_directives') && !pack.includes('uzun amaç'), '');
   check('context-pack: ilgili ekran dosyası listelenir, ilgisiz ekran listelenmez', pack.includes('screens/org-chart.html') && !pack.includes('screens/list.html'), '');
   check('context-pack: --run yoksa kullanım hatası (1)', spawnSync(process.execPath, [join(HERE, 'context-pack.mjs'), '--root', root]).status === 1, '');
+  // Sınır: zorunlular girer; sığmayan isteğe bağlı bölüm satır adresiyle listelenir; başlığında anahtar geçen önce girer
+  // Uzun eski spec ve uzun Ortak Davranış: sınıra sığmaz; kısa T-CHART template'i (başlığında anahtar) sığar
+  w('ux-specs.md', readFileSync(join(root, 'ux-specs.md'), 'utf8').replace('ESKİ-ŞEMA-SPEC', 'ESKİ-ŞEMA-SPEC ' + 'x'.repeat(3000)));
+  w('flows.md', readFileSync(join(root, 'flows.md'), 'utf8').replace('- geri al', '- geri al ' + 'y'.repeat(3000)));
+  const out2 = join(root, 'pack-small.md');
+  const res2 = spawnSync(process.execPath, [join(HERE, 'context-pack.mjs'), '--root', root, '--run', '20261005-1000', '--keys', 'T-CHART,org-chart', '--out', out2, '--budget', '2'], { encoding: 'utf8' });
+  const small = existsSync(out2) ? readFileSync(out2, 'utf8') : '';
+  check('context-pack: sınırda zorunlu bölümler yine girer', res2.status === 0 && small.includes('YENİ-SPEC') && small.includes('logo korunur'), res2.stdout + res2.stderr);
+  check('context-pack: sığmayan bölüm içeriksiz, satır adresiyle listelenir', !small.includes('ESKİ-ŞEMA-SPEC') && /ux-specs\.md:\d+-\d+ — UX Spec — TASK-002/.test(small), small);
+  check('context-pack: başlığında anahtar geçen bölüm önce sığdırılır', small.includes('zoom') && /flows\.md:\d+-\d+ — Ortak Davranış/.test(small), small);
 }
 
 // probe: hazır ölçüm betiği

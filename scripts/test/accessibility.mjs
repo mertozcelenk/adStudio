@@ -6,6 +6,11 @@
  * Not: WCAG 2.2 POUR'un manuel gerektiren kuralları bu testle yakalanamaz;
  * bunlar ads-ux-reviewer agent'ı tarafından ayrıca denetlenir.
  *
+ * Gizli durum taraması: axe gizli öğelere bakmaz; ekranlardaki durum blokları (boş, hata, arama sonucu listesi…)
+ * açılışta `hidden` olduğu için ilk taramada hiç denetlenmez. İkinci geçişte `hidden` kaldırılır ve yalnızca ARIA yapı
+ * kuralları (STATE_RULES) çalışır — görünürlüğe bağlı kurallar (kontrast, yerleşim) bu geçişte anlamsız olduğu için
+ * dışarıda. İlk taramada zaten bulunan öğe tekrar yazılmaz; bulgu mesajı "[gizli durum]" ile başlar.
+ *
  * Kullanım:
  *   node accessibility.mjs
  *   node accessibility.mjs --fail-on-minor  → Medium/Nitpick bulgular da teslimi engeller
@@ -23,6 +28,16 @@ const FAIL_ON_MINOR = process.argv.includes('--fail-on-minor');
 
 // axe impact → adStudio etki seviyesi
 const IMPACT = { critical: 'Blocker', serious: 'High', moderate: 'Medium', minor: 'Nitpick' };
+const STATE_RULES = ['aria-required-children', 'aria-required-parent', 'list', 'listitem', 'aria-allowed-role',
+  'aria-prohibited-attr', 'aria-valid-attr-value', 'aria-allowed-attr'];
+
+const toFinding = (label, v, node, prefix = '') => {
+  const impact = IMPACT[v.impact] || 'Medium';
+  return {
+    rule: `axe/${v.id}`, file: label, selector: node.target.join(' '), viewport: null, theme: null,
+    impact, blocks: blocksByImpact(impact) || FAIL_ON_MINOR, msg: `${prefix}${v.description} (${v.helpUrl})`,
+  };
+};
 
 async function run() {
   const skip = htmlPrecheck(TEST, PROJECT_ROOT);
@@ -47,23 +62,29 @@ async function run() {
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
 
-    if (results.violations.length === 0) console.log(`  [GEÇTİ]   ${label}`);
+    const seen = new Set();
     for (const v of results.violations) {
-      const impact = IMPACT[v.impact] || 'Medium';
-      for (const node of v.nodes) {
-        findings.push({
-          rule: `axe/${v.id}`,
-          file: label,
-          selector: node.target.join(' '),
-          viewport: null,
-          theme: null,
-          impact,
-          blocks: blocksByImpact(impact) || FAIL_ON_MINOR,
-          msg: `${v.description} (${v.helpUrl})`,
-        });
-      }
-      console.log(`  [${impact}] ${label} — ${v.id} (${v.nodes.length} öğe): ${v.description}`);
+      for (const node of v.nodes) { findings.push(toFinding(label, v, node)); seen.add(`${v.id}|${node.target.join(' ')}`); }
+      console.log(`  [${IMPACT[v.impact] || 'Medium'}] ${label} — ${v.id} (${v.nodes.length} öğe): ${v.description}`);
     }
+
+    // Gizli durum taraması (yalnızca gizli öğe varsa)
+    const unhidden = await page.evaluate(() => {
+      const els = [...document.querySelectorAll('body [hidden]')];
+      els.forEach(el => el.removeAttribute('hidden'));
+      return els.length;
+    });
+    let stateCount = 0;
+    if (unhidden) {
+      const hiddenRes = await new AxeBuilder({ page }).withRules(STATE_RULES).analyze();
+      for (const v of hiddenRes.violations) {
+        const nodes = v.nodes.filter(n => !seen.has(`${v.id}|${n.target.join(' ')}`));
+        for (const node of nodes) findings.push(toFinding(label, v, node, '[gizli durum] '));
+        if (nodes.length) console.log(`  [${IMPACT[v.impact] || 'Medium'}] ${label} — ${v.id} gizli durumda (${nodes.length} öğe): ${v.description}`);
+        stateCount += nodes.length;
+      }
+    }
+    if (results.violations.length === 0 && stateCount === 0) console.log(`  [GEÇTİ]   ${label}`);
     await context.close();
   }
 

@@ -44,6 +44,11 @@ Uygulama ekranlarını cihaz ölçüsünde açar ve APP kurallarının mekanik k
 
 `responsive` kırılma noktalarını ölçer; sonucu MB-1 altında raporla.
 
+**`[yalnız test]`** işaretli kurallar tamamen otomatik testle ölçülür: reviewer kaynağı okuyarak yeniden kontrol etmez,
+`test-results.json`'daki sonucu (bulgu varsa kimlik + dosya + seçici) rapora aktarır. `accessibility` testi açılışta
+gizli durum bloklarını (`hidden`) da ARIA yapı kurallarıyla tarar (bulgu mesajı `[gizli durum]`); etkileşimle oluşan
+durumlar (JS ile doldurulan liste, açılan panel) yine `probe.mjs --axe` ile reviewer'ın işidir.
+
 `structure` (`project-state.md → yapi` varsa) ekranları `flows.md` / `templates.md` ile karşılaştırır: işaretler,
 zorunlu durumlar, bölgeler, çıkmaz sokak, akış bağımlılıkları; bulgularını ST kurallarında raporla. `yapi` yoksa
 `UYGULANAMAZ` — eski proje, bulgu değildir.
@@ -61,7 +66,7 @@ yerine geçmez; bu durumda çıktı "teslime hazır" sayılmaz.
 - **SP-2** — brief'te geçen durumların blokları ekranda var mı.
 
 ### TK — Token bağlama
-- **TK-1** — CSS custom property değerleri token değerleriyle eşleşiyor mu; `var(--…)` yerine ham değer var mı (`tokens` testi).
+- **TK-1** — CSS custom property değerleri token değerleriyle eşleşiyor mu; `var(--…)` yerine ham değer var mı (`tokens` testi). `[yalnız test]`
 - **TK-2** — spacing ve `border-radius` değerleri (`tokens` testi + kaynak).
 
 ### A11Y — Erişilebilirlik
@@ -72,7 +77,7 @@ yerine geçmez; bu durumda çıktı "teslime hazır" sayılmaz.
 ### MD — Metadata ve işaretler
 - **MD-1** — her HTML dosyasının `<head>`'inde yorum ve `meta author`.
 - **MD-2** — `generator` / `ai` / `claude` içeren `<meta>`, `<!-- AI generated -->` tarzı yorum, `data-ai` / `data-generated` / `data-claude` özelliği.
-- **MD-3** — ekran dosyalarında `<body data-page-kind="marketing|product|content">`.
+- **MD-3** — ekran dosyalarında `<body data-page-kind="marketing|product|content">`. `[yalnız test]` (`tells`)
 - **MD-4** — `<body data-platform="web|ios|android">` (landing kuralları uygulanamaz — ekranı stratejist kapsamından eşleştirip devam et).
 - **MD-5** — yalnızca Figma (HTML'de her ekran ayrı dosya, işaretler `data-*`).
 
@@ -83,7 +88,7 @@ analiziyle yap; yapılamayanları "Token JSON sağlanmadı, manuel doğrulama ge
 - **AT-1** — `tells` + kaynak; `data-copy="user"` içindeki metin muaf.
 - **AT-2** — div'lerden kurulmuş görev listesi / terminal / dashboard.
 - **AT-3** — `--font-family-display` değeri ve `_meta.font_rationale`.
-- **AT-4** — `tells` eyebrow ölçümü; istisna varsa yalnızca `data-eyebrow-allowed` kapsamında.
+- **AT-4** — `tells` eyebrow ölçümü; istisna varsa yalnızca `data-eyebrow-allowed` kapsamında. `[yalnız test]`
 - **AT-5** — yan yana eşit genişlikte üç kart.
 - **AT-6** — zemin / accent renkleri (`user_explicit` değilse).
 - **AT-7** — metinlerde placeholder isim.
@@ -97,7 +102,7 @@ analiziyle yap; yapılamayanları "Token JSON sağlanmadı, manuel doğrulama ge
 - **TL-1** — accent token'ının kullanıldığı yerler; bir bölümde beliren farklı accent (ör. gri-turuncu sitede mavi CTA).
 - **TL-2** — `border-radius` değerlerinin dağılımı ve belgelenmiş kural.
 - **TL-3** — tüm CTA etiketleri niyete göre gruplanır ("Bize ulaşın" + "Konuşalım" aynı niyet).
-- **TL-4** — `tells` 1280 CTA satır sayısı.
+- **TL-4** — `tells` 1280 CTA satır sayısı. `[yalnız test]`
 - **TL-5** — CTA, input, placeholder, focus ring, helper ve hata metinleri bulundukları bölümün zeminine karşı.
 
 ### LY — Layout disiplini
@@ -130,12 +135,12 @@ analiziyle yap; yapılamayanları "Token JSON sağlanmadı, manuel doğrulama ge
 - **MO-4** — `window.addEventListener('scroll', …)`.
 - **MO-5** — sayfadaki hareketin türü ve miktarı MOTION bandıyla.
 - **MO-6** — imza anın yeri ve Tez'le bağı.
-- **MO-7** — `tells` tekrarlı giriş animasyonu (aynı `animation-name` / reveal sınıfı).
+- **MO-7** — `tells` tekrarlı giriş animasyonu (aynı `animation-name` / reveal sınıfı). `[yalnız test]`
 - **MO-8** — animasyonlu durum noktalarının veri kaynağı.
 - **MO-9** — her animasyonun amacı; sonsuz döngüler.
 
 ### OD — Okuma düzeni
-- **OD-1** — `tells` okuma genişliği (gövde `max-width`).
+- **OD-1** — `tells` okuma genişliği (gövde `max-width`). `[yalnız test]`
 - **OD-2** — ara başlık sayısı ve içindekiler / bağlantılar.
 - **OD-3** — landing kalıplarının yerleşimi.
 
@@ -179,7 +184,7 @@ analiziyle yap; yapılamayanları "Token JSON sağlanmadı, manuel doğrulama ge
 - **ST-5** — doğrulama zamanı, geri bildirim, geri alma, yıkıcı işlem onayı.
 - **ST-6** — `data-region` bölgeleri ve template'in `Davranış` / `Pattern` maddeleri; aynı template'li ekranlar.
 - **ST-7** — akışta / template'te olmayan işlev ya da dal.
-- **ST-8** — `structure` testinin işaret bulguları (`data-template`, `data-flow`, `data-region`, `data-state`, `data-flow-start`).
+- **ST-8** — `structure` testinin işaret bulguları (`data-template`, `data-flow`, `data-region`, `data-state`, `data-flow-start`). `[yalnız test]`
 
 ### CP — Çapraz sayfa tutarlılığı
 Tüm `.html` ekranları birlikte okunur. Ortak öğe: `<nav>` / `role="navigation"`, `<header>` / `role="banner"`,

@@ -1,0 +1,11 @@
+{
+  "description": "axe gizli öğelere bakmaz: açılışta hidden olan durum bloğundaki ARIA yapı hatası (listbox içinde option yerine <p>) ikinci geçişte yakalanmalı; doğru kurulmuş gizli listbox yanlış alarm vermemeli (Personasphere 2026-10-22: reviewer'ın elle bulduğu aria-required-children).",
+  "tests": {
+    "accessibility": {
+      "status": "failed",
+      "findings": [
+        { "rule": "axe/aria-required-children", "file": "screens/search.html", "selector": ".pop", "viewport": null, "theme": null, "impact": "Blocker", "blocks": true, "count": 1 }
+      ]
+    }
+  }
+}

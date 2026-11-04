@@ -18,6 +18,8 @@
  *      geçen agent'ın `tools:` satırında Edit var (yoksa agent dosyayı Write ile baştan yazmak zorunda kalır).
  *   6. Agent `tools:` satırındaki her ad Claude Code'un tanıdığı biçimde: yerleşik araç (Read, Bash…) veya
  *      `mcp__<sunucu>__<araç>`. Ad eşleşmezse araç agent'a sessizce verilmez (ör. `use_figma`, `Figma:get_metadata`).
+ *   9. Agent `model:` satırı varsa değeri haiku | sonnet | opus | inherit; skill'lerde Agent çağrısına verilen
+ *      `model: "…"` değeri de aynı listeden.
  *
  * Kapsam: yalnızca adStudio'nun kendi dosyaları (.claude/, scripts/, README.md, TESTING.md, CONTRIBUTING.md) —
  * kurulu bir projede kullanıcının kendi HTML / CSS'i taranmaz.
@@ -134,6 +136,21 @@ for (const [dir, names] of [[skillsDir, skills], [agentsDir, agents]]) {
       }
     }
   }
+}
+
+// 9. model değerleri
+const MODELS = new Set(['haiku', 'sonnet', 'opus', 'inherit']);
+for (const n of agents) {
+  const fm = readFileSync(join(agentsDir, `${n}.md`), 'utf8').match(/^---\n([\s\S]*?)\n---/);
+  const m = fm && fm[1].match(/^model:\s*(\S+)\s*$/m);
+  if (m && !MODELS.has(m[1])) problems.push(`.claude/agents/${n}.md: model: "${m[1]}" geçersiz (haiku | sonnet | opus | inherit)`);
+}
+for (const n of skills) {
+  readFileSync(join(skillsDir, `${n}.md`), 'utf8').split('\n').forEach((line, i) => {
+    for (const m of line.matchAll(/model: "([^"]+)"/g)) {
+      if (!MODELS.has(m[1])) problems.push(`.claude/skills/${n}.md:${i + 1}: model: "${m[1]}" geçersiz`);
+    }
+  });
 }
 
 // 5. commands = skills
