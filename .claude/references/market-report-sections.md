@@ -24,6 +24,7 @@ Son madde önerilen tasarım/ton yönünü tek cümlede verir.
 - **Rakam şeridi** (`.pump` bileşeni): 3–4 anahtar gösterge (pazar büyüklüğü, oyuncu/şube sayısı, kullanıcı tabanı, büyüyen alt segment). Her biri birim + açıklama + kaynak.
 - **Pazar payı çubuk grafiği** (`.bars`): lider vurgu rengiyle, ölçek etiketli. Veri yoksa bu bileşeni atla.
 - **Tasarım için önemli veriler**: kullanıcı tabanının yapısı, büyüme yönleri.
+- **Platform dağılımı** (platform kararına girdi): hedef pazarda iOS / Android payı (açık veri, WebSearch; kaynaklı, yıl yazılı) ve rakiplerin Google Play indirme bantları. Veri ülke geneli ve tüm telefonlar içindir, bankacılık/ürün kullanıcılarına özel değildir: bunu açıkça yaz. Hedef kitle bağlantısı (ör. expat nüfus iOS'a mı yoğun) doğrudan veri yoksa `Hipotez` etiketi alır. Sonuç bir `constraint` önerisine dönüşür (Platform ve Teknik Kısıtlar); kaynaksız "çoğu kullanıcı X" yazma. Veri bulunamazsa bunu yaz, bölümü silme.
 
 ## 2 · Mevzuat ve kısıtlar
 - `.rule` bloğu: yürürlük tarihi, izin verilenler, yasaklar.
@@ -96,8 +97,9 @@ Bu bölüm "Kullanıcı bu ürünü rakiplere karşı neden tercih etsin, rakipl
 - **Rakiplerin dili:** 3–4 gözlem, gerçek ifade örnekleri ve kaynaklarıyla.
 - **Önerilen ses:** bir adı olan ses ("Hesabı açık yol arkadaşı") + 4 özellik (`.voice` bileşeni).
 - **Ton ayarı:** 4 skala (`.dial`): Resmî–Samimi, Ciddi–Eğlenceli, Sade–Coşkulu, Genel–Kesin. Altında anlara göre tonun nasıl değiştiği.
-- **Anlara göre örnek metinler:** 6–8 satır, "Böyle yaz / Böyle yazma" (`.say` bileşeni). Anlar konuya göre: bakiye, kampanya, bekleyen işlem, hata, son kullanma, seviye/başarı, ödül kullanma.
-- **Kelime listesi:** Kullan · Kullanma · Neden.
+- **Anlara göre örnek metinler:** 6–8 satır, "Böyle yaz / Böyle yazma" (`.say` bileşeni). **Örnek metinler ürünün arayüz dilinde, global ürünlerde İngilizce yazılır** (rapor anlatımı kullanıcının dilinde kalır); tablo başlıkları ve "An" sütunu rapor dilinde olabilir. Anlar konuya göre: bakiye, kampanya, bekleyen işlem, hata, son kullanma, seviye/başarı, ödül kullanma.
+- **Kelime listesi:** Kullan · Kullanma · Neden. "Kullan" ve "Kullanma" sütunları arayüz dilinde (global ürünlerde İngilizce), "Neden" rapor dilinde.
+- Hedef pazarın yerel dili ayrıca gerekiyorsa (ör. Arapça) örnek yazma; "Hipotez" notunda bu dilin incelenmediğini belirt.
 - "Hipotez" notu: markanın mevcut diliyle hizalanmalı, kullanıcı testinde alternatiflerle karşılaştırılmalı.
 
 ## 11 · MVP

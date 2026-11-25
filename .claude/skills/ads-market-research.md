@@ -7,7 +7,7 @@ description: Bir ürün fikri için pazar ve rakip analizi yapar (rakipler, hede
 
 Bir ürün fikri için pazar araştırması, rakip analizi ve tasarım yönü çıkarır; sonucu tek sayfalık web raporu olarak
 yayınlar ve karara dönüşebilen önerileri `research/market-analysis.md` dosyasına yazar. Kullanıcının dilinde yaz
-(varsayılan Türkçe). **Yalnızca kullanıcı istediğinde çalışır**; hiçbir akış bunu kendiliğinden başlatmaz.
+(varsayılan Türkçe); ürün içinde görünecek örnek metinler (ton örnekleri, kelime listesi) ise arayüz dilinde, global ürünlerde İngilizce yazılır. **Yalnızca kullanıcı istediğinde çalışır**; hiçbir akış bunu kendiliğinden başlatmaz.
 
 Başvuru dosyaları:
 - `references/market-report-sections.md` — her bölümün içeriği ve tablo yapıları
@@ -61,7 +61,7 @@ Manuel ekran çekimi kapsam dışıdır; kullanıcıdan ekran istenmez.
 1. Artifact aracının gerektirdiği tasarım kılavuzunu yükle. Artifact aracı yoksa raporu `research/market-report.html` olarak yaz.
 2. `references/market-report-template.html` şablonunu oku; CSS token'larını ve bileşenleri oradan al. Renk ve display yazı tipini konuya göre uyarlayabilirsin; yapı ve bileşen sınıfları aynı kalsın.
 3. `references/market-report-sections.md` bölümlerini sırayla doldur; kullanıcı aksini söylemedikçe bölüm atlama.
-4. Raporu scratchpad dizinine yaz (`<konu-kisa-adi>-raporu.html`).
+4. Raporu scratchpad dizinine yaz (`<konu-kisa-adi>-raporu.html`). Raporu şablondan türeterek **doğrudan Write ile tek HTML dosyası olarak yaz**; birleştirme/derleme betiği yazma ve shell komutu (perl, sed vb.) çalıştırma.
 
 **Yazım kuralları**
 - Her sayısal veri ve rakip bilgisi metin içinde numaralı kaynak etiketi taşır: `<sup><a class="c" href="#k3">3</a></sup>`.
